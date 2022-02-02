@@ -41,11 +41,12 @@
         </template>
 
         <template v-slot:item.status="{ item }">
-          <div
-            :color="computedColor(item.status)" 
-          >
-            {{ item.status !== 1 ? 'Deshabilitado' : 'Habilitado'}} 
-          </div>
+          <v-icon v-if="item.status === 1" small color="success">
+            mdi-check-circle
+          </v-icon>
+          <v-icon v-else small>
+            mdi-circle-outline
+          </v-icon>
         </template>
 
         <template v-slot:item.created="{ item }">
@@ -92,7 +93,7 @@ export default {
       selectedUsers: [],
       headers: [
         { text: 'Email', value: 'email' },
-        { text: 'Creditos', value: 'start_credit' },
+        { text: 'Creditos disponible', value: 'start_credit' },
         { text: 'Creación', value: 'created_at' },
         { text: 'Estado', value: 'status' },
         { text: 'Acciones', value: 'actions' }
@@ -106,8 +107,17 @@ export default {
   methods: {
     searchUser() {},
     open() {},
-    getUsuarios() {
-      this.usuarios = []
+    getUsuarios() { 
+      this.usuarios = [
+        {
+          email: 'mterrones.ra@gmail.com',
+          name: 'Marco Terrones',
+          start_credit: 1000,
+          created_at: 'Hace 3 horas',
+          status: 1
+        }
+      ]
+      /*
       this.isLoading = true
 
       axios.get('/creditsUsedByEachUser', { headers: { Authorization: 'Bearer ' + window.localStorage.token } }).then((response) => {
@@ -120,7 +130,7 @@ export default {
         }
       }).catch((error) => {
         console.log(error)
-      })
+      })*/
     },
     computedColor(status) {
       if (status !== 1) {
@@ -179,15 +189,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.slide-fade-enter-active {
-  transition: all 0.3s ease;
-}
-.slide-fade-leave-active {
-  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
-}
-.slide-fade-enter,
-.slide-fade-leave-to {
-  transform: translateX(10px);
-  opacity: 0;
-}
+  .slide-fade-enter-active {
+    transition: all 0.3s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+  }
+  .slide-fade-enter,
+  .slide-fade-leave-to {
+    transform: translateX(10px);
+    opacity: 0;
+  }
 </style>

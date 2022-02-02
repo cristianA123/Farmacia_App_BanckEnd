@@ -16,10 +16,7 @@
     >
       <!-- Navigation menu info -->
       <template v-slot:prepend>
-        <div class="pa-2">
-          <div class="title font-weight-bold text-uppercase primary--text">{{ product.name }}</div>
-          <div class="overline grey--text">{{ product.version }}</div>
-        </div>
+        <img src="/logo.png" style="width: 230px; padding: 30px 30px 0px;">
       </template>
 
       <!-- Navigation menu -->

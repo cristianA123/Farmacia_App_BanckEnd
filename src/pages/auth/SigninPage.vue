@@ -50,21 +50,9 @@
 
           <div v-if="errorProvider" class="error--text">{{ errorProviderMessages }}</div>
 
-          <div class="mt-5">
-            <router-link to="/auth/forgot-password">
-              {{ $t('login.forgot') }}
-            </router-link>
-          </div>
         </v-form>
       </v-card-text>
     </v-card>
-
-    <div class="text-center mt-6">
-      {{ $t('login.noaccount') }}
-      <router-link to="/auth/signup" class="font-weight-bold">
-        {{ $t('login.create') }}
-      </router-link>
-    </div>
   </div>
 </template>
 

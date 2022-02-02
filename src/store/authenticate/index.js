@@ -27,23 +27,25 @@ export default {
         password: user.password
       }).then((response) => {
         if (response.data.success) {
-          localStorage.setItem('token', response.data.data.token)
+          $cookies.set('user', response.data.data.user)
+          $cookies.set('token', response.data.data.access_token)
+          $cookies.set('services', response.data.data.services)
           store.commit('setErrorMessages', null)
           router.push({ path:'/' })
         } else {
           commit('setLoadingAuth', false)
-          localStorage.removeItem('token')
           store.commit('setUser', null)
           store.commit('setErrorMessages', response.data.message)
         }
       }).catch((error) => {
-        store.commit('setErrorMessages', 'Error, no podemos conectarnos al servidor.')
+        store.commit('setErrorMessages', error.response.data.message)
         commit('setLoadingAuth', false)
-        console.log(error)
       })
     },
     logout() {
-      localStorage.removeItem('token')
+      $cookies.remove('user')
+      $cookies.remove('token')
+      $cookies.remove('services')
       router.push({ name: 'auth-signin' })
     }
   }

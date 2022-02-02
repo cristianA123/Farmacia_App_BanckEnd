@@ -24,6 +24,7 @@
     "tiptap-extensions": "^1.29.1",
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.5.3",
+    "vue-cookies": "^1.7.4",
     "vue-debounce": "^3.0.1",
     "vue-echarts": "^5.0.0-beta.0",
     "vue-emoji-picker": "^1.0.1",

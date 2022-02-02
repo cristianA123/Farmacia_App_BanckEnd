@@ -32,6 +32,9 @@ import './filters/formatDate'
 // Main Theme SCSS
 import './assets/scss/theme.scss'
 
+//Cookies
+import VueCookies from 'vue-cookies'
+
 import setupInterceptors from '@/services/setupInterceptors'
 
 setupInterceptors(store)
@@ -41,11 +44,11 @@ import 'animate.css/animate.min.css'
 import vueDebounce from 'vue-debounce'
 
 Vue.use(vueDebounce)
+Vue.use(VueCookies)
+Vue.use(DatetimePicker)
 
 // Set this to false to prevent the production tip on Vue startup.
 Vue.config.productionTip = false
-
-Vue.use(DatetimePicker)
 
 /*
 |---------------------------------------------------------------------
