@@ -9,13 +9,10 @@
 
     <v-card>
       <v-card-text>
-
-        <v-text-field
-          v-model="phones"
-          label="Ingrese números de contacto"
-          outlined
+        <Input-Individual-Phones 
+          @onInputNewIndividualPhone="InputNewIndividualPhone"
         />
-
+        
         <v-textarea
           v-model="message"
           label="Escriba el mensaje a enviar"
@@ -46,11 +43,13 @@
 
 <script>
 import OptionsComponent from './components/OptionsComponent.vue'
+import InputIndividualPhones from '@/components/common/InputIndividualPhones.vue'
 import BackendApi from '@/services/backend.service'
 
 export default {
   components: {
-    OptionsComponent
+    OptionsComponent,
+    InputIndividualPhones
   },
   data() {
     return {
@@ -67,7 +66,7 @@ export default {
       const payload = {
         campaing_type_id: 1,
         name: 'Individual',
-        destinations: [this.phones],
+        destinations: this.phones,
         message: this.message,
         url_id: null,
         options: this.options
@@ -81,6 +80,9 @@ export default {
     },
     onChangeOptions(options) {
       this.options = options
+    },
+    InputNewIndividualPhone(phones) {
+      this.phones = phones
     }
   }
 }
