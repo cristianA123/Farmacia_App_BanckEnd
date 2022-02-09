@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import BackendApi from '@/services/backend.service'
 
 export default {
   data () {
@@ -85,7 +85,7 @@ export default {
             agenda_id: this.agenda.id
           }
 
-          axios.post('/updateAgenda', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } }).then((response) => {
+          BackendApi.post('/updateAgenda', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } }).then((response) => {
             if (response.data.success) {
               this.$store.dispatch('app/showToast', 'Agenda actualizada exitosamente')
               this.$emit('onCreated')
@@ -98,7 +98,7 @@ export default {
             name: this.name
           }
 
-          axios.post('/createAgenda', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } }).then((response) => {
+          BackendApi.post('/agenda', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } }).then((response) => {
             if (response.data.success) {
               this.$store.dispatch('app/showToast', 'Agenda creada exitosamente')
               this.$emit('onCreated')

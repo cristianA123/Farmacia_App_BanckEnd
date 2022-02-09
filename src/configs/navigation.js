@@ -14,7 +14,7 @@ export default {
   {
     text: 'Servicios',
     items: [
-      { icon: 'mdi-android-messages', text: 'SMS', link: '/sms/campaing' },
+      { icon: 'mdi-android-messages', text: 'SMS', link: '/sms/create_campaing' },
       { icon: 'mdi-chart-line', text: 'SMS', link: '/sms/report' }
     ]
   },
@@ -22,24 +22,24 @@ export default {
     text: 'Herramientas',
     key: '',
     items: [
-      { icon: 'mdi-file-image', text: 'Usuarios', link: '/tools/filescloud' },
-      { icon: 'mdi-link-plus', text: 'Usuarios', link: '/tools/shorturl' },
-      { icon: 'mdi-contacts', text: 'Usuarios', link: '/tools/agendas' }
+      { icon: 'mdi-file-image', text: 'Archivos', link: '/tools/filescloud' },
+      { icon: 'mdi-link-plus', text: 'Url', link: '/tools/shorturl' },
+      { icon: 'mdi-contacts', text: 'Agendas', link: '/tools/agendas' }
     ]
   },
   {
     text: 'Configuración',
     key: '',
     items: [
-      { icon: 'mdi-account',  text: 'Usuarios', link: '/config/user' },
-      { icon: 'mdi-account-group', text: 'Usuarios', link: '/config/users' }
+      { icon: 'mdi-account',  text: 'Mi usuario', link: '/config/user' },
+      { icon: 'mdi-account-group', text: 'Sub usuarios', link: '/config/users' }
     ]
   },
   {
     text: 'Canales',
     key: '',
     items: [
-      { icon: 'mdi-call-split', text: 'Usuarios', link: '/channels/vendors' }
+      { icon: 'mdi-call-split', text: 'Proveedores', link: '/channels/vendors' }
     ]
   }]
 }

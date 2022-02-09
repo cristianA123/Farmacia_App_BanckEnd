@@ -2,15 +2,34 @@
   <div class="d-flex flex-column flex-grow-1">
     <div class="d-flex align-center py-3">
       <div>
-        <div class="display-1">Administrar contactos: {{ agenda.name }}</div>
+        <div class="display-1">Administrar contactos: </div>
       </div>
       <v-spacer></v-spacer>
-      <v-btn
-        color="primary"
-        @click="openNewContact()"
-      >
-        Nuevos contactos
-      </v-btn>
+      <v-menu offset-y left transition="slide-y-transition">
+        <template v-slot:activator="{ on }">
+          <v-btn 
+            color="primary"
+            v-on="on"
+          >
+            Nuevos contactos
+          </v-btn>
+        </template>
+
+        <!-- user menu list -->
+        <v-list dense nav>
+          <v-list-item @click="openNewContact()">
+            <v-list-item-content>
+              <v-list-item-title>Individual</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item @click="openNewContactsFromExcel()">
+            <v-list-item-content>
+              <v-list-item-title>Desde Excel</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </div>
 
     <template>
@@ -116,26 +135,28 @@
       </v-data-table>
     </template>
 
-    <new-contact 
+    <new-contact
       ref="newContact"
-      :agendaId="agenda.id" 
+      :agendaId="$route.params.agendaId"
       @onCreated="onCreated" 
     />
+
+    <new-contacts-from-excel
+      ref="newContactsFromExcel"
+    />    
 
   </div>
 </template>
 
 <script>
 import newContact from './components/newContact'
-import axios from 'axios'
+import newContactsFromExcel from './components/newContactsFromExcel'
+import BackendApi from '@/services/backend.service'
 
 export default {
-  mounted() {
-    this.agenda = this.$route.params.agenda
-    this.getContacts()
-  },
   components: {
-    newContact
+    newContact,
+    newContactsFromExcel
   },
   data() {
     return {
@@ -178,10 +199,14 @@ export default {
       return this.contacts.length
     }
   },
+  mounted() {
+    this.agenda = this.$route.params.agenda
+    this.getContacts()
+  },
   methods: {
     getContacts () {
       this.contacts = []
-      axios.get('/getContacts', { params: { agenda_id: this.agenda.id }, headers: { Authorization: 'Bearer ' + window.localStorage.token } }).then((response) => {
+      BackendApi.get('/contactByAgenda/' + this.$route.params.agendaId).then((response) => {
         if (response.data.success) {
           this.contacts = response.data.data
         } else {
@@ -196,6 +221,9 @@ export default {
     },
     openNewContact (contact) {
       this.$refs.newContact.open(contact)
+    },
+    openNewContactsFromExcel () {
+      this.$refs.newContactsFromExcel.open()
     },
     confirmDelete (contact) {
       this.deleteItem (contact)

@@ -69,7 +69,7 @@ export default [{
   component: () => import(/* webpackChunkName: "utility-help" */ '@/pages/agendas/agenda.vue')
 }, 
 {
-  path: '/tools/agendas/contacts',
+  path: '/tools/agendas/:agendaId/contacts',
   name: 'contacts',
   component: () => import(/* webpackChunkName: "utility-help" */ '@/pages/agendas/contacts.vue'),
   props: true

@@ -9,6 +9,7 @@
         :value="formattedDatetime"
         :rules="[v => !!v || 'Seleccione fecha y hora de lanzamiento']"
         readonly
+        outlined
         v-on="on"
       >
         <template v-slot:progress>
@@ -204,3 +205,12 @@ export default {
   }
 }
 </script>
+
+<style>
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
+</style>

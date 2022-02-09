@@ -1,6 +1,7 @@
 module.exports = {
   devServer: {
-    proxy: 'http://localhost:8000/web-api',
+    host: 'localhost',
+    proxy: 'http://localhost:8000/web-api'
   },
   // https://cli.vuejs.org/config/#productionsourcemap
   productionSourceMap: false,

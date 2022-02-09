@@ -149,7 +149,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import BackendApi from '@/services/backend.service'
 
 export default {
   props: ['agendaId'],
@@ -167,7 +167,6 @@ export default {
       var3: '',
       var4: '',
       dialog: false,
-      name: '',
       agenda: null
     }
   },
@@ -182,9 +181,7 @@ export default {
       this.contact = contact
 
       if (this.isEdit) {
-        this.contactId = contact.id
         this.number =  contact.number
-        this.name = contact.name
         this.name1 = contact.name1
         this.name2 = contact.name2
         this.lastname1 = contact.lastname1
@@ -195,7 +192,6 @@ export default {
         this.var4 =  contact.var4
       } else {
         this.number =  ''
-        this.name = ''
         this.name1 = ''
         this.name2 = ''
         this.lastname1 = ''
@@ -238,32 +234,31 @@ export default {
             }
           })
         } else {
+
           const payload = {
-            agenda_id: this.agendaId,
-            contact: {
-              'number': this.number,
-              'name1': this.name1,
-              'name2': this.name2,
-              'lastname1': this.lastname1,
-              'lastname2': this.lastname2,
-              'var1': this.var1,
-              'var2': this.var2,
-              'var3': this.var3,
-              'var4': this.var4
-            }
+            number:this.number,
+            name1 :this.name1,
+            name2:this.name2,
+            last_name1:this.lastname1,
+            last_name2:this.lastname2,
+            var1:this.var1,
+            var2:this.var2,
+            var3:this.var3,
+            var4:this.var4,
+            agenda_id:this.agendaId
           }
 
-          axios.post('/createContact', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } }).then((response) => {
+          BackendApi.post('/contact', payload).then((response) => {
             if (response.data.success) {
               this.$store.dispatch('app/showToast', 'Contacto creado exitosamente')
               this.$emit('onCreated')
-            } else {
-              this.$store.dispatch('app/showToast', response.data.message)
+              this.close()
             }
+          }).catch((error) => {
+            this.$store.dispatch('app/showToast', 'Revise los datos del contacto')
+            //const errors = error.response.data.errors
           })
         }
-
-        this.close()
       }
     }
   }

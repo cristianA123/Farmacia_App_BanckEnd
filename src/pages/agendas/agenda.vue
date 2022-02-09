@@ -25,13 +25,22 @@
         </template>
         <template v-slot:item.status="{ item }">
           <v-chip
-            v-if="item.status === 1"
+            v-if="item.status === '0'"
+            class="ma-2"
+            color="red"
+            text-color="white"
+            small
+          >
+            No disponible
+          </v-chip>
+          <v-chip
+            v-if="item.status === '1'"
             class="ma-2"
             color="green"
             text-color="white"
             small
           >
-            Ok
+            Disponible
           </v-chip>
           <v-chip
             v-if="item.status === 2"
@@ -49,9 +58,9 @@
           >
             <template v-slot:activator="{ attrs, on }">
               <v-btn
+                text
                 v-bind="attrs"
                 v-on="on"
-                text
               >
                 Acciones
               </v-btn>
@@ -59,14 +68,14 @@
 
             <v-list>
               <v-list-item
-                @click="openNewAgenda(item)"
                 link
+                @click="openNewAgenda(item)"
               >
                 Modificar
               </v-list-item>
               <v-list-item
-                @click="manage(item)"
                 link
+                @click="manage(item)"
               >
                 Gestionar
               </v-list-item>
@@ -79,10 +88,11 @@
                     max-width="400"
                   >
                     <template v-slot:activator="{ on, attrs }">
+                      
                       <v-list-item
-                        v-on="on"
-                        v-bind="attrs"
                         link
+                        v-bind="attrs"
+                        v-on="on"
                       >
                         Eliminar
                       </v-list-item>
@@ -128,23 +138,19 @@
 
 <script>
 import newAgenda from './components/newAgenda'
-import axios from 'axios'
+import BackendApi from '@/services/backend.service'
 
 export default {
   components: {
     newAgenda
   },
-  mounted() {
-    this.getAgendas()
-  },
   data () {
     return {
       headers: [
         { text: 'Agenda', value: 'name' },
-        { text: 'Creación', value: 'created_at' },
-        { text: 'Contactos', value: 'contacts' },
+        { text: 'Contactos', value: 'all_contacts' },
         { text: 'Última modificación', value: 'updated_at' },
-        { text: 'Entregabilidad', value: 'entregabilidad' },
+        { text: 'Entregabilidad', value: 'deliverability' },
         { text: 'Estado', value: 'status' },
         { text: 'Acciones', value: 'actions' }
       ],
@@ -152,11 +158,16 @@ export default {
       dialogConfirm: false
     }
   },
+  mounted() {
+    this.getAgendas()
+  },
   methods: {
     getAgendas () {
-      axios.get('/getAgendas', { headers: { Authorization: 'Bearer ' + window.localStorage.token } }).then((response) => {
+      BackendApi.get('/agenda', { headers: { Authorization: 'Bearer ' + window.localStorage.token } }).then((response) => {
         if (response.data.success) {
+
           this.items = response.data.data
+          console.log(this.items)
         } else {
           this.$store.dispatch('app/showToast', response.data.message)
         }
@@ -186,7 +197,7 @@ export default {
       })
     },
     manage(agenda) {
-      this.$router.push({ name: 'contacts', params: { agenda: agenda } })
+      this.$router.push({ path: '/tools/agendas/' + agenda.id + '/contacts' , params: { agenda: agenda } })
     },
     onCreated () {
       this.getAgendas()
