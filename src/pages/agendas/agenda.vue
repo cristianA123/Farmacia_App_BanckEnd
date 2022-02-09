@@ -149,7 +149,7 @@ export default {
       headers: [
         { text: 'Agenda', value: 'name' },
         { text: 'Contactos', value: 'all_contacts' },
-        { text: 'Última modificación', value: 'updated_at' },
+        { text: 'Última modificación', value: 'updated' },
         { text: 'Entregabilidad', value: 'deliverability' },
         { text: 'Estado', value: 'status' },
         { text: 'Acciones', value: 'actions' }
