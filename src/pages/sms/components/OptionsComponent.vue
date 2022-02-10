@@ -1,5 +1,9 @@
 <template>
   <div>
+    <br>
+    <span>Opciones</span>
+    <v-divider></v-divider>
+    <br>
     <v-switch
       v-model="is_bidireccional"
       class="ma-0 pa-0"
@@ -62,7 +66,7 @@ export default {
       this.onChange()
     },
     is_scheduled: function () {
-      if (this === false) {
+      if (this.is_scheduled === false) {
         this.scheduled = null
       }
     }

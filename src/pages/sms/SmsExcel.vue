@@ -13,17 +13,19 @@
         <v-file-input
           v-model="file"
           label="Cargue su base de contactos"
+          :loading="isFileLoading"
           outlined
+          :error-messages="errorMessageFile"
+          @change="onChangeExcel"
         >
           
         </v-file-input>
-        <v-textarea
-          v-model="message"
-          label="Escriba el mensaje a enviar"
-          outlined
+        <Message-Input-Component 
+          buttons="false"
+          @onChangeMessage="(msg) => message = msg"
         />
 
-        <Options-Component 
+        <Options-Component
           @onChange="onChangeOptions"
         />
       </v-card-text>
@@ -47,39 +49,74 @@
 <script>
 import OptionsComponent from './components/OptionsComponent.vue'
 import BackendApi from '@/services/backend.service'
+import MessageInputComponent from './components/MessageInputComponent.vue'
 
 export default {
   components: {
-    OptionsComponent
+    OptionsComponent,
+    MessageInputComponent
   },
   data() {
     return {
       file: null,
-      agendas: [],
       message: '',
-      options: null
+      options: null,
+      isFileLoading: false,
+      errorMessageFile: null,
+      fileId: null,
+      itemsExample: null
     }
   },
   methods: {
-    submit() {
-      const payload = new FormData()
+    onChangeOptions(options) {
+      this.options = options
+    },
+    errorFile (text) {
+      this.isFileLoading = false
+      this.errorMessageFile = text
+    },
+    onChangeExcel(file) {
+      if (file) {
+        this.isFileLoading = true
+    
+        if (file.name.split('.').pop() === 'xlsx' || file.name.split('.').pop() === 'xls') {
 
-      payload.append('campaing_type_id', 3)
-      payload.append('name', 'Envío por Excel')
-      payload.append('destinations', this.file)
-      payload.append('message', this.message)
-      payload.append('url_id', null)
-      payload.append('options', this.options)
+          const formData = new FormData()
+
+          formData.append('file', file)
+
+          BackendApi.post('/upload/ExcelCampaing', formData).then((response) => {
+            if (response.data.success) {
+              this.fileId = response.data.data.id
+              this.itemsExample = response.data.data.example
+              this.rows = response.data.data.rows
+              this.destinatarios = this.fileUploaded
+              this.errorFile(null)
+            } else {
+              this.errorFile(response.data.message)
+            }
+            this.isFileLoading = false
+          })
+        } else {
+          this.errorFile('No es un archivo Excel')
+        }
+      }
+    },
+    submit() {
+      const payload = {
+        campaing_type_id: 3,
+        name: 'Excel de contactos',
+        destinations: this.fileId,
+        message: this.message,
+        url_id: null,
+        options: this.options
+      }
 
       BackendApi.post('/campaing', payload).then((response) => {
         if (response.data.success) {
           this.$store.dispatch('app/showToast', response.data.message)
         }
       })
-
-    },
-    onChangeOptions(options) {
-      this.options = options
     }
   }
 }

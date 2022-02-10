@@ -18,10 +18,9 @@
           outlined
         />
 
-        <v-textarea
-          v-model="message"
-          label="Escriba el mensaje a enviar"
-          outlined
+        <Message-Input-Component
+          buttons="true"
+          @onChangeMessage="(msg) => message = msg"
         />
 
         <Options-Component 
@@ -48,10 +47,12 @@
 <script>
 import OptionsComponent from './components/OptionsComponent.vue'
 import BackendApi from '@/services/backend.service'
+import MessageInputComponent from './components/MessageInputComponent.vue'
 
 export default {
   components: {
-    OptionsComponent
+    OptionsComponent,
+    MessageInputComponent
   },
   data() {
     return {

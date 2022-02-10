@@ -38,6 +38,8 @@ export default ({
   watch: {
     destinatarios: function () {
       let last = 0
+      
+      this.destinatarios = this.destinatarios.replace(' ', '') 
 
       this.arrayPhones = []
       for (let i = 0; i < this.destinatarios.length; i++) {

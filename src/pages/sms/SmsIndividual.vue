@@ -10,13 +10,12 @@
     <v-card>
       <v-card-text>
         <Input-Individual-Phones 
-          @onInputNewIndividualPhone="InputNewIndividualPhone"
+          @onInputNewIndividualPhone="onInputNewIndividualPhone"
         />
         
-        <v-textarea
-          v-model="message"
-          label="Escriba el mensaje a enviar"
-          outlined
+        <Message-Input-Component
+          buttons="true"
+          @onChangeMessage="(msg) => message = msg"
         />
 
         <Options-Component 
@@ -45,11 +44,13 @@
 import OptionsComponent from './components/OptionsComponent.vue'
 import InputIndividualPhones from '@/components/common/InputIndividualPhones.vue'
 import BackendApi from '@/services/backend.service'
+import MessageInputComponent from './components/MessageInputComponent.vue'
 
 export default {
   components: {
     OptionsComponent,
-    InputIndividualPhones
+    InputIndividualPhones,
+    MessageInputComponent
   },
   data() {
     return {
@@ -81,7 +82,10 @@ export default {
     onChangeOptions(options) {
       this.options = options
     },
-    InputNewIndividualPhone(phones) {
+    onChangeMessage(message) {
+      this.message = message
+    },
+    onInputNewIndividualPhone(phones) {
       this.phones = phones
     }
   }

@@ -39,9 +39,9 @@
         :items-per-page="5"
         class="elevation-1"
       >
-        <template v-slot:item.status="{ item }">
+        <template v-slot:item.is_valid="{ item }">
           <v-chip
-            v-if="item.status ===  1"
+            v-if="item.is_valid ===  1"
             color="green"
             text-color="white"
             small
@@ -187,8 +187,8 @@ export default {
         { text: 'VAR2', value: 'var2' },
         { text: 'VAR3', value: 'var3' },
         { text: 'VAR4', value: 'var4' },
-        { text: 'Estado', value: 'status' },
-        { text: 'Creación', value: 'created_at' },
+        { text: 'Estado', value: 'is_valid' },
+        { text: 'Ult. Modif.', value: 'updated' },
         { text: 'Acciones', value: 'actions' }
       ]
     }

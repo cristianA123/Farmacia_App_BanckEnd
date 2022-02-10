@@ -34,9 +34,16 @@
             </slot>
           </v-tab>
           <v-tab-item key="calendar">
-            <v-date-picker v-model="date" v-bind="datePickerProps" full-width @input="showTimePicker"></v-date-picker>
+            <!--- FECHA --->
+            <v-date-picker 
+              v-model="date" 
+              v-bind="datePickerProps" 
+              full-width 
+              @input="showTimePicker"
+            />
           </v-tab-item>
           <v-tab-item key="timer">
+            <!--- HORA --->
             <v-time-picker
               ref="timer"
               v-model="time"
@@ -62,12 +69,12 @@
 <script>
 import { format, parse } from 'date-fns'
 
-const DEFAULT_DATE = ''
-const DEFAULT_TIME = '00:00:00'
+const DEFAULT_DATE = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
+const DEFAULT_TIME = new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds()
 const DEFAULT_DATE_FORMAT = 'yyyy-MM-dd'
 const DEFAULT_TIME_FORMAT = 'HH:mm:ss'
 const DEFAULT_DIALOG_WIDTH = 340
-const DEFAULT_CLEAR_TEXT = 'CLEAR'
+const DEFAULT_CLEAR_TEXT = 'LIMPIAR'
 const DEFAULT_OK_TEXT = 'OK'
 
 export default {
@@ -163,6 +170,7 @@ export default {
   },
   mounted() {
     this.init()
+    this.okHandler()
   },
   methods: {
     init() {

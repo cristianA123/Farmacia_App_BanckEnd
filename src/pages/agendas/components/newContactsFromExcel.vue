@@ -4,7 +4,7 @@
       <v-form
         ref="formNewContact"
         lazy-validation
-        @submit.prevent="save()"
+        @submit.prevent="submit()"
       >
 
         <v-card-title class="pa-2">
@@ -50,13 +50,18 @@ export default {
     close() {
       this.dialog = false
     },
-    save() {
+    submit() {
       if (this.$refs.formNewContact.validate()) {
-        const FormData = new FormData()
+        const payload = new FormData()
 
-        FormData.append('file', this.file)
+        payload.append('file', this.file)
 
-        BackendApi.post('/contactUpload/' + this.$route.params.agendaId, FormData)
+        BackendApi.post('/contactUpload/' + this.$route.params.agendaId, payload).then((response) => {
+
+          if (response.data.success) {
+            this.$store.dispatch('app/showToast', response.data.message)
+          }
+        })
 
         this.close()  
       }

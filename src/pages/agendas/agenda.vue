@@ -20,21 +20,22 @@
         :items-per-page="5"
         class="elevation-1"
       >
-        <template v-slot:item.entregabilidad="{ item }">
-          {{ item.entregabilidad*100 }}%
+        <template v-slot:item.deliverability="{ item }">
+          {{ item.deliverability*100 }}%
         </template>
+
         <template v-slot:item.status="{ item }">
           <v-chip
-            v-if="item.status === '0'"
+            v-if="item.status === 0"
             class="ma-2"
-            color="red"
+            color="secondary"
             text-color="white"
             small
           >
-            No disponible
+            Sin contactos
           </v-chip>
           <v-chip
-            v-if="item.status === '1'"
+            v-if="item.status === 1"
             class="ma-2"
             color="green"
             text-color="white"
@@ -52,6 +53,7 @@
             Procesando
           </v-chip>
         </template>
+
         <template v-slot:item.actions="{ item }">
           <v-menu
             offset-y
@@ -128,6 +130,7 @@
             </v-list>
           </v-menu>
         </template>
+        
       </v-data-table>
     </template>
 
@@ -149,7 +152,7 @@ export default {
       headers: [
         { text: 'Agenda', value: 'name' },
         { text: 'Contactos', value: 'all_contacts' },
-        { text: 'Última modificación', value: 'updated' },
+        { text: 'Última modificación', value: 'updated_at' },
         { text: 'Entregabilidad', value: 'deliverability' },
         { text: 'Estado', value: 'status' },
         { text: 'Acciones', value: 'actions' }
