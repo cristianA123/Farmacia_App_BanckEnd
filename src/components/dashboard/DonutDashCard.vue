@@ -8,7 +8,7 @@
         {{ title }}
       </v-card-title>
 
-      <v-card-tex>
+      <v-card-text>
         <v-col class="d-flex justify-center d-lg-none">
           <div>
             <div class="text-h3">
@@ -29,7 +29,7 @@
           ></apexchart>
         </div>
 
-      </v-card-tex>
+      </v-card-text>
     </v-card>
   </v-col>
 </template>

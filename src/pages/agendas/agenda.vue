@@ -67,19 +67,22 @@
                 Acciones
               </v-btn>
             </template>
-
+            
             <v-list>
-              <v-list-item
-                link
-                @click="openNewAgenda(item)"
-              >
-                Modificar
-              </v-list-item>
               <v-list-item
                 link
                 @click="manage(item)"
               >
                 Gestionar
+              </v-list-item>
+
+              <v-divider></v-divider>
+
+              <v-list-item
+                link
+                @click="openNewAgenda(item)"
+              >
+                Modificar
               </v-list-item>
 
               <template>
@@ -116,7 +119,7 @@
                         <v-btn
                           color="success"
                           text
-                          @click="deleteItem(item)"
+                          @click="confirmDelete(item)"
                         >
                           Confirmo
                         </v-btn>
@@ -152,9 +155,9 @@ export default {
       headers: [
         { text: 'Agenda', value: 'name' },
         { text: 'Contactos', value: 'all_contacts' },
-        { text: 'Última modificación', value: 'updated_at' },
         { text: 'Entregabilidad', value: 'deliverability' },
         { text: 'Estado', value: 'status' },
+        { text: 'Última modificación', value: 'updated_at' },
         { text: 'Acciones', value: 'actions' }
       ],
       items: [],
@@ -165,7 +168,7 @@ export default {
     this.getAgendas()
   },
   methods: {
-    getAgendas () {
+    getAgendas() {
       BackendApi.get('/agenda', { headers: { Authorization: 'Bearer ' + window.localStorage.token } }).then((response) => {
         if (response.data.success) {
 
@@ -178,18 +181,15 @@ export default {
         console.log(error)
       })
     },
-    openNewAgenda (agenda) {
+    openNewAgenda(agenda) {
       this.$refs.newAgenda.open(agenda)
     },
-    confirmDelete (agenda) {
+    confirmDelete(agenda) {
       this.deleteItem (agenda)
     },
-    deleteItem (agenda) {
-      const payload = {
-        agenda_id: agenda.id
-      }
+    deleteItem(agenda) {
 
-      axios.post('/deleteAgenda', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } }).then((response) => {
+      BackendApi.delete('/agenda/' + agenda.id).then((response) => {
         if (response.data.success) {
           this.$store.dispatch('app/showToast', 'Agenda eliminada exitosamente')
           this.dialogConfirm = false
@@ -202,7 +202,7 @@ export default {
     manage(agenda) {
       this.$router.push({ path: '/tools/agendas/' + agenda.id + '/contacts' , params: { agenda: agenda } })
     },
-    onCreated () {
+    onCreated() {
       this.getAgendas()
     }
   }

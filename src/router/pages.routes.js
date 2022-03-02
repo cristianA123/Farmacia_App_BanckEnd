@@ -57,25 +57,25 @@ export default [{
 }, {
   path: '/tools/filescloud',
   name: 'files-cloud',
-  component: () => import(/* webpackChunkName: "utility-help" */ '@/pages/files/filesCloud.vue')
+  component: () => import( '@/pages/files/filesCloud.vue')
 }, {
   path: '/tools/shorturl',
   name: 'short-url',
-  component: () => import(/* webpackChunkName: "utility-help" */ '@/pages/url/index.vue')
+  component: () => import( '@/pages/url/index.vue')
 }, 
 {
   path: '/tools/agendas',
   name: 'agendas',
-  component: () => import(/* webpackChunkName: "utility-help" */ '@/pages/agendas/agenda.vue')
+  component: () => import( '@/pages/agendas/agenda.vue')
 }, 
 {
   path: '/tools/agendas/:agendaId/contacts',
   name: 'contacts',
-  component: () => import(/* webpackChunkName: "utility-help" */ '@/pages/agendas/contacts.vue'),
+  component: () => import( '@/pages/agendas/contacts.vue'),
   props: true
 }, 
 {
   path: '/channels/vendors',
   name: 'channels-vendors',
-  component: () => import(/* webpackChunkName: "utility-help" */ '@/pages/channels/vendors.vue')
+  component: () => import( '@/pages/channels/vendors.vue')
 }]

@@ -94,12 +94,25 @@ export default {
     SearchBar,
     userAvatar
   },
+  props: {
+    headers: {
+      type: Array,
+      default: () => []
+    },
+    items: {
+      type: Array,
+      default: () => []
+    },
+    isLoading: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       searchQuery: ''
     }
   },
-  props: ['headers','items','isLoading'],
   methods: {
     detalle(item) {
       this.$emit('onDetail', item)

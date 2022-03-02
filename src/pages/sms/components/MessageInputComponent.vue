@@ -1,21 +1,25 @@
 <template>
   <div>
-
-    <v-btn
-    
-      v-for="button in vars"
-      :key="button.id"
-      class="primary mx-1"
-      @click="addVarOnMessage(button)"
+    <div
+      v-if="buttons"
+      class="ml-3"
     >
-      {{ button }}
-    </v-btn>
-    <br>
-    <br>
+      <v-btn
+        v-for="button in vars"
+        :key="button.id"
+        class="primary mx-1"
+        @click="addVarOnMessage(button)"
+      >
+        {{ button }}
+      </v-btn>
+      <br>
+      <br>
+    </div>
     <v-textarea
       v-model="message"
       label="Escriba el mensaje a enviar"
       :messages="computedCounterMessage"
+      prepend-icon="mdi-message-text-outline"
       :rules="[v=>!!v || 'Escriba el mensaje a enviar, puede utilizar los botones para el uso de Variables']"
       outlined
       @keyup="tranforMessageForSms"
@@ -46,6 +50,9 @@ export default {
 
       return  '[' + countCharacters + ' Restantes / ' + countCredits + ' Crédito]'
     }
+  },
+  mounted() {
+    console.log(this.buttons)
   },
   methods: {
     tranforMessageForSms () {
@@ -79,6 +86,9 @@ export default {
 
       this.message = estandarText
       this.$emit('onChangeMessage', this.message)
+    },
+    addVarOnMessage (text) {
+      this.message = this.message + '[' + text + ']'
     }
   }
 }

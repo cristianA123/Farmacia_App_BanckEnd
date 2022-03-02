@@ -2,7 +2,7 @@
   <div class="d-flex flex-column flex-grow-1">
     <div class="d-flex align-center py-3">
       <div>
-        <div class="display-1">Enviar SMS a una base de contactos Excel</div>
+        <div class="display-1">Enviar IVR a una base de contactos Excel</div>
       </div>
       <v-spacer></v-spacer>
     </div>
@@ -23,12 +23,10 @@
           outlined
           :error-messages="errorMessageFile"
           @change="onChangeExcel"
-        >
-          
-        </v-file-input>
-        <Message-Input-Component 
-          :buttons="true"
-          @onChangeMessage="(msg) => message = msg"
+        />
+
+        <Audio-File-Component
+          @onChangeFile="onChangeFile"
         />
 
         <Options-Component
@@ -55,12 +53,12 @@
 <script>
 import OptionsComponent from './components/OptionsComponent.vue'
 import BackendApi from '@/services/backend.service'
-import MessageInputComponent from './components/MessageInputComponent.vue'
+import AudioFileComponent from './components/AudioFileComponent.vue'
 
 export default {
   components: {
     OptionsComponent,
-    MessageInputComponent
+    AudioFileComponent
   },
   data() {
     return {
@@ -92,7 +90,7 @@ export default {
 
           formData.append('file', file)
 
-          BackendApi.post('/upload/ExcelCampaing', formData).then((response) => {
+          BackendApi.post('/ivr/upload/ExcelCampaign', formData).then((response) => {
             if (response.data.success) {
               this.fileId = response.data.data.id
               this.itemsExample = response.data.data.example
@@ -109,6 +107,10 @@ export default {
         }
       }
     },
+    onChangeFile(audio) {
+      this.url_audio = audio.url_audio,
+      this.file_id = audio.file_id
+    },
     submit() {
       const payload = {
         campaing_type_id: 3,
@@ -119,7 +121,7 @@ export default {
         options: this.options
       }
 
-      BackendApi.post('/campaing', payload).then((response) => {
+      BackendApi.post('/ivr/campaign', payload).then((response) => {
         if (response.data.success) {
           this.$store.dispatch('app/showToast', response.data.message)
         }

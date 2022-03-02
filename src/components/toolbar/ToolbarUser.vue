@@ -9,9 +9,7 @@
           offset-x="10"
           offset-y="10"
         >
-          <v-avatar size="40">
-            <v-img src="/images/avatars/avatar1.svg"></v-img>
-          </v-avatar>
+          <User-Avatar :user="user" :detail="false"/>
         </v-badge>
       </v-btn>
     </template>
@@ -50,6 +48,7 @@
 
 <script>
 import config from '../../configs'
+import UserAvatar from '@/components/reports/userAvatar'
 /*
 |---------------------------------------------------------------------
 | Toolbar User Component
@@ -59,9 +58,19 @@ import config from '../../configs'
 |
 */
 export default {
+  components: {
+    UserAvatar
+  },
   data() {
     return {
       menu: config.toolbar.user
+    }
+  },
+  computed: {
+    user: function () {
+      return {
+        name: $cookies.get('user').name
+      }
     }
   }
 }

@@ -19,6 +19,7 @@
           <v-file-input
             v-model="file"
             label="Adjunte Excel de contactos"
+            outlined
           />
         </v-card-text>
 

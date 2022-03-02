@@ -2,9 +2,9 @@
   <v-dialog v-model="dialog" width="600">
     <v-card>
       <v-form
-        @submit.prevent="save()"
         ref="formNewContact"
         lazy-validation
+        @submit.prevent="save()"
       >
 
         <v-card-title class="pa-2">
@@ -24,8 +24,12 @@
             solo
             flat
             placeholder="Número telefónico"
-            :rules='[v=>!!v || "El número telefónico es obligatorio"]'
+            :rules="[ 
+              v => !!v || 'El número telefónico es obligatorio',
+              v => (v.length === 9 && v.slice(0,1) === '9') || 'Uno o más números son incorrectos'
+            ]"
             required
+            outlined
           ></v-text-field>
 
           <v-divider></v-divider>
@@ -39,6 +43,7 @@
             flat
             placeholder="Nombre 1"
             hide-details
+            outlined
           ></v-text-field>
 
           <v-divider></v-divider>
@@ -52,6 +57,7 @@
             flat
             placeholder="Nombre 2"
             hide-details
+            outlined
           ></v-text-field>
 
           <v-divider></v-divider>
@@ -59,12 +65,13 @@
 
         <div>
           <v-text-field
-            v-model="lastname1"
+            v-model="last_name1"
             class="px-2 py-1"
             solo
             flat
             placeholder="Nombre 2"
             hide-details
+            outlined
           ></v-text-field>
 
           <v-divider></v-divider>
@@ -72,12 +79,13 @@
 
         <div>
           <v-text-field
-            v-model="lastname2"
+            v-model="last_name2"
             class="px-2 py-1"
             solo
             flat
             placeholder="Nombre 2"
             hide-details
+            outlined
           ></v-text-field>
 
           <v-divider></v-divider>
@@ -91,6 +99,7 @@
             flat
             placeholder="VAR 1"
             hide-details
+            outlined
           ></v-text-field>
 
           <v-divider></v-divider>
@@ -104,6 +113,7 @@
             flat
             placeholder="VAR 2"
             hide-details
+            outlined
           ></v-text-field>
 
           <v-divider></v-divider>
@@ -117,6 +127,7 @@
             flat
             placeholder="VAR 3"
             hide-details
+            outlined
           ></v-text-field>
 
           <v-divider></v-divider>
@@ -130,6 +141,7 @@
             flat
             placeholder="VAR 4"
             hide-details
+            outlined
           ></v-text-field>
 
           <v-divider></v-divider>
@@ -152,7 +164,6 @@
 import BackendApi from '@/services/backend.service'
 
 export default {
-  props: ['agendaId'],
   data () {
     return {
       contact: null,
@@ -160,8 +171,8 @@ export default {
       number: '',
       name1: '',
       name2: '',
-      lastname1: '',
-      lastname2: '',
+      last_name1: '',
+      last_name2: '',
       var1: '',
       var2: '',
       var3: '',
@@ -179,12 +190,11 @@ export default {
   methods: {
     open(contact) {
       this.contact = contact
-
       if (this.isEdit) {
         this.number =  contact.number
         this.name1 = contact.name1
         this.name2 = contact.name2
-        this.lastname1 = contact.lastname1
+        this.last_name1 = contact.last_name1
         this.latname2 = contact.latname2
         this.var1 = contact.var1
         this.var2 = contact.var2
@@ -194,7 +204,7 @@ export default {
         this.number =  ''
         this.name1 = ''
         this.name2 = ''
-        this.lastname1 = ''
+        this.last_name1 = ''
         this.latname2 = ''
         this.var1 = ''
         this.var2 = ''
@@ -205,33 +215,33 @@ export default {
       this.dialog = true
     },
     close() {
+      this.$refs.formNewContact.reset()
       this.dialog = false
     },
     save() {
       if (this.$refs.formNewContact.validate()) {
         if (this.isEdit) {
+
           const payload = {
-            contact_id: this.contactId,
-            contact: {
-              'number': this.number,
-              'name1': this.name1,
-              'name2': this.name2,
-              'lastname1': this.lastname1,
-              'lastname2': this.lastname2,
-              'var1': this.var1,
-              'var2': this.var2,
-              'var3': this.var3,
-              'var4': this.var4
-            }
+            number: this.number,
+            name1: this.name1,
+            name2: this.name2,
+            last_name1: this.last_name1,
+            last_name2: this.last_name2,
+            var1: this.var1,
+            var2: this.var2,
+            var3: this.var3,
+            var4: this.var4,
+            agenda_id: this.$route.params.agendaId,
+            contact_id: this.contact.id
           }
 
-          axios.post('/updateContact', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } }).then((response) => {
+          BackendApi.put('/contact/' + this.$route.params.agendaId, payload).then((response) => {
+            this.$store.dispatch('app/showToast', response.data.message)
             if (response.data.success) {
-              this.$store.dispatch('app/showToast', 'Contacto actualizado exitosamente')
               this.$emit('onCreated')
-            } else {
-              this.$store.dispatch('app/showToast', response.data.message)
-            }
+              this.close()
+            } 
           })
         } else {
 
@@ -239,13 +249,13 @@ export default {
             number:this.number,
             name1 :this.name1,
             name2:this.name2,
-            last_name1:this.lastname1,
-            last_name2:this.lastname2,
+            last_name1:this.last_name1,
+            last_name2:this.last_name2,
             var1:this.var1,
             var2:this.var2,
             var3:this.var3,
             var4:this.var4,
-            agenda_id:this.agendaId
+            agenda_id:this.$route.params.agendaId
           }
 
           BackendApi.post('/contact', payload).then((response) => {

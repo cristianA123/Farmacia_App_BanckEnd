@@ -17,7 +17,7 @@ const showError = ({ state, commit }, { message = 'Failed!', error }) => {
     commit('showToast', {
       color: 'error',
       message: message + ' ' + error.message,
-      timeout: 10000
+      timeout: 5000
     })
   })
 }

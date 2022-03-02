@@ -4,19 +4,27 @@
     <span>Opciones</span>
     <v-divider></v-divider>
     <br>
-    <v-switch
-      v-model="is_bidireccional"
-      class="ma-0 pa-0"
-      prepend-icon="mdi-swap-vertical"
-      label="Bidireccional"
-    />
 
-    <v-switch
-      v-model="is_push"
-      class="ma-0 pa-0"
-      prepend-icon="mdi-message-flash-outline"
-      label="Push"
-    />
+    <v-row>
+      <v-col>
+        <v-switch
+          v-model="is_repeat_dtmf"
+          class="ma-0 pa-0"
+          prepend-icon="mdi-repeat"
+          label="Marcar para repetir"
+        />
+      </v-col>
+      <v-col
+        style="margin-top: -20px !important;"
+      >
+        <v-text-field
+          v-if="is_repeat_dtmf"
+          v-model="repeat_dtmf"
+          outlined
+        ></v-text-field>
+      </v-col>
+    </v-row>
+
     <v-row>
       <v-col
         class="pt-0 mt-0"
@@ -52,20 +60,20 @@ export default {
   },
   data() {
     return {
-      is_bidireccional: false,
+      is_repeat_dtmf: false,
+      repeat_dtmf: 0,
       is_scheduled: false,
-      scheduled: null,
-      is_push: false
+      scheduled: null
     }
   },
   watch: {
-    is_push: function () {
+    is_repeat_dtmf: function () {
+      this.onChange()
+    },
+    repeat_dtmf: function () {
       this.onChange()
     },
     scheduled: function () {
-      this.onChange()
-    },
-    is_bidireccional: function () {
       this.onChange()
     },
     is_scheduled: function () {
@@ -77,9 +85,8 @@ export default {
   methods: {
     onChange() {
       this.$emit('onChange', {
-        is_bidireccional: this.is_bidireccional,
-        scheduled:this.scheduled,
-        is_push: this.is_push
+        repeat_dtmf: this.repeat_dtmf,
+        scheduled:this.scheduled
       })
     }
   }

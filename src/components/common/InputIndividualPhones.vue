@@ -5,10 +5,10 @@
       label="Ingrese destinatarios (máximo 10 números)"
       maxlength="98"
       counter
-      prepend-icon="mdi-tooltip-edit"
-      @blur="onBlur()"
+      prepend-icon="mdi-cellphone-message"
       :rules="[v => (v.length >= 9 && v.slice(0,1) === '9') || 'Uno o más números son incorrectos']"
       outlined
+      @blur="onBlur()"
     />
     <v-alert
       :value="alert"
@@ -25,9 +25,6 @@
 <script>
 
 export default ({
-  props: {
-    'type': { type: Number }
-  },
   data () {
     return {
       alert: false,

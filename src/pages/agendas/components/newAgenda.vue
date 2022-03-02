@@ -81,17 +81,16 @@ export default {
       if (this.$refs.formNewAgenda.validate()) {
         if (this.isEdit) {
           const payload = {
-            name: this.name,
-            agenda_id: this.agenda.id
+            name: this.name
           }
 
-          BackendApi.post('/updateAgenda', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } }).then((response) => {
+          BackendApi.put('/agenda/' + this.agenda.id, payload).then((response) => {
             if (response.data.success) {
               this.$store.dispatch('app/showToast', 'Agenda actualizada exitosamente')
               this.$emit('onCreated')
-            } else {
-              this.$store.dispatch('app/showToast', response.data.message)
             }
+          }).catch((error) => {
+            this.$store.dispatch('app/showToast', error.response.data.message)
           })
         } else {
           const payload = {

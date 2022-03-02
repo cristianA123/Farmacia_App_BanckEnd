@@ -2,7 +2,7 @@
   <div class="d-flex flex-column flex-grow-1">
     <div class="d-flex align-center py-3">
       <div>
-        <div class="display-1">Enviar SMS Individual</div>
+        <div class="display-1">Enviar IVR Individual</div>
       </div>
       <v-spacer></v-spacer>
     </div>
@@ -14,8 +14,8 @@
           @onInputNewIndividualPhone="onInputNewIndividualPhone"
         />
         
-        <MessageInputComponent 
-          @onChangeMessage="onChangeMessage"
+        <Audio-File-Component
+          @onChangeFile="onChangeFile"
         />
         
         <Options-Component 
@@ -44,21 +44,20 @@
 import OptionsComponent from './components/OptionsComponent.vue'
 import InputIndividualPhones from '@/components/common/InputIndividualPhones.vue'
 import BackendApi from '@/services/backend.service'
-import MessageInputComponent from './components/MessageInputComponent.vue'
+import AudioFileComponent from './components/AudioFileComponent.vue'
 
 export default {
   components: {
     OptionsComponent,
     InputIndividualPhones,
-    MessageInputComponent
+    AudioFileComponent
   },
   data() {
     return {
-      isLoading: true,
       campaing_type_id: 1,
       url_audio: '',
       message: '',
-      url_id: null,
+      file_id: null,
       options: null
     }
   },
@@ -69,11 +68,11 @@ export default {
         name: 'Individual',
         destinations: this.phones,
         message: this.message,
-        url_id: null,
+        url_id: this.file_id,
         options: this.options
       }
 
-      BackendApi.post('/campaing', payload).then((response) => {
+      BackendApi.post('/ivr/campaign', payload).then((response) => {
         if (response.data.success) {
           this.$store.dispatch('app/showToast', response.data.message)
         }
@@ -87,6 +86,10 @@ export default {
     },
     onInputNewIndividualPhone(phones) {
       this.phones = phones
+    },
+    onChangeFile(audio) {
+      this.url_audio = audio.url_audio,
+      this.file_id = audio.file_id
     }
   }
 }

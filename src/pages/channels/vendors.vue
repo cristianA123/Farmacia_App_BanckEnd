@@ -148,7 +148,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import BackendApi from '@/services/backend.service'
 
 export default {
   data: () => ({
@@ -157,8 +157,8 @@ export default {
     dialogDelete: false,
     headers: [
       { text: 'Canal', value: 'id' },
-      { text: 'Nombre', value: 'route_name' },
-      { text: 'Proveedor', value: 'vendor_name' },
+      { text: 'Nombre', value: 'name' },
+      { text: 'Proveedor', value: 'provider' },
       { text: 'Descripción', value: 'description' },
       { text: 'Precio', value: 'price' },
       { text: 'APIKEY', value: 'apikey' },
@@ -214,10 +214,9 @@ export default {
   methods: {
     initialize () {
       this.items = []
-      axios.get('/getRoutes', { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } }).then((response) => {
+      BackendApi.get('/provider').then((response) => {
         if (response.data.success) {
           this.items = response.data.data
-          console.log(this.items)
         } else {
           this.$store.dispatch('app/showToast', response.data.message)
         }
@@ -244,7 +243,7 @@ export default {
       const payload =  this.editedItem
 
       if (this.editedIndex > -1) {
-        axios.post('/modifyRoute', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } }).then((response) => {
+        BackendApi.put('/provider', payload).then((response) => {
           if (response.data.success) {
             this.items = response.data.data
             this.initialize()
@@ -254,7 +253,7 @@ export default {
           this.isLoading = false
         })
       } else {
-        axios.post('/createRoute', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } }).then((response) => {
+        BackendApi.post('/provider', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } }).then((response) => {
           if (response.data.success) {
             this.items = response.data.data
             this.initialize()

@@ -26,7 +26,7 @@ export default {
     // Text to show on toast
     toastText: {
       type: String,
-      default: 'Copiado a portapapeles!'
+      default: 'Copied to clipboard!'
     },
     /**
      * CSS animation with animate.css
@@ -39,7 +39,7 @@ export default {
   },
   data() {
     return {
-      tooltip: 'Copiar',
+      tooltip: 'Copy',
       timeout: null
     }
   },
@@ -50,10 +50,10 @@ export default {
     copy() {
       this.$animate(this.$refs.copylabel, this.animation)
       this.$clipboard(this.text, this.toastText)
-      this.tooltip = 'Copiado!'
+      this.tooltip = 'Copied!'
 
       this.timeout = setTimeout(() => {
-        this.tooltip = 'Copiar'
+        this.tooltip = 'Copy'
       }, 2000)
     }
   }

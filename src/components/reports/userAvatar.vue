@@ -6,7 +6,7 @@
     >
       <span class="white--text text-h6">{{ computedAvatarName }}</span>
     </v-avatar>
-    <v-col class="py-0 my-0">
+    <v-col v-if="detail" class="py-0 my-0">
       <v-row>
         <div class="ml-1 caption font-weight-bold">
           {{ user.name }}
@@ -28,7 +28,16 @@
 
 <script>
 export default {
-  props: ['user'],
+  props: {
+    user: {
+      type: Object,
+      default: () => {}
+    },
+    detail: {
+      type: Boolean,
+      default: true
+    }
+  },
   computed: {
     computedAvatarName : function () {
       const array = this.user.name.split(' ')

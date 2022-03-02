@@ -1,7 +1,7 @@
 <template>
   <div class="my-2">
     <div>
-      <v-card v-if="user.status !== 1 && mode !== 'create'" class="warning mb-4" light>
+      <v-card v-if="user.status === false" class="warning mb-4" light>
         <v-card-title>Usuario deshabilitado</v-card-title>
         <v-card-subtitle>¡Este usuario ha sido deshabilitado! Se revocaron los accesos de inicio de sesión.</v-card-subtitle>
         <v-card-text>
@@ -15,22 +15,17 @@
         <v-card-title>Información básica</v-card-title>
         <v-card-text>
           <div class="d-flex flex-column flex-sm-row">
-            <div>
-              <v-img
-                :src="user.avatar"
-                aspect-ratio="1"
-                class="blue-grey lighten-4 rounded elevation-3"
-                max-width="90"
-                max-height="90"
-              ></v-img>
-              <v-btn class="mt-1" small>Editar avatar</v-btn>
+            
+            <div v-if="user.name !== ''">
+              <userAvatar :key="user.id" :user="user" :detail="false" />
             </div>
+
             <div class="flex-grow-1 pt-2 pa-sm-2">
               <v-form
-                @submit.prevent="submit()"
                 ref="form"
                 v-model="valid"
                 lazy-validation
+                @submit.prevent="submit"
               >
                 <v-text-field 
                   v-model="user.name" 
@@ -38,6 +33,8 @@
                   label="Nombre" 
                   placeholder="name"
                   :rules="[v => !!v || 'Nombre es obligatorio']"
+                  outlined
+                  prepend-icon="mdi-account-outline"
                 />
                 <v-text-field 
                   v-model="user.company" 
@@ -45,6 +42,8 @@
                   label="Empresa" 
                   placeholder="name"
                   :rules="[v => !!v || 'Empresa es obligatorio']"
+                  prepend-icon="mdi-briefcase-outline"
+                  outlined
                 />
                 <v-text-field 
                   v-model="user.email" 
@@ -54,27 +53,75 @@
                     v => !!v || 'Email es obligatorio',
                     v => /.+@.+\..+/.test(v) || 'Email no es válido'
                   ]"
+                  prepend-icon="mdi-at"
+                  outlined
                 />
-                <v-slider
-                  v-model="user.start_credit"
-                  label="Créditos"
-                  class="align-center"
-                  :max="maxCredits"
-                  :min="minCredits"
-                  hide-details
-                >
-                  <template v-slot:append>
-                    <v-text-field
-                      v-model="user.start_credit"
-                      class="mt-0 pt-0"
-                      hide-details
-                      single-line
-                      type="number"
-                      style="width: 200px"
-                    ></v-text-field>
-                  </template>
-                </v-slider>
-                <br>
+                <v-text-field 
+                  v-model="user.credit" 
+                  :error-messages="errors.credit"
+                  label="Credito inicial [min: 100, máx: 7280]" 
+                  :rules="creditRules"
+                  prepend-icon="mdi-currency-usd"
+                  outlined
+                />
+                <span>Servicios</span>
+                <v-divider></v-divider>
+                <v-row>
+                  <v-col
+                    class="pb-0 mb-0"
+                  >
+                    <v-checkbox
+                      v-model="user.sms"
+                      label="SMS"
+                    ></v-checkbox>
+                  </v-col>
+                  <v-col
+                    class="pb-0 mb-0"
+                  >
+                    <v-select
+                      v-if="user.sms"
+                      v-model="user.provider_id"
+                      :items="providers"
+                      item-text="name"
+                      item-value="id"
+                      label="Proveedor"
+                      color="red"
+                      append-icon="mdi-call-split"
+                      outlined
+                      hide-details="true"
+                    />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col
+                    class="py-0 my-0"
+                  >
+                    <v-checkbox
+                      v-model="user.ivr"
+                      label="IVR"
+                    ></v-checkbox>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col
+                    class="pt-0 mt-0"
+                  >
+                    <v-checkbox
+                      v-model="user.whatsapp"
+                      label="WHATSAPP"
+                    ></v-checkbox>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col
+                    class="pt-0 mt-0"
+                  >
+                    <v-checkbox
+                      v-model="user.mailling"
+                      label="WHATSAPP"
+                    ></v-checkbox>
+                  </v-col>
+                </v-row>
                 <div class="d-flex">
                   <v-spacer></v-spacer>
                   <v-btn 
@@ -82,7 +129,7 @@
                     type="submit"
                     :loading="isLoading"
                   >
-                    {{ mode === 'create' ? "Crear" : "Editar"}} 
+                    {{ edit ? "Editar" : "Crear" }} 
                   </v-btn>
                 </div>
 
@@ -91,40 +138,6 @@
           </div>
         </v-card-text>
       </v-card>
-
-      <v-expansion-panels v-if="$store.state.users.userRegistrationMode !== 'create'" v-model="panel" multiple class="mt-3">
-        <v-expansion-panel>
-          <v-expansion-panel-header class="title">Contraseña de acceso</v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <div class="mb-2">
-              <div class="title">Restablecer contraseña</div>
-              <div class="subtitle mb-2">Puede restablecer una nueva contraseña que el sistema generará de manera segura, tenga en cuenta que si reestablece una nueva contraseña la contraseña actual dejará de funcionar.</div>
-              <v-btn
-                class="mb-2"
-                @click
-              >
-                <v-icon left small>mdi-email</v-icon>Restablecer y enviar email
-              </v-btn>
-            </div>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-        <v-expansion-panel>
-          <v-expansion-panel-header class="title">Metadata</v-expansion-panel-header>
-          <v-expansion-panel-content class="body-2">
-            <span class="font-weight-bold">Creado:</span>
-            {{ user.created_at | formatDate('lll') }}
-            <br />
-            <span class="font-weight-bold">Último inicio de sesión:</span>
-            {{ user.lastSignIn | formatDate('lll') }}
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-        <v-expansion-panel>
-          <v-expansion-panel-header class="title">API</v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <pre class="body-2">{{ user }}</pre>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
     </div>
 
     <!-- disable modal -->
@@ -152,71 +165,37 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    
-    <!----- Snackbar  -->
-    <template>
-      <div class="text-center ma-2">
-        <v-snackbar
-          v-model="snackbar"
-        >
-          {{ textSnackbar }}
 
-          <template v-slot:action="{ attrs }">
-            <v-btn
-              color="pink"
-              text
-              v-bind="attrs"
-              @click="snackbar = false"
-            >
-              Cerrar
-            </v-btn>
-          </template>
-        </v-snackbar>
-      </div>
-    </template>
-
-    <!-- delete modal -->
-    <v-dialog v-model="dialogPassword" max-width="600">
-      <v-card>
-        <v-card-title class="headline">Contraseña generada por el sistem</v-card-title>
-        <v-card-text>
-          <copy-label :text="password" />
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn @click="dialogPassword = false">Cancel</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <Dialog-Password-Component ref="dialogPassword" @onOk="$router.push({ name: 'users' })"/>
 
   </div>
 </template>
 
 <script>
-import CopyLabel from '../../../components/common/CopyLabel'
-import axios from 'axios'
+import BackendApi from '@/services/backend.service'
 import headers from '@/configs/headers.js'
+import userAvatar from '@/components/reports/userAvatar'
+import DialogPasswordComponent from '../components/DialogPasswordComponent'
 
 export default {
   components: {
-    CopyLabel
+    userAvatar,
+    DialogPasswordComponent
   },
   props: {
     user: {
       type: Object,
       default: () => ({})
     },
-    mode: {
-      default: () => ({})
+    edit: {
+      type: Boolean,
+      default: false
     }
-  },
-  mounted() {
-    this.startCredit = this.user.start_credit
   },
   data() {
     return {
       dialogPassword: false,
-      password: 'asdasdas',
+      password: '',
       errors: {
         name:'',
         company: '',
@@ -232,84 +211,72 @@ export default {
       slider: 50,
       min: 0,
       max: 300,
-      startCredit: 0
+      startCredit: 0,
+      creditRules: [
+        (v) => (v > this.min || v < this.max) || 'No se puede asignar este crédito'
+      ],
+      providers: []
     }
   },
   computed: {
     maxCredits : function () {
-      const maxCredits = this.startCredit + parseInt(this.$store.state.credits.availableCredits)
 
-      return maxCredits
+      return this.user.availableCredit
     },
     minCredits : function () {
-      const { balance, sms_out, sms_in, ivr, whatsapp } = this.user
-
-      const minCredits = parseInt(balance) +  parseInt(sms_out) +  parseInt(whatsapp) +  parseInt(sms_in) +  parseInt(ivr) +  parseInt(whatsapp)
-
-      return minCredits
+      
+      return this.user.usedCredit
     }
+  },
+  mounted() {
+    this.getProviders()
   },
   methods : {
     submit () { 
       if (this.$refs.form.validate()) {
         this.isLoading = true
 
-        if (this.mode === 'create') {
-        
-          axios.post('/createUserBasicInformation', this.user, headers)
-            .then((response) => {
-              if (response.data.success) {
-                this.snackbar = true
-                this.textSnackbar = response.data.message
-                this.errors = {}
-                this.dialogPassword = true
-                this.password = response.data.password
+        const payload = {
+          name: this.user.name,
+          email: this.user.email,
+          company: this.user.company,
+          sms:this.user.sms,
+          ivr:this.user.ivr,
+          whatsapp:this.user.whatsapp,
+          mailling:this.user.mailling,
+          credit: this.user.credit,
+          provider_id: this.user.provider_id
+        }
 
-                console.log(response.data.password)
+        if (this.edit) {
 
-              } else {
-                this.snackbar = true
-                this.textSnackbar = 'Error al crear el usuario'
-                this.errors = response.data.errors
-              }
+          BackendApi.put('/user/' + this.user.id, payload).then((response) => {
+            if (response.data.success) {
               this.isLoading = false
-            })
-            .catch((error) => {
-              this.isLoading = false
-              console.log(error)
-            })
+              this.$store.dispatch('app/showToast', response.data.message)
+              this.$router.push({ name: 'users' })
+            }
+          }).catch((error) => {
+            this.isLoading = false
+            this.$store.dispatch('app/showError', { message: error.response.data.message, error: '' } )
+          })
+
         } else {
+          console.log('holis')
 
-          const config = {
-            headers: { Authorization: `Bearer ${localStorage.token}` }
-          }
-
-          const payload = {
-            user_id_update: this.user.id,
-            status: this.user.status,
-            name: this.user.name,
-            email: this.user.email,
-            company: this.user.company,
-            start_credits: this.user.start_credit,
-            route_name: this.user.route_name
-          }
-
-          axios.post('/updateUserBasicInformation', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } })
-            .then((response) => {
-              if (response.data.success) {
-                this.snackbar = true
-                this.textSnackbar = response.data.message
-              } else {
-                this.snackbar = true
-                this.textSnackbar = 'Error al actualizar el usuario'
-              }
+          BackendApi.post('/user', payload).then((response) => {
+            if (response.data.success) {
               this.isLoading = false
-              console.log(response.data)
-            })
-            .catch((error) => {
-              this.isLoading = false
-              console.log(error)
-            })
+              this.$store.dispatch('app/showToast', response.data.message)
+              this.$refs.dialogPassword.open(response.data.data.userPassword)
+            }
+          }).catch((error) => {
+            this.isLoading = false
+            this.$store.dispatch('app/showError', { message: 'No se pudo crear el usuario', error: '' } )
+            this.errors = {
+              email: 'Este email ya existe'
+            }
+          })
         }
       }
     },
@@ -335,6 +302,13 @@ export default {
           this.isLoading = false
           console.log(error)
         })
+    },
+    getProviders () {
+      BackendApi.get('/provider').then((response) => {
+        if (response.data.success) {
+          this.providers = response.data.data
+        }
+      })
     }
   }
 }

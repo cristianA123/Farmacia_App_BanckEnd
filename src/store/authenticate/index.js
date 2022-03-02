@@ -21,6 +21,12 @@ export default {
   },
   actions: {
     login ({ commit }, user) {
+
+      store.dispatch('app/showError', {
+        message: 'Holis',
+        error: 'Qupe tal'
+      })
+
       commit('setLoadingAuth', true)
       axios.post('/login', {
         email: user.email,
@@ -38,8 +44,17 @@ export default {
           store.commit('setErrorMessages', response.data.message)
         }
       }).catch((error) => {
-        store.commit('setErrorMessages', error.response.data.message)
+        let messageError = ''
+
+        if (error.response.data.message) {
+          messageError = error.response.data.message
+        } else {
+          messageError = 'No pudimos conectarnos con el servidor'
+        }
+
+        store.commit('setErrorMessages', messageError)
         commit('setLoadingAuth', false)
+        
       })
     },
     logout() {

@@ -1,5 +1,5 @@
-import axios from 'axios'
 import store from '../../store'
+import BackendApi from '@/services/backend.service'
 
 export default {
   state: {
@@ -21,11 +21,11 @@ export default {
 
       store.commit('setLoading', true)
 
-      axios.get('/creditAvailable', { headers: { Authorization: 'Bearer ' + window.localStorage.token } }).then((response) => {
+      BackendApi.get('/availablecredit').then((response) => {
         
-        const { creditAvailable } = response.data.data
+        const { availableCredit } = response.data.data
 
-        store.commit('setAvailableCredits', creditAvailable)
+        store.commit('setAvailableCredits', availableCredit)
         store.commit('setLoading', false)
       }).catch((error) => {
         console.log(error)

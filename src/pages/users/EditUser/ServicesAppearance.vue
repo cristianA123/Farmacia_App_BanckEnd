@@ -4,17 +4,17 @@
       <v-card-title>Configuración de servicios</v-card-title>
       <v-card-text>
         <v-form
-          @submit.prevent="submit()"
           ref="form"
           v-model="valid"
           lazy-validation
+          @submit.prevent="submit()"
         >
           <v-row>
             <v-col
               class="pb-0 mb-0"
             >
               <v-checkbox
-                v-model="user.service_sms"
+                v-model="user.sms"
                 label="SMS"
               ></v-checkbox>
             </v-col>
@@ -39,7 +39,7 @@
               class="py-0 my-0"
             >
               <v-checkbox
-                v-model="user.service_ivr"
+                v-model="user.ivr"
                 label="IVR"
               ></v-checkbox>
             </v-col>
@@ -49,7 +49,7 @@
               class="pt-0 mt-0"
             >
               <v-checkbox
-                v-model="user.service_whatsapp"
+                v-model="user.whatsapp"
                 label="WHATSAPP"
               ></v-checkbox>
             </v-col>
@@ -127,8 +127,9 @@ export default {
       type: Object,
       default: () => ({})
     },
-    mode: {
-      default: () => ({})
+    edit: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {

@@ -1,7 +1,8 @@
 export default [
+  //SMS
   {
     path: '/sms/create_campaing',
-    name: 'create-campaing',
+    name: 'create-campaing-sms',
     component: () => import('@/pages/sms/CreateCampaing.vue')
   },
   {
@@ -18,16 +19,36 @@ export default [
     path: '/sms/create_campaing/sms_excel',
     name: 'sms-excel',
     component: () => import('@/pages/sms/SmsExcel.vue')
-  }
-  /*, 
+  },
   {
     path: '/sms/report',
     name: 'sms-report',
-    component: () => import('@/pages/sms/Report.vue')
+    component: () => import('@/pages/sms/SmsReport.vue')
+  },
+  //IVR
+  {
+    path: '/ivr/create_campaing',
+    name: 'create-campaing-ivr',
+    component: () => import('@/pages/ivr/CreateCampaing.vue')
   },
   {
-    path: '/sms/report/detail/:id',
-    name: 'sms-report-detail',
-    component: () => import('@/pages/sms/Detail.vue')
-  }*/
+    path: '/ivr/create_campaing/ivr_individual',
+    name: 'ivr-individual',
+    component: () => import('@/pages/ivr/IvrIndividual.vue')
+  },
+  {
+    path: '/ivr/create_campaing/ivr_agendas',
+    name: 'ivr-agendas',
+    component: () => import('@/pages/ivr/IvrAgendas.vue')
+  },
+  {
+    path: '/ivr/create_campaing/ivr_excel',
+    name: 'ivr-excel',
+    component: () => import('@/pages/ivr/IvrExcel.vue')
+  },
+  {
+    path: '/ivr/report',
+    name: 'ivr-report',
+    component: () => import('@/pages/ivr/IvrReport.vue')
+  }
 ]

@@ -9,6 +9,18 @@ class BackendApi {
   post(endpoint, data) {
     return api.post(endpoint, data)
   }
+
+  put(endpoint, data) {
+    return api.put(endpoint, data)
+  }
+
+  update(endpoint, data) {
+    return api.update(endpoint, data)
+  }
+
+  delete(endpoint, data) {
+    return api.delete(endpoint, data)
+  }
   
 }
 

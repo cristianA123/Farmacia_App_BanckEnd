@@ -7,7 +7,7 @@
         Crédito inicial
       </v-card-title>
 
-      <v-card-tex>
+      <v-card-text>
         <v-col class="d-flex justify-center">
           <div>
             <div class="text-h3">
@@ -18,7 +18,7 @@
             </div>
           </div>
         </v-col>
-      </v-card-tex>
+      </v-card-text>
     </v-card>
   </v-col>
 </template>
