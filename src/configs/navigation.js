@@ -14,10 +14,15 @@ export default {
   {
     text: 'Servicios',
     items: [
+      { icon: 'mdi-bullhorn', text: 'Servicios', link: '/services' },
+      { icon: 'mdi-chart-line', text: 'Reportes', link: '/reports' }
+    ]
+    /*
+    items: [
       { icon: 'mdi-android-messages', text: 'SMS', link: '/sms/create_campaing' },
       { icon: 'mdi-phone-in-talk', text: 'IVR', link: '/ivr/create_campaing' },
       { icon: 'mdi-chart-line', text: 'SMS', link: '/sms/report' }
-    ]
+    ]*/
   },
   {
     text: 'Herramientas',

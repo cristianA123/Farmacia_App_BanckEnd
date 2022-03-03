@@ -1,4 +1,10 @@
 export default [
+  //SERVICES
+  {
+    path: '/services',
+    name: 'services',
+    component: () => import('@/pages/services')
+  },
   //SMS
   {
     path: '/sms/create_campaing',
