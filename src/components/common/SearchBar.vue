@@ -22,6 +22,7 @@
           multiple
           placeholder="Seleccione usuario"
           :rules="[ computedSelectUser => computedSelectUser.length !== 0 || 'Usuario es obligatorio' ]"
+          :loading="isLoading"
           @change="ifSelectAllData()"
         >
           <template v-slot:selection="{ item, index }">
@@ -129,7 +130,7 @@
 
 <script>
 import moment from 'moment'
-import axios from 'axios'
+import BackendApi from '@/services/backend.service'
 
 export default {
   data() {
@@ -142,14 +143,9 @@ export default {
       modalDateRangeStart: null,
       minDateEnd: null,
       dateEnd: null,
-      modalDateRangeEnd: null
+      modalDateRangeEnd: null,
+      isLoading: false
     }
-  },
-  mounted() {
-    this.getUsers()
-    this.getMyUser()
-    this.dateStart = this.computedDateFormat
-    this.dateEnd = this.computedDateFormat
   },
   computed: {
     computedSelectUser: function () {
@@ -166,9 +162,16 @@ export default {
       return moment(Date.now()).format('YYYY-MM-DD')
     }
   },
+  mounted() {
+    this.getUsers()
+    this.getMyUser()
+    this.dateStart = this.computedDateFormat
+    this.dateEnd = this.computedDateFormat
+  },
   methods: {
     getUsers () {
-      axios.get('/getUsers', { headers: { Authorization: 'Bearer ' + window.localStorage.token } }).then((response) => {
+      this.isLoading = true
+      BackendApi.get('/user').then((response) => {
         response.data.data.forEach((user) => {
           const data = {
             id: user.id,
@@ -177,15 +180,18 @@ export default {
 
           this.subUsers.push(data)
         })
-        
+
+        this.isLoading = false
+        this.selectUser = this.subUsers
         this.filter()
+        
       })
         .catch((error) => {
           console.log(error)
         })
     },
     getMyUser() {
-      axios.get('/me', { headers: { Authorization: 'Bearer ' + window.localStorage.token } }).then((response) => {
+      BackendApi.get('/me').then((response) => {
         if (response.data.success) {
           this.selectUser.push({ id: response.data.data.id, name: response.data.data.name })
         }

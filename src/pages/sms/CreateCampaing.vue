@@ -1,8 +1,9 @@
 <template>
   <div class="d-flex flex-column flex-grow-1">
-    <div class="d-flex align-center py-3">
+    <div class="d-flex align-center py-3 pb-0">
       <div>
         <div class="display-1">Selecciona tipo de campaña</div>
+        <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
       </div>
       <v-spacer></v-spacer>
     </div>
@@ -43,6 +44,16 @@
 export default {
   data() {
     return {
+      breadcrumbs: [{
+        text: 'Servicios',
+        disabled: false,
+        to: '/services'
+      },
+      {
+        text: 'SMS',
+        disabled: true,
+        to: '/services/create_campaing'
+      }],
       types: [
         {
           name: 'Individual',

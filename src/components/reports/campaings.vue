@@ -4,6 +4,7 @@
     <!-- search bar form -->
     <Search-Bar
       @onfilter="onfilter"
+      @onreadyfilters="onreadyfilters"
     />
 
     <v-card>
@@ -28,15 +29,44 @@
         class="flex-grow-1"
       >
 
-        <template v-slot:item.camp_status="{ item }">
+        <template v-slot:item.status="{ item }">
           <v-chip
-            v-if="item.camp_status === '1'"
+            v-if="item.status === 0"
+            class="ma-2"
+            color="red"
+            text-color="white"
+            small
+          >
+            Cancelado
+          </v-chip>
+
+          <v-chip
+            v-if="item.status === 1"
             class="ma-2"
             color="green"
             text-color="white"
             small
           >
             Finalizado
+          </v-chip>
+
+          <v-chip
+            v-if="item.status === 2"
+            class="ma-2"
+            text-color="white"
+            small
+          >
+            Pendiente
+          </v-chip>
+
+          <v-chip
+            v-if="item.status === 3"
+            class="ma-2"
+            color="orange"
+            text-color="white"
+            small
+          >
+            Agendado
           </v-chip>
 
         </template>
@@ -69,12 +99,6 @@
                 link
               >
                 <v-list-item-text>Ver detalle</v-list-item-text>
-              </v-list-item>
-              <v-list-item
-                @click="duplicate(item)"
-                link
-              >
-                <v-list-item-text>Duplicar</v-list-item-text>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -119,6 +143,9 @@ export default {
     },
     onfilter(data) {
       this.$emit('onfilter', data)
+    },
+    onreadyfilters() {
+      this.$emit('onreadyfilters')
     }
   }
 }

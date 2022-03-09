@@ -2,7 +2,7 @@
   <div class="d-flex flex-column flex-grow-1">
     <div class="d-flex align-center py-3 pb-0">
       <div>
-        <div class="display-1">Selecciona el servicio a utilizar</div>
+        <div class="display-1">Selecciona el servicio </div>
         <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
       </div>
       <v-spacer></v-spacer>
@@ -70,7 +70,7 @@ export default {
               id: 1,
               name: 'SMS',
               icon: 'mdi-cellphone-text',
-              path: 'create-campaing-sms'
+              path: 'report-sms'
             })
           }
 
@@ -79,7 +79,7 @@ export default {
               id: 2,
               name: 'IVR',
               icon: 'mdi-phone-in-talk',
-              path: 'create-campaing-ivr'
+              path: 'report-ivr'
             })
           }
         }

@@ -83,6 +83,7 @@ export default {
       searchText: '',
       headers: [
         { text: 'Usuario', value: 'email' },
+        { text: 'Creditos inicial', value: 'credit' },
         { text: 'Creditos disponible', value: 'availableCredit' },
         { text: 'Ultima Modif.', value: 'updated_at' },
         { text: 'Estado', value: 'status' },

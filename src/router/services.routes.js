@@ -26,10 +26,26 @@ export default [
     name: 'sms-excel',
     component: () => import('@/pages/sms/SmsExcel.vue')
   },
+  //REPORTS
   {
-    path: '/sms/report',
-    name: 'sms-report',
-    component: () => import('@/pages/sms/SmsReport.vue')
+    path: '/reports',
+    name: 'reports',
+    component: () => import('@/pages/reports/Index.vue')
+  },
+  {
+    path: '/reports/sms',
+    name: 'report-sms',
+    component: () => import('@/pages/reports/ReportSms.vue')
+  },
+  {
+    path: '/reports/ivr',
+    name: 'report-ivr',
+    component: () => import('@/pages/reports/ReportIvr.vue')
+  },
+  {
+    path: '/reports/ivr/detail/:campaingId?',
+    name: 'report-ivr-detail',
+    component: () => import('@/pages/reports/ReportDetailIvr.vue')
   },
   //IVR
   {

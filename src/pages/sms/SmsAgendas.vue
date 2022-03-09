@@ -3,6 +3,7 @@
     <div class="d-flex align-center py-3">
       <div>
         <div class="display-1">Enviar SMS a una agenda de contactos</div>
+        <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
       </div>
       <v-spacer></v-spacer>
     </div>
@@ -65,7 +66,22 @@ export default {
     return {
       agendas: [],
       agendaSelected: null,
-      message: ''
+      message: '',
+      breadcrumbs: [{
+        text: 'Servicios',
+        disabled: false,
+        to: '/services'
+      },
+      {
+        text: 'SMS',
+        disabled: false,
+        to: '/sms/create_campaing/'
+      },
+      {
+        text: 'Agenda',
+        disabled: true,
+        to: '/sms/create_campaing/sms_agenda'
+      }]
     }
   },
   created() {

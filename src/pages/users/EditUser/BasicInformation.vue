@@ -262,7 +262,6 @@ export default {
           })
 
         } else {
-          console.log('holis')
 
           BackendApi.post('/user', payload).then((response) => {
             if (response.data.success) {
