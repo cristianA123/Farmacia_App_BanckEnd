@@ -171,7 +171,7 @@ export default {
   methods: {
     getUsers () {
       this.isLoading = true
-      BackendApi.get('/user').then((response) => {
+      BackendApi.get('/userforreport').then((response) => {
         response.data.data.forEach((user) => {
           const data = {
             id: user.id,

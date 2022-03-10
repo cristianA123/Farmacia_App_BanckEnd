@@ -16,12 +16,13 @@
 
       <AvailableCreditComponent
         :availableCredit="credits.availableCredit"
+        :credits="credits"
         :isLoading="isLoading"
       />
 
       <ServiceCreditComponent
         
-        :sms_cost="credits.sms_cost"
+        :credits="credits"
         :isLoading="isLoading"
       />
 
@@ -69,14 +70,6 @@ export default {
     }
   },
   mounted() {
-    let count = 0
-
-    // DEMO delay for loading graphics
-    this.loadingInterval = setInterval(() => {
-      this[`isLoading${count++}`] = false
-      if (count === 4) this.clear()
-    }, 300)
-
     this.getCreditsUsedByUser()
   },
   methods: {

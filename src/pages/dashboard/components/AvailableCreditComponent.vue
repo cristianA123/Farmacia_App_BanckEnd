@@ -41,20 +41,20 @@
           <table>
             <tr>
               <td>Crédito inicial:</td>
-              <td>sd -</td>
+              <td>{{ credits.credit | formatCurrency(configFormat) }} -</td>
             </tr>
             <tr>
               <td>Crédito asignado a sub-usuarios:</td>
-              <td>sd</td>
+              <td>{{ assignedCredits | formatCurrency(configFormat) }}</td>
             </tr>
             <tr>
               <td>Crédito utilizado por mi usuario:</td>
-              <td>sd</td>
+              <td>{{ credits.sms_cost + credits.ivr_cost | formatCurrency(configFormat) }}</td>
             </tr>
             ______________
             <tr>
               <td>Crédito disponible:</td>
-              <td>sd</td>
+              <td>{{ credits.availableCredit | formatCurrency(configFormat) }}</td>
             </tr>
           </table>
         </v-card-text>
@@ -70,8 +70,14 @@
 </template>
 
 <script>
+import BackendApi from '@/services/backend.service'
+
 export default {
   props: {
+    credits: {
+      type: Number,
+      default: 0
+    },
     isLoading: {
       type: Boolean,
       default: false
@@ -83,8 +89,12 @@ export default {
   },
   data () {
     return {
-      dialogDetailAvailableCredit: false
+      dialogDetailAvailableCredit: false,
+      assignedCredits: 0
     }
+  },
+  mounted() {
+    this.getUsers()
   },
   computed: {
     configFormat: function () {
@@ -101,6 +111,17 @@ export default {
   methods: {
     detailAvailableCredit() {
       this.dialogDetailAvailableCredit = true
+    },
+    getUsers() {
+      BackendApi.get('/user').then((response) => {
+        if (response.data.success) {
+          const users = response.data.data
+
+          users.forEach((user) => {
+            this.assignedCredits = this.assignedCredits + user.credit
+          })
+        }
+      })
     }
   }
 }

@@ -2,7 +2,6 @@
   <div
     v-shortkey="['ctrl', '/']"
     class="d-flex flex-grow-1"
-    @shortkey="onKeyup"
   >
     <!-- Navigation -->
     <v-navigation-drawer
@@ -45,7 +44,6 @@
           <div :class="[$vuetify.rtl ? 'ml-1' : 'mr-1']">
             <toolbar-notifications />
           </div>
-          {{ shortName }} 
           <toolbar-user />
         </div>
       </v-card>
@@ -70,7 +68,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import axios from 'axios'
 
 // navigation menu configurations
 import config from '../configs'
@@ -93,32 +90,11 @@ export default {
     return {
       drawer: null,
       showSearch: false,
-      navigation: config.navigation,
-      shortName: ''
+      navigation: config.navigation
     }
-  },
-  mounted() {
-    this.getShortName()
   },
   computed: {
     ...mapState('app', ['product', 'isContentBoxed', 'menuTheme', 'toolbarTheme', 'isToolbarDetached'])
-  },
-  methods: {
-    onKeyup(e) {
-      this.$refs.search.focus()
-    },
-    getShortName() {
-      axios.get('/me', { headers: { Authorization: 'Bearer ' + window.localStorage.token } }).then((response) => {
-        if (response.data.success) {
-          console.log(response.data.data.name.substr(0, response.data.data.name.indexOf(' ')))
-          this.shortName = response.data.data.name.substr(0, response.data.data.name.indexOf(' '))
-        } else {
-          this.$store.dispatch('app/showToast', response.data.message)
-        }
-      }).catch((error) => {
-        console.log(error)
-      })
-    }
   }
 }
 </script>

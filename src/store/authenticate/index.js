@@ -21,13 +21,8 @@ export default {
   },
   actions: {
     login ({ commit }, user) {
-
-      store.dispatch('app/showError', {
-        message: 'Holis',
-        error: 'Qupe tal'
-      })
-
       commit('setLoadingAuth', true)
+      
       axios.post('/login', {
         email: user.email,
         password: user.password

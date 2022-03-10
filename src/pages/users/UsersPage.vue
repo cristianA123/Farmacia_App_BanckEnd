@@ -52,8 +52,12 @@
           <div>{{ item.created | formatDate('ll') }}</div>
         </template>
 
-        <template v-slot:[`item.start_credit`]="{ item }">
-          <div>{{ new Intl.NumberFormat().format(item.start_credit) }}</div>
+        <template v-slot:[`item.credit`]="{ item }">
+          <div>{{ item.credit | formatCurrency(configFormat) }}</div>
+        </template>
+
+        <template v-slot:[`item.availableCredit`]="{ item }">
+          <div>{{ item.availableCredit | formatCurrency(configFormat) }}</div>
         </template>
 
         <template v-slot:[`item.actions`]="{ item }">
@@ -89,6 +93,18 @@ export default {
         { text: 'Estado', value: 'status' },
         { text: 'Acciones', value: 'actions' }
       ]
+    }
+  },
+  computed: {
+    configFormat: function () {
+      return {
+        decimalDigits: 0,
+        decimalSeparator: '.',
+        thousandsSeparator: ',',
+        currencySymbol: '',
+        currencySymbolNumberOfSpaces: 0,
+        currencySymbolPosition: 'left'
+      }
     }
   },
   mounted() {

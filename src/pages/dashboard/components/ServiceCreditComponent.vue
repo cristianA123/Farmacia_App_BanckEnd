@@ -2,6 +2,8 @@
   <v-col cols="12" lg="3" xl="3">
     <v-card
       height="200px"
+      color="light-blue darken-4"
+      dark
     >
       <v-card-title>
         Crédito {{ service }} consumido
@@ -20,7 +22,7 @@
             v-else
           >
             <div class="text-h3">
-              {{ sms_cost | formatCurrency(configFormat) }}
+              {{ credits.sms_cost + credits.ivr_cost | formatCurrency(configFormat) }}
             </div>
             <div class="d-flex justify-end">
               <span>Créditos</span>
@@ -79,9 +81,9 @@ export default {
       type: Boolean,
       default: false
     },
-    sms_cost: {
-      type: Number,
-      default: 0
+    credits: {
+      type: Object,
+      default: () => {}
     }
   },
   data () {

@@ -82,6 +82,9 @@ export default {
       }
     }
   },
+  created () {
+    this.onChange()
+  },
   methods: {
     onChange() {
       this.$emit('onChange', {
