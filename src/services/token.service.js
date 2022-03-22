@@ -1,11 +1,5 @@
 class TokenService {
-  getLocalRefreshToken() {
-    
-    const user = JSON.parse(localStorage.getItem('user'))
-    
-    return user?.refreshToken
-  }
-
+  
   getLocalAccessToken() {
     const user = $cookies.get('token')
     
@@ -14,20 +8,7 @@ class TokenService {
 
   updateLocalAccessToken(token) {
     
-    localStorage.setItem('token', token)
-  }
-
-  getUser() {
-    return localStorage.getItem('token')
-  }
-
-  setUser(user) {
-    console.log(JSON.stringify(user))
-    localStorage.setItem('token', JSON.stringify(user))
-  }
-
-  removeUser() {
-    localStorage.removeItem('user')
+    $cookies.set('token', token)
   }
 }
 

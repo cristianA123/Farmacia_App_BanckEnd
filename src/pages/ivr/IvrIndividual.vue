@@ -5,6 +5,9 @@
         <div class="display-1">Enviar IVR Individual</div>
       </div>
       <v-spacer></v-spacer>
+      <BackPage 
+        to="create-campaing-ivr"
+      />
     </div>
 
     <v-card>
@@ -45,12 +48,14 @@ import OptionsComponent from './components/OptionsComponent.vue'
 import InputIndividualPhones from '@/components/common/InputIndividualPhones.vue'
 import BackendApi from '@/services/backend.service'
 import AudioFileComponent from './components/AudioFileComponent.vue'
+import BackPage from '@/components/common/BackPage.vue'
 
 export default {
   components: {
     OptionsComponent,
     InputIndividualPhones,
-    AudioFileComponent
+    AudioFileComponent,
+    BackPage
   },
   data() {
     return {
@@ -64,7 +69,8 @@ export default {
   methods: {
     submit() {
       const payload = {
-        campaing_type_id: 1,
+        service_id: 2,
+        campaign_type_id: 1,
         name: 'Individual',
         destinations: this.phones,
         message: this.message,
@@ -72,7 +78,7 @@ export default {
         options: this.options
       }
 
-      BackendApi.post('/ivr/campaign', payload).then((response) => {
+      BackendApi.post('/campaign', payload).then((response) => {
         if (response.data.success) {
           this.$store.dispatch('app/showToast', response.data.message)
         }

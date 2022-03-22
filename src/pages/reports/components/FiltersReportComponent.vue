@@ -7,40 +7,36 @@
   >
     <!-- search bar -->
     <v-row class="pb-1">
-      <v-col class="col-12 col-lg-4 py-0 d-flex justify-space-between">
-        <!-- users list -->
-        <v-combobox
-          v-model="selectUser"
-          :items="subUsers"
-          item-text="name"
-          item-value="id"
-          append-icon="mdi-account"
-          class="flex-grow-1 mr-md-2"
-          solo
-          dense
-          clearable
-          multiple
-          placeholder="Seleccione usuario"
-          :rules="[ computedSelectUser => computedSelectUser.length !== 0 || 'Usuario es obligatorio' ]"
-          :loading="isLoading"
-          @change="ifSelectAllData()"
-        >
-          <template v-slot:selection="{ item, index }">
-            <div v-if="index === 0">
-              {{ item.name }}
-            </div>
-            <span
-              v-if="index === 1"
-              class="grey--text text-caption"
-            >
-              (+{{ selectUser.length - 1 }} más)
-            </span>
-          </template>
-        </v-combobox>
+      <v-col
+        class="col-12 col-lg-3 py-0 pr-0 d-flex justify-space-between"
+      >
+
+        <ComboboxComponent 
+          ref="comboUsers"
+          :loading="isLoadingUsers"
+          icon="mdi-account"
+          label="Usuarios"
+          @onChange="ChangeSelectedUsers"
+        />
+
+      </v-col>
+
+      <v-col
+        class="col-12 col-lg-3 py-0 pr-0 d-flex justify-space-between"
+      >
+
+        <ComboboxComponent 
+          ref="comboServices"
+          :loading="isLoadingServices"
+          icon="mdi-bullhorn"
+          label="Servicios"
+          @onChange="ChangeSelectedServices"
+        />
+
       </v-col>
 
       <!-- date start -->
-      <v-col class="col-6 col-lg-3 py-0 pd-flex justify-space-between">
+      <v-col class="col-6 col-lg-2 py-0 pr-0 pd-flex justify-space-between">
         <v-dialog
           ref="dialogStart"
           v-model="modalDateRangeStart"
@@ -53,7 +49,8 @@
               v-model="dateStart"
               append-icon="mdi-calendar-start"
               class="flex-grow-1 mr-md-2"
-              solo
+              label="Fecha inicio"
+              outlined
               readonly
               dense
               clearable
@@ -76,7 +73,7 @@
       </v-col>
 
       <!-- date end -->
-      <v-col class="col-6 col-lg-3 py-0 d-flex justify-space-between">
+      <v-col class="col-6 col-lg-2 py-0 pr-0 d-flex justify-space-between">
         <v-dialog
           ref="dialogEnd"
           v-model="modalDateRangeEnd"
@@ -89,8 +86,9 @@
               v-model="dateEnd"
               append-icon="mdi-calendar-end"
               class="flex-grow-1 mr-md-2"
-              solo
+              label="Fecha fin"
               readonly
+              outlined
               dense
               clearable
               placeholder="Fecha fin"
@@ -131,32 +129,41 @@
 <script>
 import moment from 'moment'
 import BackendApi from '@/services/backend.service'
+import ComboboxComponent from '@/pages/reports/components/ComboboxComponent'
 
 export default {
+  components: {
+    ComboboxComponent
+  },
   data() {
     return {
-      subUsers: [{ id: 0, name: 'Todos' }],
       validForm: true,
-      selectUser: [],
+
+      services: [
+        { id: 0, name: 'Todos' },
+        { id: 1, name: 'SMS' },
+        { id: 2, name: 'IVR' },
+        { id: 3, name: 'WHATSAPP' },
+        { id: 4, name: 'MAILLING' }
+      ],
+      selectedServices: [],
+      isLoadingServices: false,
+
+      selectedUsers: [],
+      isLoadingUsers: false,
+      
       maxDateStart: null,
       dateStart: null,
-      modalDateRangeStart: null,
       minDateEnd: null,
       dateEnd: null,
+
+      modalDateRangeStart: null,
       modalDateRangeEnd: null,
+
       isLoading: false
     }
   },
   computed: {
-    computedSelectUser: function () {
-      const result = []
-
-      this.selectUser.forEach((element) => {
-        result.push(element.id)
-      })
-
-      return result
-    },
     computedDateFormat: function () {
 
       return moment(Date.now()).format('YYYY-MM-DD')
@@ -164,54 +171,50 @@ export default {
   },
   mounted() {
     this.getUsers()
-    this.getMyUser()
+    this.getServices()
     this.dateStart = this.computedDateFormat
     this.dateEnd = this.computedDateFormat
   },
   methods: {
     getUsers () {
-      this.isLoading = true
+      this.isLoadingUsers = true
+      
       BackendApi.get('/userforreport').then((response) => {
+        const data = [{ id:0, name: 'Todos' }]
+
         response.data.data.forEach((user) => {
-          const data = {
+          data.push({
             id: user.id,
             name: user.name
-          }
-
-          this.subUsers.push(data)
+          })
         })
 
-        this.isLoading = false
-        this.selectUser = this.subUsers
-        this.filter()
-        
-      })
-        .catch((error) => {
-          console.log(error)
-        })
-    },
-    getMyUser() {
-      BackendApi.get('/me').then((response) => {
-        if (response.data.success) {
-          this.selectUser.push({ id: response.data.data.id, name: response.data.data.name })
-        }
-      }).catch((error) => {
-        console.log(error)
+        this.isLoadingUsers = false
+        this.$refs.comboUsers.list(data)
       })
     },
-    ifSelectAllData () {
-      if (this.selectUser.find((user) => user.id === 0)) {
-        this.selectUser = this.subUsers
-      }
-    },
-    filter() {
-      const filters = {
-        usersSelected: this.computedSelectUser,
-        dateStart: this.dateStart,
-        dateEnd: this.dateEnd
-      }
+    getServices () {
+      this.isLoadingServices = true
       
-      this.$emit('onfilter', filters)
+      const data = [
+        { id:0, name: 'Todos' },
+        { id:1, name: 'Sms' },
+        { id:2, name: 'Ivr' }
+      ]
+
+      /*BackendApi.get('/userforreport').then((response) => {
+        const data = [{ id:0, name: 'Todos' }]
+
+        response.data.data.forEach((user) => {
+          data.push({
+            id: user.id,
+            name: user.name
+          })
+        })*/
+        
+      this.isLoadingServices = false
+      this.$refs.comboServices.list(data)
+
     },
     saveDateStart () {
       this.$refs.dialogStart.save(this.dateStart)
@@ -223,8 +226,22 @@ export default {
     },
     submit () {
       if (this.$refs.form.validate()) {
-        this.filter()
+        
+        const filters = {
+          users: this.selectedUsers,
+          services: this.selectedServices,
+          start_date: this.dateStart,
+          final_date: this.dateEnd
+        }
+
+        this.$emit('onfilter', filters)
       }
+    },
+    ChangeSelectedUsers(users) {
+      this.selectedUsers = users
+    },
+    ChangeSelectedServices(services) {
+      this.selectedServices = services
     }
   }
 }

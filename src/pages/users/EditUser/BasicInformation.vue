@@ -12,7 +12,6 @@
       </v-card>
 
       <v-card :loading="isLoading" :disabled="isLoading">
-        <v-card-title>Información básica</v-card-title>
         <v-card-text>
           <div class="d-flex flex-column flex-sm-row">
             
@@ -20,7 +19,7 @@
               <userAvatar :key="user.id" :user="user" :detail="false" />
             </div>
 
-            <div class="flex-grow-1 pt-2 pa-sm-2">
+            <div class="flex-grow-1 pt-2 pa-sm-2">  
               <v-form
                 ref="form"
                 v-model="valid"
@@ -64,64 +63,17 @@
                   prepend-icon="mdi-currency-usd"
                   outlined
                 />
+
                 <span>Servicios</span>
                 <v-divider></v-divider>
-                <v-row>
-                  <v-col
-                    class="pb-0 mb-0"
-                  >
-                    <v-checkbox
-                      v-model="user.sms"
-                      label="SMS"
-                    ></v-checkbox>
-                  </v-col>
-                  <v-col
-                    class="pb-0 mb-0"
-                  >
-                    <v-select
-                      v-if="user.sms"
-                      v-model="user.provider_id"
-                      :items="providers"
-                      item-text="name"
-                      item-value="id"
-                      label="Proveedor"
-                      color="red"
-                      append-icon="mdi-call-split"
-                      outlined
-                      hide-details="true"
-                    />
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col
-                    class="py-0 my-0"
-                  >
-                    <v-checkbox
-                      v-model="user.ivr"
-                      label="IVR"
-                    ></v-checkbox>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col
-                    class="pt-0 mt-0"
-                  >
-                    <v-checkbox
-                      v-model="user.whatsapp"
-                      label="WHATSAPP"
-                    ></v-checkbox>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col
-                    class="pt-0 mt-0"
-                  >
-                    <v-checkbox
-                      v-model="user.mailling"
-                      label="WHATSAPP"
-                    ></v-checkbox>
-                  </v-col>
-                </v-row>
+
+                <ServicesCheckComponent
+                  @onChange="onChangeServicesCheck"
+                />
+
+                <span>Password</span>
+                <v-divider></v-divider>
+
                 <div class="d-flex">
                   <v-spacer></v-spacer>
                   <v-btn 
@@ -176,11 +128,13 @@ import BackendApi from '@/services/backend.service'
 import headers from '@/configs/headers.js'
 import userAvatar from '@/components/reports/userAvatar'
 import DialogPasswordComponent from '../components/DialogPasswordComponent'
+import ServicesCheckComponent from '../components/ServicesCheck.vue'
 
 export default {
   components: {
     userAvatar,
-    DialogPasswordComponent
+    DialogPasswordComponent,
+    ServicesCheckComponent
   },
   props: {
     user: {
@@ -194,6 +148,7 @@ export default {
   },
   data() {
     return {
+      services: [],
       dialogPassword: false,
       password: '',
       errors: {
@@ -240,17 +195,15 @@ export default {
           name: this.user.name,
           email: this.user.email,
           company: this.user.company,
-          sms:this.user.sms,
-          ivr:this.user.ivr,
-          whatsapp:this.user.whatsapp,
-          mailling:this.user.mailling,
+          services: this.services,
           credit: this.user.credit,
-          provider_id: this.user.provider_id
+          provider_id: this.user.provider_id,
+          user_id: this.$route.params.userId
         }
 
         if (this.edit) {
 
-          BackendApi.put('/user/' + this.user.id, payload).then((response) => {
+          BackendApi.post('/user', payload).then((response) => {
             if (response.data.success) {
               this.isLoading = false
               this.$store.dispatch('app/showToast', response.data.message)
@@ -280,7 +233,6 @@ export default {
       }
     },
     enableUser () {
-
       const payload = {
         user_id_disable: this.user.id,
         status: 1
@@ -308,6 +260,9 @@ export default {
           this.providers = response.data.data
         }
       })
+    },
+    onChangeServicesCheck(services) {
+      this.services = services
     }
   }
 }

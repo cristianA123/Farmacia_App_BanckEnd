@@ -126,7 +126,7 @@
 import _ from 'lodash'
 import CopyLabel from '@/components/common/CopyLabel'
 import DialogCreate from './createUrl/dialogCreate'
-import axios from 'axios'
+import BackendApi from '@/services/backend.service'
 
 export default {
   components: {
@@ -165,7 +165,7 @@ export default {
         filesPerPage: this.filesPerPage 
       }
 
-      axios.get('/getUrls', { params: payload, headers: { Authorization: 'Bearer ' + window.localStorage.token }  }).then((response) => {
+      BackendApi.get('/getUrls').then((response) => {
         if (response.data.success) {
           this.urls = []
           this.urls = response.data.data.urls

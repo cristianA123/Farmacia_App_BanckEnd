@@ -30,22 +30,7 @@ export default [
   {
     path: '/reports',
     name: 'reports',
-    component: () => import('@/pages/reports/Index.vue')
-  },
-  {
-    path: '/reports/sms',
-    name: 'report-sms',
-    component: () => import('@/pages/reports/ReportSms.vue')
-  },
-  {
-    path: '/reports/ivr',
-    name: 'report-ivr',
-    component: () => import('@/pages/reports/ReportIvr.vue')
-  },
-  {
-    path: '/reports/ivr/detail/:campaingId?',
-    name: 'report-ivr-detail',
-    component: () => import('@/pages/reports/ReportDetailIvr.vue')
+    component: () => import('@/pages/reports/Reports.vue')
   },
   //IVR
   {
@@ -67,10 +52,5 @@ export default [
     path: '/ivr/create_campaing/ivr_excel',
     name: 'ivr-excel',
     component: () => import('@/pages/ivr/IvrExcel.vue')
-  },
-  {
-    path: '/ivr/report',
-    name: 'ivr-report',
-    component: () => import('@/pages/ivr/IvrReport.vue')
   }
 ]

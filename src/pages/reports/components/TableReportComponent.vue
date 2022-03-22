@@ -2,7 +2,7 @@
   <div>
 
     <!-- search bar form -->
-    <Search-Bar
+    <FiltersReportComponent
       @onfilter="onfilter"
       @onreadyfilters="onreadyfilters"
     />
@@ -28,6 +28,12 @@
         :search="searchQuery"
         class="flex-grow-1"
       >
+      
+        <template v-slot:item.name="{ item }">
+          {{ item.name }}
+          <br>
+          {{ item.service }}
+        </template>
 
         <template v-slot:item.status="{ item }">
           <v-chip
@@ -76,7 +82,7 @@
         </template>
 
         <template v-slot:item.user_name="{ item }">
-          <userAvatar :user="item" />
+          <userAvatar :user="{ name: item.user, company: item.company, email:item.email }" />
         </template>
 
         <template v-slot:item.actions="{ item }">
@@ -110,12 +116,12 @@
 </template>
 
 <script>
-import userAvatar from './userAvatar'
-import SearchBar from '@/components/common/SearchBar'
+import userAvatar from '@/components/reports/userAvatar'
+import FiltersReportComponent from './FiltersReportComponent'
 
 export default {
   components: {
-    SearchBar,
+    FiltersReportComponent,
     userAvatar
   },
   props: {

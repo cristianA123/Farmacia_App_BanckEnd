@@ -1,14 +1,13 @@
 <template>
   <div class="flex-grow-1">
-    <Back-Page 
-      to="users"
-    />
-    
-    <div class="d-flex align-center py-3">
+    <div class="d-flex align-center pb-3">
       <div>
         <div class="display-1">{{ isEdit ? "Editar usuario" : "Crear usuario" }}</div>
-        <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
       </div>
+      <v-spacer></v-spacer>
+      <Back-Page 
+        to="users"
+      />
     </div>
 
     <v-tabs v-model="tab" :show-arrows="false" background-color="transparent">

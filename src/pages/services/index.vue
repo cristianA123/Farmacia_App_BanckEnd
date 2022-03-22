@@ -3,7 +3,6 @@
     <div class="d-flex align-center py-3 pb-0">
       <div>
         <div class="display-1">Selecciona el servicio a utilizar</div>
-        <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
       </div>
       <v-spacer></v-spacer>
     </div>
@@ -64,24 +63,7 @@ export default {
     getServices() {
       BackendApi.get('/userServices').then((response) => {
         if (response.data.success) {
-
-          if (response.data.data.sms) {
-            this.services.push({
-              id: 1,
-              name: 'SMS',
-              icon: 'mdi-cellphone-text',
-              path: 'create-campaing-sms'
-            })
-          }
-
-          if (response.data.data.ivr) {
-            this.services.push({
-              id: 2,
-              name: 'IVR',
-              icon: 'mdi-phone-in-talk',
-              path: 'create-campaing-ivr'
-            })
-          }
+          this.services =   response.data.data
         }
       })
     },    

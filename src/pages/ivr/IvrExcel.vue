@@ -1,10 +1,13 @@
 <template>
   <div class="d-flex flex-column flex-grow-1">
-    <div class="d-flex align-center py-3">
+    <div class="d-flex align-center pb-3">
       <div>
         <div class="display-1">Enviar IVR a una base de contactos Excel</div>
       </div>
       <v-spacer></v-spacer>
+      <BackPage 
+        to="create-campaing-ivr"
+      />
     </div>
 
     <v-card>
@@ -54,11 +57,13 @@
 import OptionsComponent from './components/OptionsComponent.vue'
 import BackendApi from '@/services/backend.service'
 import AudioFileComponent from './components/AudioFileComponent.vue'
+import BackPage from '@/components/common/BackPage.vue'
 
 export default {
   components: {
     OptionsComponent,
-    AudioFileComponent
+    AudioFileComponent,
+    BackPage
   },
   data() {
     return {
@@ -113,7 +118,8 @@ export default {
     },
     submit() {
       const payload = {
-        campaing_type_id: 3,
+        service_id: 2,
+        campaign_type_id: 3,
         name: this.name,
         destinations: this.fileId,
         message: this.message,
@@ -121,7 +127,7 @@ export default {
         options: this.options
       }
 
-      BackendApi.post('/ivr/campaign', payload).then((response) => {
+      BackendApi.post('/campaign', payload).then((response) => {
         if (response.data.success) {
           this.$store.dispatch('app/showToast', response.data.message)
         }

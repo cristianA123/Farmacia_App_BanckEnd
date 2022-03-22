@@ -15,7 +15,7 @@
     >
       <!-- Navigation menu info -->
       <template v-slot:prepend>
-        <img src="/logo.png" style="width: 230px; padding: 30px 30px 0px;">
+        <img src="/logo.png" style="width: 150px; margin: 20px 45px 0px;">
       </template>
 
       <!-- Navigation menu -->

@@ -131,6 +131,7 @@ import _ from 'lodash'
 import CopyLabel from '@/components/common/CopyLabel'
 import DialogUpload from './uploadFile/dialogUpload'
 import axios from 'axios'
+import BackendApi from '@/services/backend.service'
 
 export default {
   components: {
@@ -169,7 +170,7 @@ export default {
         filesPerPage: this.filesPerPage 
       }
       
-      axios.get('/getFiles', { params: payload, headers: { Authorization: 'Bearer ' + window.localStorage.token } }).then((response) => {
+      BackendApi.get('/getFiles').then((response) => {
         if (response.data.success) {
           this.files = []
           this.files = response.data.data.files

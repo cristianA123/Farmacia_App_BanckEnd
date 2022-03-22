@@ -119,7 +119,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import BakendApi from '@/services/backend.service'
 
 export default {
   props: {
@@ -193,7 +193,7 @@ export default {
     getProviders () {
       this.isLoadingProviders = true
       
-      axios.get('/getRoutes', { headers: { Authorization: 'Bearer ' + window.localStorage.token } }).then((response) => {
+      BakendApi.get('/getRoutes').then((response) => {
         const providers = response.data.data
         
         this.providers = providers

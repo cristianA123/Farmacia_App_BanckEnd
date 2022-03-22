@@ -4,7 +4,7 @@ import TokenService from './token.service'
 const setup = (store) => {
   axiosInstance.interceptors.request.use(
     (config) => {
-      console.log('interceptado en request')
+      
       const token = TokenService.getLocalAccessToken()
       
       if (token) {
@@ -25,15 +25,13 @@ const setup = (store) => {
     },
     async (err) => {
 
-      console.log(err.response)
       const originalConfig = err.config
       
       switch (err.response.status) {
-      case 401: {
-        // Refrescar token
-        console.log('Refrescando token')
-        
-        const rs = await axiosInstance.post('/refresh')
+      case 498: {
+
+        const rs = await axiosInstance.get('/refresh')
+
         const accessToken = rs.data.data.token
 
         TokenService.updateLocalAccessToken(accessToken)

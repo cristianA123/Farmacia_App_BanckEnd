@@ -2,12 +2,12 @@
   <div class="d-flex flex-column flex-grow-1">
     <div class="d-flex align-center py-3">
       <div>
-        <div class="display-1">Reporte IVR</div>
+        <div class="display-1">Reporte de servicios</div>
       </div>
       <v-spacer></v-spacer>
     </div>
 
-    <ReportCampaingComponent
+    <TableReportComponent
       :headers="headers"
       :items="reports"
       :search_text="search_text"
@@ -20,12 +20,12 @@
 </template>
 
 <script>
-import ReportCampaingComponent from '@/components/reports/campaings.vue'
+import TableReportComponent from './components/TableReportComponent.vue'
 import BackendApi from '@/services/backend.service'
 
 export default {
   components: {
-    ReportCampaingComponent
+    TableReportComponent
   },
   data() {
     return {
@@ -47,7 +47,7 @@ export default {
     getReports(filters) {
       this.isLoading = true
       
-      BackendApi.post('/ivr/userCampaignBetween', filters).then((response) => {
+      BackendApi.post('/userCampaignBetween', filters).then((response) => {
         if (response.data.success) {
           this.reports = response.data.data
         }
@@ -55,7 +55,7 @@ export default {
       })
     },
     on_filter(data) {
-      const users = data.usersSelected
+      const { users, services } = data
       
       if (users.find((user) => user === 0) !== undefined) {
         const i = users.indexOf(0)
@@ -63,10 +63,17 @@ export default {
         users.splice(i, 1)
       }
 
+      if (services.find((user) => user === 0) !== undefined) {
+        const i = services.indexOf(0)
+
+        services.splice(i, 1)
+      }
+
       const filters = {
         users: users,
-        start_date: data.dateStart,
-        final_date: data.dateEnd
+        services: services,
+        start_date: data.start_date,
+        final_date: data.final_date
       } 
 
       this.getReports(filters)

@@ -169,7 +169,7 @@ export default {
   },
   methods: {
     getAgendas() {
-      BackendApi.get('/agenda', { headers: { Authorization: 'Bearer ' + window.localStorage.token } }).then((response) => {
+      BackendApi.get('/agenda').then((response) => {
         if (response.data.success) {
 
           this.items = response.data.data

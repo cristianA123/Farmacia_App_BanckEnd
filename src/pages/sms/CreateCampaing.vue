@@ -1,11 +1,13 @@
 <template>
   <div class="d-flex flex-column flex-grow-1">
-    <div class="d-flex align-center py-3 pb-0">
+    <div class="d-flex align-center pb-3 pb-0">
       <div>
         <div class="display-1">Selecciona tipo de campaña</div>
-        <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
       </div>
       <v-spacer></v-spacer>
+      <BackPage 
+        to="services"
+      />
     </div>
 
     <v-row>
@@ -26,7 +28,7 @@
               <br>
               <v-row>
                 <v-col>
-                  <v-icon style="font-size: 90px; color: #e85a03;">{{ type.icon }}</v-icon>
+                  <v-icon style="font-size: 90px;">{{ type.icon }}</v-icon>
                 </v-col>
                 <v-col>
                   {{ type.description }}
@@ -41,7 +43,12 @@
 </template>
 
 <script>
+import BackPage from '@/components/common/BackPage.vue'
+
 export default {
+  components: {
+    BackPage
+  },
   data() {
     return {
       breadcrumbs: [{

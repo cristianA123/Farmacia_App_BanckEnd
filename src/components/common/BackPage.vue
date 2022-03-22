@@ -6,7 +6,7 @@
       :loading="isLoading"
       @click="backTo()"
     >
-        <v-icon>bx bx-arrow-back</v-icon> Regresar
+      <v-icon>mdi-chevron-left</v-icon> Regresar
     </v-btn>
   </div>
 </template>
@@ -14,15 +14,18 @@
 <script>
 export default {
   props: {
-    to: String
-  },
-  mounted() {
-    this.isLoading = false
+    to: {
+      type: String,
+      default: ''
+    } 
   },
   data() {
     return {
       isLoading: false
     }
+  },
+  mounted() {
+    this.isLoading = false
   },
   methods: {
     backTo() {

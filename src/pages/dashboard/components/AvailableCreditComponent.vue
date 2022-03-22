@@ -32,29 +32,34 @@
     </v-card>
 
     <v-dialog
-      v-model="dialogDetailAvailableCredit"
-      width="800px"
+      v-model="diaglog"
+      width="300px"
     >
       <v-card>
         <v-card-title>Detalle de créditos</v-card-title>
         <v-card-text>
           <table>
             <tr>
-              <td>Crédito inicial:</td>
-              <td>{{ credits.credit | formatCurrency(configFormat) }} -</td>
+              <td style="width: 100%;"><strong>Inicial:</strong></td>
+              <td style="text-align: right;">{{ credits.credit | formatCurrency(configFormat) }}</td>
+              <td>-</td>
             </tr>
             <tr>
-              <td>Crédito asignado a sub-usuarios:</td>
-              <td>{{ assignedCredits | formatCurrency(configFormat) }}</td>
+              <td style="width: 300px;"><strong>Sub-usuarios:</strong></td>
+              <td style="text-align: right;">{{ assignedCredits | formatCurrency(configFormat) }}</td>
             </tr>
             <tr>
-              <td>Crédito utilizado por mi usuario:</td>
-              <td>{{ credits.sms_cost + credits.ivr_cost | formatCurrency(configFormat) }}</td>
+              <td style="width: 300px;"><strong>Mi usuario:</strong></td>
+              <td style="text-align: right;">{{ credits.sms_cost + credits.ivr_cost | formatCurrency(configFormat) }}</td>
             </tr>
-            ______________
             <tr>
-              <td>Crédito disponible:</td>
-              <td>{{ credits.availableCredit | formatCurrency(configFormat) }}</td>
+              <td></td>
+              <td>_________</td>
+            </tr>
+          
+            <tr>
+              <td style="width: 300px;"><strong>Disponible:</strong></td>
+              <td style="text-align: right;">{{ credits.availableCredit | formatCurrency(configFormat) }}</td>
             </tr>
           </table>
         </v-card-text>
@@ -62,7 +67,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text>Más detalle</v-btn>
-          <v-btn text>Entiendo</v-btn>
+          <v-btn text @click="diaglog=false">Entiendo</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -75,8 +80,8 @@ import BackendApi from '@/services/backend.service'
 export default {
   props: {
     credits: {
-      type: Number,
-      default: 0
+      type: Object,
+      default: () => {}
     },
     isLoading: {
       type: Boolean,
@@ -89,12 +94,9 @@ export default {
   },
   data () {
     return {
-      dialogDetailAvailableCredit: false,
+      diaglog: false,
       assignedCredits: 0
     }
-  },
-  mounted() {
-    this.getUsers()
   },
   computed: {
     configFormat: function () {
@@ -108,9 +110,12 @@ export default {
       }
     }
   },
+  mounted() {
+    this.getUsers()
+  },
   methods: {
     detailAvailableCredit() {
-      this.dialogDetailAvailableCredit = true
+      this.diaglog = true
     },
     getUsers() {
       BackendApi.get('/user').then((response) => {

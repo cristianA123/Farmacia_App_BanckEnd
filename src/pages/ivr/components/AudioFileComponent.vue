@@ -31,7 +31,7 @@ export default {
 
           formData.append('file', file)
 
-          BackendApi.post('/ivr/upload/audio', formData).then((response) => {
+          BackendApi.post('/upload/audio', formData).then((response) => {
             if (response.data.success) {
               this.$emit('onChangeFile', {
                 file_id: response.data.data.id,

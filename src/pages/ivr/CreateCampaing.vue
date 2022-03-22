@@ -5,6 +5,9 @@
         <div class="display-1">Selecciona tipo de campaña</div>
       </div>
       <v-spacer></v-spacer>
+      <BackPage 
+        to="services"
+      />
     </div>
 
     <v-row>
@@ -25,7 +28,7 @@
               <br>
               <v-row>
                 <v-col>
-                  <v-icon style="font-size: 90px; color: #e85a03;">{{ type.icon }}</v-icon>
+                  <v-icon style="font-size: 90px;">{{ type.icon }}</v-icon>
                 </v-col>
                 <v-col>
                   {{ type.description }}
@@ -40,7 +43,12 @@
 </template>
 
 <script>
+import BackPage from '@/components/common/BackPage.vue'
+
 export default {
+  components: {
+    BackPage
+  },
   data() {
     return {
       types: [

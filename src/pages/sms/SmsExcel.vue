@@ -1,14 +1,28 @@
 <template>
   <div class="d-flex flex-column flex-grow-1">
-    <div class="d-flex align-center py-3">
+    <div class="d-flex align-center pb-3">
       <div>
         <div class="display-1">Enviar SMS a una base de contactos Excel</div>
       </div>
       <v-spacer></v-spacer>
+      <BackPage 
+        to="create-campaing-sms"
+      />
     </div>
 
     <v-card>
       <v-card-text>
+        <v-row>
+          <v-col>
+            <v-icon>mdi-cloud-download-outline</v-icon>
+            <v-btn  
+              text
+              @click="downloadFile"
+            >
+              Descargar formato Excel
+            </v-btn>
+          </v-col>
+        </v-row>
         <v-text-field
           v-model="name"
           label="Ingrese nombre de campaña"
@@ -41,12 +55,10 @@
         <v-btn
           text
           color="primary"
-          @click="submit"
         >
           Enviar mensaje
         </v-btn>
       </v-card-actions>
-
     </v-card>
 
   </div>
@@ -56,11 +68,13 @@
 import OptionsComponent from './components/OptionsComponent.vue'
 import BackendApi from '@/services/backend.service'
 import MessageInputComponent from './components/MessageInputComponent.vue'
+import BackPage from '@/components/common/BackPage.vue'
 
 export default {
   components: {
     OptionsComponent,
-    MessageInputComponent
+    MessageInputComponent,
+    BackPage
   },
   data() {
     return {
@@ -111,7 +125,8 @@ export default {
     },
     submit() {
       const payload = {
-        campaing_type_id: 3,
+        service_id: 1,
+        campaign_type_id: 3,
         name: this.name,
         destinations: this.fileId,
         message: this.message,
@@ -119,11 +134,14 @@ export default {
         options: this.options
       }
 
-      BackendApi.post('/campaing', payload).then((response) => {
+      BackendApi.post('/campaign', payload).then((response) => {
         if (response.data.success) {
           this.$store.dispatch('app/showToast', response.data.message)
         }
       })
+    },
+    downloadFile () {
+      window.open('https://appenviamas.com/files/FormatoExcelSmsAvanzado.xlsx', '_blank').focus()
     }
   }
 }

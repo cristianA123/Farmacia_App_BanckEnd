@@ -61,10 +61,36 @@
         </template>
 
         <template v-slot:[`item.actions`]="{ item }">
-          <div class="actions">
-            <v-icon @click="updateUser(item.id)">mdi-open-in-new</v-icon>
-            <v-icon @click="loginUser(item)">mdi-login</v-icon>
-          </div>
+          <v-menu
+            offset-y
+          >
+            <template v-slot:activator="{ attrs, on }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                text
+              >
+                Acciones
+              </v-btn>
+            </template>
+
+            <v-list>
+              <v-list-item
+                @click="updateUser(item.id)"
+                link
+              >
+                <v-list-item-text>Modificar</v-list-item-text>
+              </v-list-item>
+            </v-list>
+            <v-list>
+              <v-list-item
+                @click="loginUser(item)"
+                link
+              >
+                <v-list-item-text>Iniciar sesión</v-list-item-text>
+              </v-list-item>
+            </v-list>
+          </v-menu>
         </template>
       </v-data-table>
     </v-card>
@@ -74,7 +100,6 @@
 <script>
 import BackendApi from '@/services/backend.service'
 import userAvatar from '@/components/reports/userAvatar'
-
 export default {
   components: {
     userAvatar
