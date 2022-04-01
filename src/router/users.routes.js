@@ -5,16 +5,16 @@ export default [{
 {
   path: '/config/users',
   name: 'users',
-  component: () => import('@/pages/users/UsersPage.vue')
+  component: () => import('@/pages/Users/users.vue')
 }, 
 {
   path: '/config/users/register/:userId?',
   name: 'register-user',
   props: true,
-  component: () => import('@/pages/users/EditUserPage.vue')
+  component: () => import('@/pages/Users/editUserPage.vue')
 }, 
 {
   path: '/config/user',
   name: 'user',
-  component: () => import('@/pages/users/myUser.vue')
+  component: () => import('@/pages/Users/myUser.vue')
 }]

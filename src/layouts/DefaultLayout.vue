@@ -35,8 +35,6 @@
         <div class="d-flex flex-grow-1 align-center">
           <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
           
-          <available-credits />
-
           <v-spacer></v-spacer>
 
           <toolbar-apps />
@@ -73,7 +71,6 @@ import { mapState } from 'vuex'
 import config from '../configs'
 
 import MainMenu from '../components/navigation/MainMenu'
-import AvailableCredits from '../components/credits/AvailableCredits'
 import ToolbarUser from '../components/toolbar/ToolbarUser'
 import ToolbarApps from '../components/toolbar/ToolbarApps'
 import ToolbarNotifications from '../components/toolbar/ToolbarNotifications'
@@ -81,7 +78,6 @@ import ToolbarNotifications from '../components/toolbar/ToolbarNotifications'
 export default {
   components: {
     MainMenu,
-    AvailableCredits,
     ToolbarUser,
     ToolbarApps,
     ToolbarNotifications

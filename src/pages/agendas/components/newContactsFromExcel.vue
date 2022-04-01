@@ -16,6 +16,9 @@
         </v-card-title>
 
         <v-card-text>
+          <DownloadBottonComponent 
+            path="/files/contactos_agenda.xlsx"
+          />
           <v-file-input
             v-model="file"
             label="Adjunte Excel de contactos"
@@ -36,8 +39,12 @@
 
 <script>
 import BackendApi from '@/services/backend.service'
+import DownloadBottonComponent from '@/components/common/DownloadBottonComponent.vue'
 
 export default {
+  components: {
+    DownloadBottonComponent
+  },
   data () {
     return {
       file: null,
@@ -57,7 +64,7 @@ export default {
 
         payload.append('file', this.file)
 
-        BackendApi.post('/contactUpload/' + this.$route.params.agendaId, payload).then((response) => {
+        BackendApi.post('/agenda/' + this.$route.params.agendaId + '/contactUpload', payload).then((response) => {
 
           if (response.data.success) {
             this.$store.dispatch('app/showToast', response.data.message)

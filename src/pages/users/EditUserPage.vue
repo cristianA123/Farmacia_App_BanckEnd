@@ -10,17 +10,8 @@
       />
     </div>
 
-    <v-tabs v-model="tab" :show-arrows="false" background-color="transparent">
-      <v-tab to="#tabs-account">Cuenta</v-tab>
-      <v-tab v-if="isEdit" to="#tabs-information">Configuración</v-tab>
-    </v-tabs>
-
-    <v-tabs-items v-model="tab">
-      <v-tab-item value="tabs-account">
-        <basic-information ref="tabs-account" :edit="isEdit" :user="user"></basic-information>
-      </v-tab-item>
-
-    </v-tabs-items>
+    <basic-information ref="tabs-account" :edit="isEdit" :user="user"></basic-information>
+  
   </div>
 </template>
 

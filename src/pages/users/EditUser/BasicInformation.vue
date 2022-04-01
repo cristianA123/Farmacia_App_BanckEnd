@@ -12,6 +12,11 @@
       </v-card>
 
       <v-card :loading="isLoading" :disabled="isLoading">
+
+        <v-card-title>
+          Información básica
+        </v-card-title>
+
         <v-card-text>
           <div class="d-flex flex-column flex-sm-row">
             
@@ -64,15 +69,35 @@
                   outlined
                 />
 
-                <span>Servicios</span>
-                <v-divider></v-divider>
+                <v-row>
+                  <v-col>
+                    <v-card>
+                      <v-card-title>
+                        Servicios
+                      </v-card-title>
 
-                <ServicesCheckComponent
-                  @onChange="onChangeServicesCheck"
-                />
+                      <v-card-text>
+                        <ServicesCheckComponent
+                          @onChange="onChangeServicesCheck"
+                        />
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
 
-                <span>Password</span>
-                <v-divider></v-divider>
+                  <v-col>
+                    <v-card>
+                      <v-card-title>
+                        Password
+                      </v-card-title>
+
+                      <v-card-text>
+                        <v-btn>
+                          Reiniciar contraseña
+                        </v-btn>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                </v-row>
 
                 <div class="d-flex">
                   <v-spacer></v-spacer>
@@ -128,7 +153,7 @@ import BackendApi from '@/services/backend.service'
 import headers from '@/configs/headers.js'
 import userAvatar from '@/components/reports/userAvatar'
 import DialogPasswordComponent from '../components/DialogPasswordComponent'
-import ServicesCheckComponent from '../components/ServicesCheck.vue'
+import ServicesCheckComponent from '@/pages/Users/components/ServicesCheckComponent.vue'
 
 export default {
   components: {
