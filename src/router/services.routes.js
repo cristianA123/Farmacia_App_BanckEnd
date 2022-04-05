@@ -30,7 +30,7 @@ export default [
   {
     path: '/reports',
     name: 'reports',
-    component: () => import('@/pages/Reports/reports.vue')
+    component: () => import('@/pages/reports/Reports.vue')
   },
   //IVR
   {

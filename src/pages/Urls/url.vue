@@ -17,10 +17,39 @@
     <v-data-table
       :headers="headers"
       :items="urls"
-    ></v-data-table>
+    >
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-menu
+          offset-y
+        >
+          <template v-slot:activator="{ attrs, on }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+            >
+              Acciones
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item
+              @click="updateUrl(item.id)"
+              link
+            >
+              Modificar
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </template>
+    </v-data-table>
 
     <Dialog-Create
       :show="dialogUploadShow"
+      :isUpdate="isUpdate"
+      :url="url"
+      :name="name"
+      :urlId="urlId"
+      :isBtnEnable="isBtnEnable"
       @onClose="onClose"
     />
     
@@ -42,9 +71,13 @@ export default {
     return {
       dialogUploadShow: false,
       loadingGetFiles: false,
+      isUpdate : false,
       headers: [
-        { text: 'Usuario', value: 'email' },
-        { text: 'Nombre', value: 'name' }
+        { text: 'Número de links', value: 'number_of_links' },
+        { text: 'Número de clicks', value: 'number_of_clicks' },
+        { text: 'campaña', value: 'campaign_id' },
+        { text: 'Última modificacion', value: 'updated' },
+        { text: 'Acciones', value: 'actions' }
       ],
       urls: [],
       lengthPagination: 1,
@@ -52,7 +85,12 @@ export default {
       searchText: '',
       snackbar: false,
       textSnackbar: '',
-      filesPerPage: 12
+      filesPerPage: 12,
+      url:'',
+      name:'',
+      url_id: null,
+      isBtnEnable:false
+
     }
   },
   mounted() {
@@ -67,9 +105,11 @@ export default {
   },
   methods: {
     getFiles () {
+      this.name = ''
+      this.url = ''
       this.loadingGetFiles = true
 
-      BackendApi.get('/urls').then((response) => {
+      BackendApi.get('/groupurl').then((response) => {
         if (response.data.success) {
           this.urls = response.data.data
         }
@@ -80,9 +120,28 @@ export default {
       })
     },
     onClose () {
+      this.isUpdate = false
       this.dialogUploadShow = false
       this.getFiles()
-    }
+    },
+
+    async updateUrl(urlId) { 
+      this.isUpdate = true
+      this.dialogUploadShow = true
+      this.urlId  = urlId
+      await BackendApi.get('/url/' + urlId).then((response) => {
+        if (response.data.success) {
+          this.url = response.data.data.long_url
+          this.name = response.data.data.name
+        } else {
+          this.$store.dispatch('app/showToast', response.data.message)
+        }
+      }).catch((error) => {
+        console.log(error)
+      })             
+      console.log(urlId)
+      console.log(this.url)
+    } 
   }
 }
 </script>

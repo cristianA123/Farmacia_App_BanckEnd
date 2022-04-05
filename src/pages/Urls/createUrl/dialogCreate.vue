@@ -12,7 +12,7 @@
       >
         <v-card>
           <v-card-title>
-            <span class="text-h5">Crear url corta</span>
+            <span class="text-h5">{{ isUpdate ? "Editar url corta" : "Crear url corta" }}</span>
           </v-card-title>
           <v-card-text>
             <v-container>
@@ -26,8 +26,12 @@
                   ></v-text-field>
                   <v-text-field
                     v-model="url"
+                    type="url"
                     label="Url"
-                    :rules="[v => !!v || 'Url es obligatorio']"
+                    :rules="[
+                      v => !!v || 'Url es obligatorio',
+                      v => /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi.test(v)|| 'Url no es válido' 
+                    ]"
                     required
                   ></v-text-field>
                 </v-col>
@@ -48,8 +52,9 @@
               text
               type="submit"
               :loading="isLoading"
+              :disabled="isBtnEnable"
             >
-              Crear
+              {{ isUpdate ? "Editar" : "Crear" }}
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -66,34 +71,103 @@ export default {
   props: {
     show: {
       type: Boolean
+    },
+    isUpdate:{
+      type: Boolean
+    },
+    name: {
+      type: String,
+      default: ''
+    },
+    url: {
+      type: String,
+      default: ''
+    },
+    urlId: {
+      type: Number,
+      default: null
+    },
+    isBtnEnable:{
+      type: Boolean
     }
   },
   data: () => ({
-    isLoading: false,
-    name: '',
-    url: ''
+    isLoading: false
+    // isupdate2: this.isUpdate,
+    // isBtnEnable:false,
+    // url: this.url2
   }),
+  computed: {
+    estoaaa: () => {
+      // this.url = this.url2
+    }
+  },
+  watch: {
+    handler : () => {
+      // this.updateUrl()
+    }
+  },
+  mounted() {
+    // this.updateUrl()
+
+  },
   methods: {
     close () {
+      this.$refs.formUploadFile.reset()
+      this.isUpdate = false
       this.$emit('onClose')
+
     }, 
     submit () {
       if (this.$refs.formUploadFile.validate()) {
-        this.isLoading = true
+        this.isLoading = false
 
-        const payload = {
-          name: this.name,
-          url: this.url
-        }
-
-        axios.post('/createUrl', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } }).then((response) => {
-          console.log(response)
-          if (response.data.success) {
-            this.close()
+        if ( !this.isUpdate ) {
+          this.isBtnEnable = true
+          const payload = {
+            name: this.name,
+            long_url: this.url
           }
+  
+          axios.post('/url', payload).then((response) => {
+            // console.log(response)
+            if (response.data.success) {
+              this.close()
+              this.$store.dispatch('app/showToast', 'Url corta creada exitosamente')
+            }
+            this.isLoading = false
+            this.isUpdate = false
+            this.$refs.formUploadFile.reset()
+
+          })
+          this.isBtnEnable = true
           this.isLoading = false
-        })
+        } else {
+          this.isBtnEnable = true
+
+          const payload = {
+            name: this.name,
+            long_url: this.url
+          }
+  
+          axios.put('/url/' + this.urlId, payload).then((response) => {
+            // console.log(response)
+            if (response.data.success) {
+              this.close()
+              this.$store.dispatch('app/showToast', 'Url corta se editó exitosamente')
+            }
+            this.isLoading = false
+            this.isUpdate = false
+            this.$refs.formUploadFile.reset()
+
+          })
+          this.isBtnEnable = true
+          this.isLoading = false
+        }
       }
+    },
+    updateUrl () {
+      // this.url = this.url2
     }
   }
 }

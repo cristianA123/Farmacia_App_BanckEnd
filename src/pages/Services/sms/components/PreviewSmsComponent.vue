@@ -55,14 +55,14 @@
                       <td style="width:150px;"><strong>Créditos a usar (aprox):</strong></td>
                       <td>
                         
-                        <span><strong>232</strong></span>
+                        <span><strong>{{creditToUse}}</strong></span>
                       </td>
                     </tr>
                     <tr>
                       <td style="width:150px;"><strong>Créditos disponibles:</strong></td>
                       <td>
                         
-                        <span><strong>232</strong></span>
+                        <span><strong>{{availableCredit}}</strong></span>
                       </td>
                     </tr>
                   </table>
@@ -101,6 +101,14 @@ export default {
     message: {
       type: String,
       default: ''
+    },
+    creditToUse: {
+      type: Number,
+      default: 0
+    },
+    availableCredit : {
+      type : Number,
+      default: 0
     }
   },
   data() {

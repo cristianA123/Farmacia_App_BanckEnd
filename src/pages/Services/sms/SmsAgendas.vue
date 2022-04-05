@@ -60,6 +60,8 @@
       ref="dialogPreview"
       :options="options" 
       :message="message"
+      :creditToUse="creditToUse"
+      :availableCredit="availableCredit"
       @onPreviewSmsSubmit="PreviewSmsSubmit"
     />
 
@@ -99,13 +101,47 @@ export default {
         text: 'Agenda',
         disabled: true,
         to: '/sms/create_campaing/sms_agenda'
-      }]
+      }],
+      creditToUse : 0,
+      availableCredit : 0,
+      numberOfContacts:0
     }
   },
   created() {
     this.getAgendas()
   },
   methods: {
+    calculateCreditToUse() {
+
+      this.agendas.map( (agenda) => {
+        if (agenda.id === this.agendaSelected) {
+          this.numberOfContacts = agenda.all_contacts
+
+          return agenda.all_contacts
+        } else {
+          return null
+        } 
+
+      })
+
+      const payload = {
+        message: this.message,
+        numberOfContacts: this.numberOfContacts 
+      }
+
+      BackendApi.post('/calculateMessageCredits', payload).then((response) => {
+        if (response.data.success) {
+          this.creditToUse = response.data.data.creditsToUse
+        }
+      })
+    },
+    availableCreditByUser() {
+      BackendApi.get('/creditsUsedByUser').then((response) => {
+        if (response.data.success) {
+          this.availableCredit = response.data.data.availableCredit
+        }
+      })
+    },
     submit() {
       /*
       const payload = {
@@ -124,6 +160,8 @@ export default {
         }
       })*/
       if (this.$refs.form.validate()) {
+        this.calculateCreditToUse()
+        this.availableCreditByUser()
         this.$refs.dialogPreview.open()
       }
     },
@@ -131,6 +169,7 @@ export default {
       BackendApi.get('/agenda').then((response) => {
         if (response.data.success) {
           this.agendas = response.data.data
+          console.log(this.agendas)
         }
       })
     },

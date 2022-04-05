@@ -48,6 +48,8 @@
       ref="dialogPreview"
       :options="options" 
       :message="message"
+      :creditToUse="creditToUse"
+      :availableCredit="availableCredit"
       @onPreviewSmsSubmit="PreviewSmsSubmit"
     />
 
@@ -83,12 +85,35 @@ export default {
         is_push: false,
         scheduled: null,
         bidireccional: false
-      }
+      },
+      creditToUse : 0,
+      availableCredit : 0
     }
   },
   methods: {
+    calculateCreditToUse() {
+      const payload = {
+        message: this.message,
+        numberOfContacts: 1
+      }
+
+      BackendApi.post('/calculateMessageCredits', payload).then((response) => {
+        if (response.data.success) {
+          this.creditToUse = response.data.data.creditsToUse
+        }
+      })
+    },
+    availableCreditByUser() {
+      BackendApi.get('/creditsUsedByUser').then((response) => {
+        if (response.data.success) {
+          this.availableCredit = response.data.data.availableCredit
+        }
+      })
+    },
     submit() {
       if (this.$refs.form.validate()) {
+        this.calculateCreditToUse()
+        this.availableCreditByUser()
         this.$refs.dialogPreview.open()
       }
     },
