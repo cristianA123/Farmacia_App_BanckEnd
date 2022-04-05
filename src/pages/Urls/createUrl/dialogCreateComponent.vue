@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-dialog
-      v-model="show"
+      v-model="dialog"
       persistent
       max-width="600px"
     >
@@ -12,7 +12,7 @@
       >
         <v-card>
           <v-card-title>
-            <span class="text-h5">{{ isUpdate ? "Editar url corta" : "Crear url corta" }}</span>
+            <span class="text-h5">{{ isEdit ? "Editar url corta" : "Crear url corta" }}</span>
           </v-card-title>
           <v-card-text>
             <v-container>
@@ -52,9 +52,8 @@
               text
               type="submit"
               :loading="isLoading"
-              :disabled="isBtnEnable"
             >
-              {{ isUpdate ? "Editar" : "Crear" }}
+              {{ isEdit ? "Editar" : "Crear" }}
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -66,108 +65,67 @@
 <script>
 import axios from 'axios'
 import headers from '@/configs/headers.js'
+import BackendApi from '@/services/backend.service'
 
 export default {
   props: {
-    show: {
-      type: Boolean
-    },
-    isUpdate:{
-      type: Boolean
-    },
-    name: {
-      type: String,
-      default: ''
-    },
-    url: {
-      type: String,
-      default: ''
-    },
-    urlId: {
-      type: Number,
-      default: null
-    },
-    isBtnEnable:{
-      type: Boolean
-    }
   },
   data: () => ({
-    isLoading: false
-    // isupdate2: this.isUpdate,
-    // isBtnEnable:false,
-    // url: this.url2
+    isLoading: false,
+    item : null,
+    name : '',
+    url: '',
+    dialog: false
   }),
   computed: {
-    estoaaa: () => {
-      // this.url = this.url2
+    isEdit: function () {
+      return this.item === undefined ? false : true
     }
-  },
-  watch: {
-    handler : () => {
-      // this.updateUrl()
-    }
-  },
-  mounted() {
-    // this.updateUrl()
-
   },
   methods: {
+    open(item) {
+      this.item = item
+      console.log(this.item)
+      if ( this.isEdit ) {
+        this.name = item.name
+        this.url = item.long_url
+      } else {
+        this.name = null
+        this.url = null
+      }
+      this.dialog = true
+    },
     close () {
       this.$refs.formUploadFile.reset()
-      this.isUpdate = false
-      this.$emit('onClose')
-
+      this.isLoading = false
+      this.dialog = false
+      this.$emit('onDialogCreateFinish')
     }, 
-    submit () {
+    async submit () {
       if (this.$refs.formUploadFile.validate()) {
-        this.isLoading = false
-
-        if ( !this.isUpdate ) {
-          this.isBtnEnable = true
-          const payload = {
-            name: this.name,
-            long_url: this.url
-          }
+        this.isLoading = true
+        const payload = {
+          name: this.name,
+          long_url: this.url
+        }
   
-          axios.post('/url', payload).then((response) => {
-            // console.log(response)
+        if ( !this.isEdit ) {
+          await BackendApi.post('/url', payload).then((response) => {
             if (response.data.success) {
               this.close()
-              this.$store.dispatch('app/showToast', 'Url corta creada exitosamente')
+              this.$store.dispatch('app/showToast', response.data.message)
             }
-            this.isLoading = false
-            this.isUpdate = false
-            this.$refs.formUploadFile.reset()
-
           })
-          this.isBtnEnable = true
-          this.isLoading = false
         } else {
-          this.isBtnEnable = true
-
-          const payload = {
-            name: this.name,
-            long_url: this.url
-          }
   
-          axios.put('/url/' + this.urlId, payload).then((response) => {
-            // console.log(response)
+          BackendApi.put('/url/' + this.item.id, payload).then((response) => {
             if (response.data.success) {
               this.close()
-              this.$store.dispatch('app/showToast', 'Url corta se editó exitosamente')
+              this.$store.dispatch('app/showToast', response.data.message)
             }
-            this.isLoading = false
-            this.isUpdate = false
-            this.$refs.formUploadFile.reset()
-
           })
-          this.isBtnEnable = true
-          this.isLoading = false
         }
       }
-    },
-    updateUrl () {
-      // this.url = this.url2
     }
   }
 }

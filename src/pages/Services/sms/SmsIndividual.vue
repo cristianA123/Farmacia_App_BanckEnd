@@ -94,7 +94,7 @@ export default {
     calculateCreditToUse() {
       const payload = {
         message: this.message,
-        numberOfContacts: 1
+        numberOfContacts: this.phones.length
       }
 
       BackendApi.post('/calculateMessageCredits', payload).then((response) => {

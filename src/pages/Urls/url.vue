@@ -8,7 +8,7 @@
       <v-spacer></v-spacer>
       <v-btn
         color="primary"
-        @click="dialogUploadShow = true"
+        @click="openDialogCreate(undefined)"
       >
         Crear url corta
       </v-btn>
@@ -30,10 +30,9 @@
               Acciones
             </v-btn>
           </template>
-
           <v-list>
             <v-list-item
-              @click="updateUrl(item.id)"
+              @click="openDialogCreate(item)"
               link
             >
               Modificar
@@ -43,14 +42,9 @@
       </template>
     </v-data-table>
 
-    <Dialog-Create
-      :show="dialogUploadShow"
-      :isUpdate="isUpdate"
-      :url="url"
-      :name="name"
-      :urlId="urlId"
-      :isBtnEnable="isBtnEnable"
-      @onClose="onClose"
+    <DialogCreateComponent
+      ref="dialogCreate"
+      @onDialogCreateFinish="onDialogCreateFinish"
     />
     
   </div>
@@ -59,13 +53,13 @@
 
 <script>
 import _ from 'lodash'
-import DialogCreate from './createUrl/dialogCreate'
+import DialogCreateComponent from './createUrl/dialogCreateComponent.vue'
 import BackendApi from '@/services/backend.service'
 
 export default {
   components: {
     
-    DialogCreate
+    DialogCreateComponent
   },
   data() {
     return {
@@ -80,18 +74,7 @@ export default {
         { text: 'Última modificacion', value: 'updated' },
         { text: 'Acciones', value: 'actions' }
       ],
-      urls: [],
-      lengthPagination: 1,
-      page: 1,
-      searchText: '',
-      snackbar: false,
-      textSnackbar: '',
-      filesPerPage: 12,
-      url:'',
-      name:'',
-      url_id: null,
-      isBtnEnable:false
-
+      urls: []
     }
   },
   mounted() {
@@ -105,44 +88,27 @@ export default {
     }
   },
   methods: {
+
+    openDialogCreate(item) {
+      this.$refs.dialogCreate.open(item)
+      // console.log(item)
+    },
+    onDialogCreateFinish ()  {
+      this.getFiles()
+    },
     getFiles () {
-      this.name = ''
-      this.url = ''
+      this.urls = []
       this.loadingGetFiles = true
 
       BackendApi.get('/groupurl').then((response) => {
         if (response.data.success) {
           this.urls = response.data.data
+          this.loadingGetFiles = false
         }
-
-        this.loadingGetFiles = false
       }).catch((error) => {
         console.log(error)
       })
-    },
-    onClose () {
-      this.isUpdate = false
-      this.dialogUploadShow = false
-      this.getFiles()
-    },
-
-    async updateUrl(urlId) { 
-      this.isUpdate = true
-      this.dialogUploadShow = true
-      this.urlId  = urlId
-      await BackendApi.get('/url/' + urlId).then((response) => {
-        if (response.data.success) {
-          this.url = response.data.data.long_url
-          this.name = response.data.data.name
-        } else {
-          this.$store.dispatch('app/showToast', response.data.message)
-        }
-      }).catch((error) => {
-        console.log(error)
-      })             
-      console.log(urlId)
-      console.log(this.url)
-    } 
+    }
   }
 }
 </script>
