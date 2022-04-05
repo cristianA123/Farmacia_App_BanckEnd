@@ -73,6 +73,7 @@ export default {
       loadingGetFiles: false,
       isUpdate : false,
       headers: [
+        { text: 'Nombre', value: 'name' },
         { text: 'Número de links', value: 'number_of_links' },
         { text: 'Número de clicks', value: 'number_of_clicks' },
         { text: 'campaña', value: 'campaign_id' },
