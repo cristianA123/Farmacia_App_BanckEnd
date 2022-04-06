@@ -79,7 +79,7 @@ export default {
       this.getReports(filters)
     },
     onDetail(item) {
-      this.$router.push({ path: 'ivr/detail/' + item.id })
+      this.$router.push({ path: '/reports/sms/detail/' + item.id })
     }
   }
 }
