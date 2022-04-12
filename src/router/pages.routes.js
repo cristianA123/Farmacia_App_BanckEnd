@@ -26,12 +26,12 @@ export default [{
 {
   path: '/tools/agendas',
   name: 'agendas',
-  component: () => import( '@/pages/agendas/agenda.vue')
+  component: () => import( '@/pages/Agendas/agenda.vue')
 }, 
 {
   path: '/tools/agendas/:agendaId/contacts',
   name: 'contacts',
-  component: () => import( '@/pages/agendas/contacts.vue'),
+  component: () => import( '@/pages/Agendas/contacts.vue'),
   props: true
 }, 
 {
