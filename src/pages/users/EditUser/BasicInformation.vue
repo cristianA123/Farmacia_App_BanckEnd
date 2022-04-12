@@ -153,7 +153,7 @@ import BackendApi from '@/services/backend.service'
 import headers from '@/configs/headers.js'
 import userAvatar from '@/components/reports/userAvatar'
 import DialogPasswordComponent from '../components/DialogPasswordComponent'
-import ServicesCheckComponent from '@/pages/Users/components/ServicesCheckComponent.vue'
+import ServicesCheckComponent from '@/pages/users/components/ServicesCheckComponent.vue'
 
 export default {
   components: {

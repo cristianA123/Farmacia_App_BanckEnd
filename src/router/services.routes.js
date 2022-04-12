@@ -30,12 +30,12 @@ export default [
   {
     path: '/reports',
     name: 'reports',
-    component: () => import('@/pages/Reports/Reports.vue')
+    component: () => import('@/pages/reports/Reports.vue')
   },
   {
     path: '/reports/sms/detail/:campaign_id',
     name: 'reports-sms',
-    component: () => import('@/pages/Reports/DetailSmsReport.vue')
+    component: () => import('@/pages/reports/DetailSmsReport.vue')
   },
   //IVR
   {
