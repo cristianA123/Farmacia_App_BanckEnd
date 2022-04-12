@@ -2,7 +2,7 @@
   <div class="d-flex flex-column flex-grow-1">
     <div class="d-flex align-center py-3">
       <div>
-        <div class="display-1">Proveedores</div>
+        <div class="display-1">Canales</div>
       </div>
       <v-spacer></v-spacer>
       <v-dialog
@@ -33,8 +33,9 @@
                   lg="6"
                 >
                   <v-text-field
-                    v-model="editedItem.route_name"
+                    v-model="editedItem.name"
                     label="Nombre"
+                    outlined
                   ></v-text-field>
                 </v-col>
                 <v-col
@@ -44,6 +45,7 @@
                   <v-text-field
                     v-model="editedItem.price"
                     label="Precio"
+                    outlined
                   ></v-text-field>
                 </v-col>
                 <v-col
@@ -53,6 +55,7 @@
                   <v-text-field
                     v-model="editedItem.description"
                     label="Descripción"
+                    outlined
                   ></v-text-field>
                 </v-col>
                 <v-col
@@ -60,9 +63,27 @@
                   lg="6"
                 >
                   <v-text-field
-                    v-model="editedItem.apikey"
+                    v-model="editedItem.api_Key"
                     label="Apikey"
+                    outlined
                   ></v-text-field>
+                </v-col>
+                <v-col
+                  class="my-0 py-0"
+                  lg="6"
+                >
+                  <v-select
+                    v-model="editedItem.provider_id"
+                    label="Proveedor"
+                    solo
+                    dense
+                    hide-details
+                    hide-selected
+                    :items="intervals"
+                    item-text="name"
+                    item-value="id"
+                    outlined
+                  ></v-select>
                 </v-col>
                 <v-col
                   class="my-0 py-0"
@@ -71,6 +92,7 @@
                   <v-text-field
                     v-model="editedItem.sender"
                     label="Sender"
+                    outlined
                   ></v-text-field>
                 </v-col>
                 <v-col
@@ -80,6 +102,7 @@
                   <v-text-field
                     v-model="editedItem.authorization"
                     label="Authorization"
+                    outlined
                   ></v-text-field>
                 </v-col>
                 <v-col
@@ -89,6 +112,7 @@
                   <v-text-field
                     v-model="editedItem.var1"
                     label="Var1"
+                    outlined
                   ></v-text-field>
                 </v-col>
                 <v-col
@@ -98,6 +122,7 @@
                   <v-text-field
                     v-model="editedItem.var2"
                     label="Var2"
+                    outlined
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -152,16 +177,24 @@ import BackendApi from '@/services/backend.service'
 
 export default {
   data: () => ({
+    selectedInterval: 0,
+    intervals: [
+      'Last 7 days',
+      'Last 28 days',
+      'Last month',
+      'Last year'
+    ],
     isLoading: false,
     dialog: false,
     dialogDelete: false,
+    itemSelected: 0,
     headers: [
       { text: 'Canal', value: 'id' },
       { text: 'Nombre', value: 'name' },
       { text: 'Proveedor', value: 'provider' },
       { text: 'Descripción', value: 'description' },
       { text: 'Precio', value: 'price' },
-      { text: 'APIKEY', value: 'apikey' },
+      { text: 'APIKEY', value: 'api_Key' },
       { text: 'SENDER', value: 'sender' },
       { text: 'AUTHORIZATION', value: 'authorization' },
       { text: 'VAR1', value: 'var1' },
@@ -174,21 +207,23 @@ export default {
       name: '',
       description: '',
       price:0,
-      apikey: '',
+      api_Key: '',
       sender: '',
       authorization: '',
       var1: '',
-      var2: ''
+      var2: '',
+      provider_id: 0
     },
     defaultItem: {
       name: '',
       description: '',
       price:0,
-      apikey: '',
+      api_Key: '',
       sender: '',
       authorization: '',
       var1: '',
-      var2: ''
+      var2: '',
+      provider_id: 0
     }
   }),
 
@@ -214,9 +249,19 @@ export default {
   methods: {
     initialize () {
       this.items = []
-      BackendApi.get('/provider').then((response) => {
+      BackendApi.get('/channel').then((response) => {
         if (response.data.success) {
           this.items = response.data.data
+        } else {
+          this.$store.dispatch('app/showToast', response.data.message)
+        }
+        this.isLoading = false
+      })
+
+      this.intervals = []
+      BackendApi.get('/provider').then((response) => {
+        if (response.data.success) {
+          this.intervals = response.data.data
         } else {
           this.$store.dispatch('app/showToast', response.data.message)
         }
@@ -228,6 +273,7 @@ export default {
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
+      this.itemSelected = item.id
     },
 
     close () {
@@ -243,7 +289,7 @@ export default {
       const payload =  this.editedItem
 
       if (this.editedIndex > -1) {
-        BackendApi.put('/provider', payload).then((response) => {
+        BackendApi.put('/channel/' + this.itemSelected, payload).then((response) => {
           if (response.data.success) {
             this.items = response.data.data
             this.initialize()
@@ -253,7 +299,7 @@ export default {
           this.isLoading = false
         })
       } else {
-        BackendApi.post('/provider', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } }).then((response) => {
+        BackendApi.post('/channel', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } }).then((response) => {
           if (response.data.success) {
             this.items = response.data.data
             this.initialize()
@@ -261,7 +307,7 @@ export default {
             this.$store.dispatch('app/showToast', response.data.message)
           }
           this.isLoading = false
-        })
+        }).catch( (erro) => console.log(erro) )
       }
       this.close()
     }
