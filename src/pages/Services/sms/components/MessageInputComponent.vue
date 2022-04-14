@@ -1,11 +1,26 @@
 <template>
   <div>
     <div
-      v-if="buttons"
+      v-if="agenda"
       class="ml-3"
     >
       <v-btn
         v-for="button in vars"
+        :key="button.id"
+        class="primary mx-1"
+        @click="addVarOnMessage(button)"
+      >
+        {{ button }}
+      </v-btn>
+      <br>
+      <br>
+    </div>
+    <div
+      v-if="excel"
+      class="ml-3"
+    >
+      <v-btn
+        v-for="button in vars_excel"
         :key="button.id"
         class="primary mx-1"
         @click="addVarOnMessage(button)"
@@ -32,7 +47,11 @@ import SmsCounter from 'sms-counter'
 
 export default {
   props: {
-    buttons: {
+    agenda: {
+      type: Boolean,
+      default: false
+    },
+    excel: {
       type: Boolean,
       default: false
     }
@@ -40,6 +59,7 @@ export default {
   data() {
     return {
       vars: ['NOMBRE 1', 'NOMBRE 2', 'APELLIDO 1', 'APELLIDO 2', 'VAR1', 'VAR2', 'VAR3', 'VAR4'],
+      vars_excel: ['VAR1', 'VAR2', 'VAR3', 'VAR4','VAR5', 'VAR6', 'VAR7', 'VAR8'],
       message: ''
     }
   },

@@ -34,7 +34,8 @@
           />
 
           <Message-Input-Component
-            :buttons="true"
+            :agenda="true"
+            :excel="false"
             @onChangeMessage="(msg) => message = msg"
           />
 
