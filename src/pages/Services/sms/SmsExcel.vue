@@ -40,14 +40,21 @@
             required
             @change="onChangeExcel"
           />
-
           <!-- aqui es donde van los ejemplos -->
-          <v-data-table
-            :headers="headers"
-            :items="excelExample"
-            :items-per-page="5"
-            class="elevation-1"
-          ></v-data-table>
+          <v-col
+            v-if="showExample"
+            class="pt-0"
+          >
+            <p>Ejemplos:</p>
+            <v-data-table
+              :headers="headers"
+              :items="excelExample"
+              :items-per-page="5"
+              class="elevation-1"
+            >
+              
+            </v-data-table>
+          </v-col>
 
           <!--    <InputFileDragAndDrop 
             :dialog="true"
@@ -141,6 +148,11 @@ export default {
       availableCredit : 0,
       isBtnLoading: true
 
+    }
+  },
+  computed: {
+    showExample: function () {
+      return this.excelExample.length !== 0
     }
   },
   methods: {

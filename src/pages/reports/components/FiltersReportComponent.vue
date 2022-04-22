@@ -129,7 +129,7 @@
 <script>
 import moment from 'moment'
 import BackendApi from '@/services/backend.service'
-import ComboboxComponent from '@/pages/reports/components/ComboboxComponent'
+import ComboboxComponent from '@/pages/Reports/components/ComboboxComponent'
 
 export default {
   components: {

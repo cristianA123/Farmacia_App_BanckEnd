@@ -34,12 +34,18 @@
             @change="cambio"  
           />
           <!-- aqui es donde van los ejemplos -->
-          <v-data-table
-            :headers="headers"
-            :items="exampleContact"
-            :items-per-page="5"
-            class="elevation-1"
-          ></v-data-table>
+          <v-col
+            v-if="showExample"
+            class="pt-0"
+          >
+            <p>Ejemplos:</p>
+            <v-data-table
+              :headers="headers"
+              :items="exampleContact"
+              :items-per-page="5"
+              class="elevation-1"
+            ></v-data-table>
+          </v-col>
 
           <Message-Input-Component
             :agenda="true"
@@ -134,6 +140,9 @@ export default {
     }
   },
   computed: {
+    showExample: function () {
+      return this.exampleContact.length !== 0
+    }
   },
   created() {
     this.getAgendas()
