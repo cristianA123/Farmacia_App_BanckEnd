@@ -187,7 +187,9 @@ export default {
       this.errorMessageFile = text
     },
     onChangeExcel(file) {
+      
       if (file) {
+       
         this.isFileLoading = true
     
         if (file.name.split('.').pop() === 'xlsx' || file.name.split('.').pop() === 'xls') {
@@ -197,6 +199,7 @@ export default {
           formData.append('file', file)
 
           BackendApi.post('/sms/upload/excelcampaing', formData).then((response) => {
+            console.log(response)
             if (response.data.success) {
               this.fileId = response.data.data.id
               this.excelExample = response.data.data.example
@@ -209,6 +212,7 @@ export default {
             this.isFileLoading = false
           })
         } else {
+          console.log('error')
           this.errorFile('No es un archivo Excel')
         }
       }

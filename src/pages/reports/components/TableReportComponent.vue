@@ -104,7 +104,7 @@
                 @click="detalle(item)"
                 link
               >
-                <v-list-item-text>Ver detalle</v-list-item-text>
+                Ver detalle
               </v-list-item>
             </v-list>
           </v-menu>
