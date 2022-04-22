@@ -76,6 +76,7 @@
         <v-spacer></v-spacer>
         <v-btn
           color="success"
+          :loading="isBtnLoading"
           @click="submit"
         >
           <v-icon
@@ -109,16 +110,22 @@ export default {
     availableCredit : {
       type : Number,
       default: 0
+    },
+    isBtnLoading : {
+      type : Boolean,
+      default: true
     }
   },
   data() {
     return {
       show: false
+      // isloading: false
     }
   },
   methods: {
     open() {
       this.show = true
+      // this.isloading = true
     },
     close() {
       this.show = false

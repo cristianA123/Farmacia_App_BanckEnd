@@ -31,12 +31,20 @@
             item-value="id"
             prepend-icon="mdi-contacts-outline"
             outlined
+            @change="cambio"  
           />
+          <!-- aqui es donde van los ejemplos -->
+          <v-data-table
+            :headers="headers"
+            :items="exampleContact"
+            :items-per-page="5"
+            class="elevation-1"
+          ></v-data-table>
 
           <Message-Input-Component
             :agenda="true"
             :excel="false"
-            @onChangeMessage="(msg) => message = msg"
+            @onChangeMessage="onChangeMessage"
           />
 
           <Options-Component 
@@ -61,6 +69,7 @@
       ref="dialogPreview"
       :options="options" 
       :message="message"
+      :isBtnLoading="isBtnLoading"
       :creditToUse="creditToUse"
       :availableCredit="availableCredit"
       @onPreviewSmsSubmit="PreviewSmsSubmit"
@@ -85,9 +94,24 @@ export default {
   },
   data() {
     return {
+      headers: [
+        { text: 'Número', value: 'number' },
+        { text: 'Primer nombre', value: 'name1' },
+        { text: 'Segundo nombre', value: 'name2' },
+        { text: 'Primer Apellido', value: 'last_name1' },
+        { text: 'Segundo Apellido', value: 'last_name2' },
+        { text: 'Email', value: 'email' },
+        { text: 'VAR 1', value: 'var1' },
+        { text: 'VAR 2', value: 'var2' },
+        { text: 'VAR 3', value: 'var3' },
+        { text: 'VAR 4', value: 'var4' }
+      ],
+      exampleContact : [],
       agendas: [],
       agendaSelected: null,
       message: '',
+      url_id: '',
+      long_url: '',
       breadcrumbs: [{
         text: 'Servicios',
         disabled: false,
@@ -105,8 +129,11 @@ export default {
       }],
       creditToUse : 0,
       availableCredit : 0,
-      numberOfContacts:0
+      numberOfContacts:0,
+      isBtnLoading: true
     }
+  },
+  computed: {
   },
   created() {
     this.getAgendas()
@@ -122,7 +149,6 @@ export default {
         } else {
           return null
         } 
-
       })
 
       const payload = {
@@ -136,33 +162,21 @@ export default {
         }
       })
     },
-    availableCreditByUser() {
+    async availableCreditByUser() {
+
+      await this.calculateCreditToUse()
+
       BackendApi.get('/creditsUsedByUser').then((response) => {
         if (response.data.success) {
           this.availableCredit = response.data.data.availableCredit
+          this.isBtnLoading = false
         }
       })
     },
-    submit() {
-      /*
-      const payload = {
-        service_id: 1,
-        campaign_type_id: 2,
-        name: 'Agenda de contactos',
-        destinations: this.agendaSelected,
-        message: this.message,
-        url_id: null,
-        options: this.options
-      }
-
-      BackendApi.post('/campaign', payload).then((response) => {
-        if (response.data.success) {
-          this.$store.dispatch('app/showToast', response.data.message)
-        }
-      })*/
+    async submit() {
       if (this.$refs.form.validate()) {
-        this.calculateCreditToUse()
-        this.availableCreditByUser()
+        await this.availableCreditByUser()
+
         this.$refs.dialogPreview.open()
       }
     },
@@ -170,7 +184,6 @@ export default {
       BackendApi.get('/agenda').then((response) => {
         if (response.data.success) {
           this.agendas = response.data.data
-          console.log(this.agendas)
         }
       })
     },
@@ -184,16 +197,40 @@ export default {
         name: this.name,
         destinations: this.agendaSelected,
         message: this.message,
-        url_id: null,
-        options: this.options
+        url_id: this.url_id,
+        options: this.options,
+        long_url: this.long_url
       }
 
       BackendApi.post('/campaign', payload).then((response) => {
         if (response.data.success) {
           this.$store.dispatch('app/showToast', response.data.message)
         }
+        this.$router.push({ name: 'create-campaing-sms' })
       })
+      // this.$refs.form.reset()
+    },
+    onChangeMessage(msg, url_id, long_url) {
+      this.message = msg
+      this.url_id = url_id
+      this.long_url = long_url
+    },
+    cambio() {
+
+      const payload = {
+        agenda_id : this.agendaSelected
+      }
+
+      BackendApi.post('/showContactExample',payload).then((response) => {
+        if (response.data.success) {
+          this.exampleContact = response.data.data
+        }
+      }).catch((error) => {
+        this.$store.dispatch('app/showToast', error.response.data.message)
+      })
+
     }
+   
   }
 }
 </script>

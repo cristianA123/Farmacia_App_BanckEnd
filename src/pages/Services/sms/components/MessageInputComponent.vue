@@ -1,35 +1,60 @@
 <template>
   <div>
-    <div
-      v-if="agenda"
-      class="ml-3"
-    >
-      <v-btn
-        v-for="button in vars"
-        :key="button.id"
-        class="primary mx-1"
-        @click="addVarOnMessage(button)"
+
+    <div class="row ml-3">
+      <div
+        v-if="agenda"
+        class="ml-3"
       >
-        {{ button }}
-      </v-btn>
-      <br>
-      <br>
-    </div>
-    <div
-      v-if="excel"
-      class="ml-3"
-    >
-      <v-btn
-        v-for="button in vars_excel"
-        :key="button.id"
-        class="primary mx-1"
-        @click="addVarOnMessage(button)"
+        <v-btn
+          v-for="button in vars"
+          :key="button.id"
+          class="primary mx-1"
+          @click="addVarOnMessage(button)"
+        >
+          {{ button }}
+        </v-btn>
+        <br>
+        <br>
+      </div>
+      <div
+        v-if="excel"
+        class="ml-3"
       >
-        {{ button }}
-      </v-btn>
-      <br>
-      <br>
+        <v-btn
+          v-for="button in vars_excel"
+          :key="button.id"
+          class="primary mx-1"
+          @click="addVarOnMessage(button)"
+        >
+          {{ button }}
+        </v-btn>
+        <br>
+        <br>
+      </div>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            color="primary"
+            dark
+            v-bind="attrs"
+            v-on="on"
+          >
+            URL
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="(item, index) in items"
+            :key="index"
+            @click="chooseUrl(index)"
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </div>
+
     <v-textarea
       v-model="message"
       label="Escriba el mensaje a enviar"
@@ -39,13 +64,24 @@
       outlined
       @keyup="tranforMessageForSms"
     />
+
+    <Dialog-Url
+      ref="DialogUrl"
+      @onChooseUrl="onChooseUrl"
+      @onMakeUrl="onMakeUrl"
+    />
+   
   </div>
 </template>  
 
 <script>
 import SmsCounter from 'sms-counter'
+import DialogUrl from './DialogUrl.vue'
 
 export default {
+  components: {
+    DialogUrl
+  },
   props: {
     agenda: {
       type: Boolean,
@@ -58,9 +94,15 @@ export default {
   },
   data() {
     return {
+      items: [
+        { title: 'Elegir url' },
+        { title: 'Url personalizado' }
+      ],
       vars: ['NOMBRE 1', 'NOMBRE 2', 'APELLIDO 1', 'APELLIDO 2', 'VAR1', 'VAR2', 'VAR3', 'VAR4'],
       vars_excel: ['VAR1', 'VAR2', 'VAR3', 'VAR4','VAR5', 'VAR6', 'VAR7', 'VAR8'],
-      message: ''
+      message: '',
+      url_id: '',
+      long_url: ''
     }
   },
   computed: {
@@ -78,7 +120,7 @@ export default {
     tranforMessageForSms () {
       const string = this.message
       let estandarText = ''
-      const filtro = '@$ !#\'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZ¿abcdefghijklmnopqrstuvwxyz{}[]áéíóú\'ñ'
+      const filtro = '_@$ !#\'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZ¿abcdefghijklmnopqrstuvwxyz{}[]áéíóú\'ñ'
       
       for (let i = 0; i < string.length; i++) {
         if (filtro.indexOf(string.charAt(i)) !== -1) {
@@ -105,10 +147,22 @@ export default {
       estandarText = estandarText.replace('Ñ', 'N')
 
       this.message = estandarText
-      this.$emit('onChangeMessage', this.message)
+      this.$emit('onChangeMessage', this.message, this.url_id, this.long_url)
     },
     addVarOnMessage (text) {
-      this.message = this.message + '[' + text + ']'
+      this.message = this.message + ' [' + text + '] '
+    },
+    chooseUrl(url) {
+      console.log(url)
+      this.$refs.DialogUrl.open(url)
+    },
+    onChooseUrl(url, url_id) {
+      this.url_id = url_id
+      this.message = this.message + ' ' + url + ' '
+    },
+    onMakeUrl(url, url_id,long_url) {
+      this.long_url = long_url
+      this.message = this.message + ' [' + 'CUSTOM_URL' + '] '
     }
   }
 }

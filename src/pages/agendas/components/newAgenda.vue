@@ -2,9 +2,9 @@
   <v-dialog v-model="dialog" width="600">
     <v-card>
       <v-form
-        @submit.prevent="save()"
         ref="formNewAgenda"
         lazy-validation
+        @submit.prevent="save()"
       >
 
         <v-card-title class="pa-2">
@@ -26,7 +26,7 @@
             flat
             placeholder="Nombre"
             autofocus
-            :rules='[v=>!!v || "El nombre es obligatorio"]'
+            :rules="[v=>!!v ||'El nombre es obligatorio']"
             required
           ></v-text-field>
 
