@@ -100,6 +100,8 @@ export default {
   },
   data() {
     return {
+      name: '',
+      options: {},
       headers: [
         { text: 'Número', value: 'number' },
         { text: 'Primer nombre', value: 'name1' },
