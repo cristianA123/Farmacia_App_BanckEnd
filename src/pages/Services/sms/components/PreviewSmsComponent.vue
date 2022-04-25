@@ -16,7 +16,7 @@
         <div class="d-flex flex-column flex-grow-1">
           <div class="d-flex align-center pb-3">
             <div style="background-image: url(http://localhost:8080/images/services/sms_preview.png); width: 250px; height: 450px; background-size: 100%;">
-              <div style="padding: 5px 25px; 25px  25px;"><div><span id="span_sms_text" style="background-color: rgb(230, 230, 235);text-align: left;padding: 5px 7px;margin: 100px 25px 25px 20px;border-radius: 10px;float: left;white-space: pre-wrap;font-size: 12px;color: black;">{{ messageComputed }} $#$$</span></div></div>
+              <div style="padding: 5px 25px; 25px  25px;"><div><span id="span_sms_text" style="background-color: rgb(230, 230, 235);text-align: left;padding: 5px 7px;margin: 100px 25px 25px 20px;border-radius: 10px;float: left;white-space: pre-wrap;font-size: 12px;color: black;">{{ messageComputed }} </span></div></div>
             </div>
             <div>
               <v-card
