@@ -22,6 +22,8 @@
           />
           
           <MessageInputComponent 
+            :agenda="false"
+            :excel="false"
             @onChangeMessage="onChangeMessage"
           />
           

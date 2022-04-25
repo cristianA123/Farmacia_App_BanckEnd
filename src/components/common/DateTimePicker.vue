@@ -39,6 +39,7 @@
               v-model="date" 
               v-bind="datePickerProps" 
               full-width 
+              :min="fechaIs"
               @input="showTimePicker"
             />
           </v-tab-item>
@@ -50,6 +51,7 @@
               format="24hr"
               class="v-time-picker-custom"
               v-bind="timePickerProps"
+              :min="horaIs"
               full-width
             ></v-time-picker>
           </v-tab-item>
@@ -68,9 +70,12 @@
 
 <script>
 import { format, parse } from 'date-fns'
+import moment from 'moment'
 
-const DEFAULT_DATE = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
-const DEFAULT_TIME = new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds()
+// const DEFAULT_DATE = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
+const DEFAULT_DATE2 = (moment().format('YYYY-MM-DD'))
+// const DEFAULT_TIME = new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds()
+const DEFAULT_TIME2 = (moment().add(2, 'm').format('HH:mm'))
 const DEFAULT_DATE_FORMAT = 'yyyy-MM-dd'
 const DEFAULT_TIME_FORMAT = 'HH:mm:ss'
 const DEFAULT_DIALOG_WIDTH = 340
@@ -132,8 +137,8 @@ export default {
     return {
       display: false,
       activeTab: 0,
-      date: DEFAULT_DATE,
-      time: DEFAULT_TIME
+      date: DEFAULT_DATE2,
+      time: DEFAULT_TIME2
     }
   },
   computed: {
@@ -161,11 +166,34 @@ export default {
     },
     dateSelected() {
       return !this.date
+    },
+    horaIs: function () {
+
+      const horaNowMasTwoMinute = moment().add(2, 'm').format('HH:mm')
+      const fechaNow = moment().format('YYYY-MM-DD')
+
+      if ( fechaNow === this.date) {
+        return horaNowMasTwoMinute
+      } else {
+        return '0:0'
+      }
+      
+    },
+    fechaIs () {
+      const fechaNow = moment().format('YYYY-MM-DD')
+
+      return fechaNow
     }
+  
   },
   watch: {
     datetime: function() {
       this.init()
+    },
+    defaultDate: function () {
+      const defaultDateMoreTwoMinute = moment().add(2, 'm').format('YYYY-MM-DD HH:mm:ss')
+
+      return defaultDateMoreTwoMinute
     }
   },
   mounted() {

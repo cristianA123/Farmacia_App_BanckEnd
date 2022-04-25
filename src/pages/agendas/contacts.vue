@@ -288,6 +288,7 @@ export default {
         name2: '',
         lastname1: '',
         lastname2: '',
+        email: '',
         var1: '',
         var2: '',
         var3: '',
@@ -300,6 +301,7 @@ export default {
         { text: 'Nombre2', value: 'name2' },
         { text: 'Apellido1', value: 'last_name1' },
         { text: 'Apellido2', value: 'last_name2' },
+        { text: 'EMAIL', value: 'email' },
         { text: 'VAR1', value: 'var1' },
         { text: 'VAR2', value: 'var2' },
         { text: 'VAR3', value: 'var3' },
@@ -338,6 +340,7 @@ export default {
       BackendApi.get('/contactByAgenda/' + this.$route.params.agendaId).then((response) => {
         if (response.data.success) {
           this.contacts = response.data.data
+          console.log(this.contacts)
         } else {
           this.$store.dispatch('app/showToast', response.data.message)
         }

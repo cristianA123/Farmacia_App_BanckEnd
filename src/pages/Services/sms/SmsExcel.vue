@@ -35,7 +35,7 @@
             label="Cargue su base de contactos"
             :loading="isFileLoading"
             outlined
-            :rules="[v=>!!v || 'El nombre es obligatorio']"
+            :rules="[v=>!!v || 'Seleccione excel']"
             :error-messages="errorMessageFile"
             required
             @change="onChangeExcel"

@@ -4,7 +4,6 @@
     <div class="row ml-3">
       <div
         v-if="agenda"
-        class="ml-3"
       >
         <v-btn
           v-for="button in vars"
@@ -32,7 +31,7 @@
         <br>
         <br>
       </div>
-      <v-menu offset-y>
+      <v-menu v-if="excel != agenda" offset-y>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             color="primary"
@@ -97,7 +96,7 @@ export default {
         { title: 'Elegir url' },
         { title: 'Url personalizado' }
       ],
-      vars: ['NOMBRE 1', 'NOMBRE 2', 'APELLIDO 1', 'APELLIDO 2', 'VAR1', 'VAR2', 'VAR3', 'VAR4'],
+      vars: ['NOMBRE 1', 'NOMBRE 2','EMAIL', 'APELLIDO 1', 'APELLIDO 2', 'VAR1', 'VAR2', 'VAR3', 'VAR4'],
       vars_excel: ['VAR1', 'VAR2', 'VAR3', 'VAR4','VAR5', 'VAR6', 'VAR7', 'VAR8'],
       message: '',
       url_id: '',

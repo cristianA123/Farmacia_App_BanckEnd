@@ -69,7 +69,7 @@
             class="px-2 py-1"
             solo
             flat
-            placeholder="Nombre 2"
+            placeholder="Apellido 1"
             hide-details
             outlined
           ></v-text-field>
@@ -83,7 +83,21 @@
             class="px-2 py-1"
             solo
             flat
-            placeholder="Nombre 2"
+            placeholder="Apellido 2"
+            hide-details
+            outlined
+          ></v-text-field>
+
+          <v-divider></v-divider>
+        </div>
+
+        <div>
+          <v-text-field
+            v-model="email"
+            class="px-2 py-1"
+            solo
+            flat
+            placeholder="Email"
             hide-details
             outlined
           ></v-text-field>
@@ -173,6 +187,7 @@ export default {
       name2: '',
       last_name1: '',
       last_name2: '',
+      email:'',
       var1: '',
       var2: '',
       var3: '',
@@ -196,6 +211,7 @@ export default {
         this.name2 = contact.name2
         this.last_name1 = contact.last_name1
         this.latname2 = contact.latname2
+        this.email = contact.email
         this.var1 = contact.var1
         this.var2 = contact.var2
         this.var3 = contact.var3
@@ -206,6 +222,7 @@ export default {
         this.name2 = ''
         this.last_name1 = ''
         this.latname2 = ''
+        this.email = '',
         this.var1 = ''
         this.var2 = ''
         this.var3 = ''
@@ -251,6 +268,7 @@ export default {
             name2:this.name2,
             last_name1:this.last_name1,
             last_name2:this.last_name2,
+            email:this.email,
             var1:this.var1,
             var2:this.var2,
             var3:this.var3,

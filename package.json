@@ -18,7 +18,7 @@
     "echarts": "^4.8.0",
     "flag-icon-css": "^3.4.6",
     "lodash": "^4.17.21",
-    "moment": "^2.29.1",
+    "moment": "^2.29.3",
     "moment-timezone": "^0.5.31",
     "sms-counter": "^1.0.0",
     "tiptap": "^1.27.1",

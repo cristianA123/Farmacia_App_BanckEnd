@@ -21,6 +21,9 @@
             v-model="name"
             label="Ingrese nombre de campaña"
             prepend-icon="mdi-tag-text-outline"
+            :rules="[
+              v => !!v || 'Ingrese nombre de campaña'
+            ]"
             required
             outlined
           />
@@ -32,6 +35,10 @@
             item-value="id"
             prepend-icon="mdi-contacts-outline"
             outlined
+            :rules="[
+              v => !!v || 'Seleccione agenda'
+            ]"
+            required
             @change="cambio"  
           />
           <!-- aqui es donde van los ejemplos -->
@@ -53,6 +60,8 @@
             :excel="false"
             @onChangeMessage="onChangeMessage"
           />
+          aaaa
+          {{ horaIs }}
 
           <Options-Component 
             @onChange="onChangeOptions"
@@ -71,7 +80,6 @@
         </v-card-actions>
       </v-form>
     </v-card>
-
     <PreviewSmsComponent
       ref="dialogPreview"
       :options="options" 
@@ -92,6 +100,7 @@ import BackendApi from '@/services/backend.service'
 import MessageInputComponent from './components/MessageInputComponent.vue'
 import BackPage from '@/components/common/BackPage.vue'
 import PreviewSmsComponent from './components/PreviewSmsComponent.vue'
+import moment from 'moment'
 
 export default {
   components: {
@@ -149,6 +158,13 @@ export default {
     },
     exampleContactComputed: function () {
       return this.exampleContact
+    },
+    horaIs: function () {
+
+      const horaNowMasTwoMinute = moment().add(2, 'm').format('HH:mm')
+      const defaultDateMoreTwoMinute = moment().add(2, 'm').format('YYYY-MM-DD HH:mm:ss')
+
+      return defaultDateMoreTwoMinute
     }
   },
   created() {

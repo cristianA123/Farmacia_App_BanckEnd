@@ -133,6 +133,7 @@ export default {
         { key:'[NOMBRE 2]', value:'name2' },
         { key:'[APELLIDO 1]', value:'last_name1' },
         { key:'[APELLIDO 2]', value:'last_name2' },
+        { key:'[EMAIL]', value:'email' },
         { key:'[VAR1]', value:'var1' },
         { key:'[VAR2]', value:'var2' },
         { key:'[VAR3]', value:'var3' },
@@ -154,26 +155,26 @@ export default {
   },
   computed: {
     messageComputed: function () {
-      let auxiliar = this.message
+      let messageTemporal = this.message
 
       if ( this.exampleContact.length !== 0) {
 
         if ( this.isExcel ) {
   
           this.data_key_excel.forEach( (element) => {
-            auxiliar = auxiliar.replace(element.key, this.exampleContact[0][element.value])
+            messageTemporal = messageTemporal.replace(element.key, this.exampleContact[0][element.value])
           })
 
         } else {
 
           this.data_key_agenda.forEach( (element) => {
-            auxiliar = auxiliar.replace(element.key, this.exampleContact[0][element.value])
+            messageTemporal = messageTemporal.replace(element.key, this.exampleContact[0][element.value])
           })
           
         }
       }
 
-      return auxiliar
+      return messageTemporal
 
     }
   },
