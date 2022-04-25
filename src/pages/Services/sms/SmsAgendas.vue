@@ -21,6 +21,7 @@
             v-model="name"
             label="Ingrese nombre de campaña"
             prepend-icon="mdi-tag-text-outline"
+            required
             outlined
           />
           <v-select

@@ -62,7 +62,6 @@
       prepend-icon="mdi-message-text-outline"
       :rules="[v=>!!v || 'Escriba el mensaje a enviar, puede utilizar los botones para el uso de Variables']"
       outlined
-      @keyup="tranforMessageForSms"
     />
 
     <Dialog-Url
@@ -113,10 +112,19 @@ export default {
       return  '[' + countCharacters + ' Restantes / ' + countCredits + ' Crédito]'
     }
   },
+  watch: {
+    message: function () {
+      
+      this.tranforMessageForSms()
+    }
+  },
   mounted() {
     console.log(this.buttons)
   },
   methods: {
+    changetest() {
+      console.log('change')
+    },
     tranforMessageForSms () {
       const string = this.message
       let estandarText = ''
@@ -153,7 +161,6 @@ export default {
       this.message = this.message + ' [' + text + '] '
     },
     chooseUrl(url) {
-      console.log(url)
       this.$refs.DialogUrl.open(url)
     },
     onChooseUrl(url, url_id) {

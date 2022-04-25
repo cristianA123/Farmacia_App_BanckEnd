@@ -40,20 +40,26 @@ export default {
   },
   computed: {
     computedAvatarName : function () {
-      const array = this.user.name.split(' ')
       let first = ''
       let second = ''
       let text = ''
 
-      if (array.length > 1) {
-        first = array[0].slice(0, 1)
-        second = array[1].slice(0, 1)
+      if (this.user && this.user.name.search(' ') !== -1) {
+        const array = this.user.name.split(' ')
 
-        text = first + second
+        if (array.length > 1) {
+          first = array[0].slice(0, 1)
+          second = array[1].slice(0, 1)
+
+          text = first + second
+        } else {
+          first = array[0].slice(0, 1)
+
+          text = first
+        }
       } else {
-        first = array[0].slice(0, 1)
+        text = this.user.name.slice(0, 1)
 
-        text = first
       }
 
       return text.toUpperCase()
