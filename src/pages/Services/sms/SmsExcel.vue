@@ -89,6 +89,8 @@
       ref="dialogPreview"
       :options="options" 
       :message="message"
+      :isExcel="true"
+      :exampleContact="exampleExelComputed"
       :isBtnLoading="isBtnLoading"
       :creditToUse="creditToUse"
       :availableCredit="availableCredit"
@@ -153,6 +155,9 @@ export default {
   computed: {
     showExample: function () {
       return this.excelExample.length !== 0
+    },
+    exampleExelComputed: function () {
+      return this.excelExample
     }
   },
   methods: {

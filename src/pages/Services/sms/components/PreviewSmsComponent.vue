@@ -16,7 +16,7 @@
         <div class="d-flex flex-column flex-grow-1">
           <div class="d-flex align-center pb-3">
             <div style="background-image: url(http://localhost:8080/images/services/sms_preview.png); width: 250px; height: 450px; background-size: 100%;">
-              <div style="padding: 5px 25px; 25px  25px;"><div><span id="span_sms_text" style="background-color: rgb(230, 230, 235);text-align: left;padding: 5px 7px;margin: 100px 25px 25px 20px;border-radius: 10px;float: left;white-space: pre-wrap;font-size: 12px;color: black;">{{ message }}</span></div></div>
+              <div style="padding: 5px 25px; 25px  25px;"><div><span id="span_sms_text" style="background-color: rgb(230, 230, 235);text-align: left;padding: 5px 7px;margin: 100px 25px 25px 20px;border-radius: 10px;float: left;white-space: pre-wrap;font-size: 12px;color: black;">{{ messageComputed }} $#$$</span></div></div>
             </div>
             <div>
               <v-card
@@ -55,14 +55,14 @@
                       <td style="width:150px;"><strong>Créditos a usar (aprox):</strong></td>
                       <td>
                         
-                        <span><strong>{{creditToUse}}</strong></span>
+                        <span><strong>{{ creditToUse }}</strong></span>
                       </td>
                     </tr>
                     <tr>
                       <td style="width:150px;"><strong>Créditos disponibles:</strong></td>
                       <td>
                         
-                        <span><strong>{{availableCredit}}</strong></span>
+                        <span><strong>{{ availableCredit }}</strong></span>
                       </td>
                     </tr>
                   </table>
@@ -114,12 +114,67 @@ export default {
     isBtnLoading : {
       type : Boolean,
       default: true
+    },
+    exampleContact : {
+      type : Array,
+      default: () => []
+    },
+    isExcel : {
+      type : Boolean,
+      default: false
     }
+
   },
   data() {
     return {
-      show: false
-      // isloading: false
+      show: false,
+      data_key_agenda: [
+        { key:'[NOMBRE 1]', value:'name1' },
+        { key:'[NOMBRE 2]', value:'name2' },
+        { key:'[APELLIDO 1]', value:'last_name1' },
+        { key:'[APELLIDO 2]', value:'last_name2' },
+        { key:'[VAR1]', value:'var1' },
+        { key:'[VAR2]', value:'var2' },
+        { key:'[VAR3]', value:'var3' },
+        { key:'[VAR4]', value:'var4' }
+        // { key9:'[NOMBRE 1]' }
+      ],
+      data_key_excel: [
+        { key:'[VAR1]', value:'VAR1' },
+        { key:'[VAR2]', value:'VAR2' },
+        { key:'[VAR3]', value:'VAR3' },
+        { key:'[VAR4]', value:'VAR4' },
+        { key:'[VAR5]', value:'VAR5' },
+        { key:'[VAR6]', value:'VAR6' },
+        { key:'[VAR7]', value:'VAR7' },
+        { key:'[VAR8]', value:'VAR8' }
+        // { key9:'[NOMBRE 1]' }
+      ]
+    }
+  },
+  computed: {
+    messageComputed: function () {
+      let auxiliar = this.message
+
+      if ( this.exampleContact.length !== 0) {
+
+        if ( this.isExcel ) {
+  
+          this.data_key_excel.forEach( (element) => {
+            auxiliar = auxiliar.replace(element.key, this.exampleContact[0][element.value])
+          })
+
+        } else {
+
+          this.data_key_agenda.forEach( (element) => {
+            auxiliar = auxiliar.replace(element.key, this.exampleContact[0][element.value])
+          })
+          
+        }
+      }
+
+      return auxiliar
+
     }
   },
   methods: {

@@ -75,6 +75,7 @@
       ref="dialogPreview"
       :options="options" 
       :message="message"
+      :exampleContact="exampleContactComputed"
       :isBtnLoading="isBtnLoading"
       :creditToUse="creditToUse"
       :availableCredit="availableCredit"
@@ -144,6 +145,9 @@ export default {
   computed: {
     showExample: function () {
       return this.exampleContact.length !== 0
+    },
+    exampleContactComputed: function () {
+      return this.exampleContact
     }
   },
   created() {
