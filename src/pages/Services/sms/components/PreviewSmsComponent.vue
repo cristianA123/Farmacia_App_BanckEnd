@@ -44,7 +44,7 @@
                     <tr>
                       <td>Agendado:</td>
                       <td>
-                        <span v-if="options.scheduled !== null">{{ options.scheduled }}</span>
+                        <span v-if="options.scheduled !== null">{{ scheduled }}</span>
                         <span v-else>NO</span>
                       </td>
                     </tr>
@@ -93,6 +93,9 @@
 </template>
 
 <script>
+import moment from 'moment'
+import 'moment/locale/es'
+
 export default {
   props: {
     options: {
@@ -176,6 +179,11 @@ export default {
 
       return messageTemporal
 
+    },
+    scheduled: function () {
+      const a = moment(this.options.scheduled).format('lll')
+
+      return a
     }
   },
   methods: {

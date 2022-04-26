@@ -244,7 +244,8 @@ export default {
       BackendApi.post('/campaign', payload).then((response) => {
         if (response.data.success) {
           this.$store.dispatch('app/showToast', response.data.message)
-          this.$router.push({ name: 'create-campaing-sms' })
+          this.$router.push({ name: 'reports' })
+
         }
       })
     },

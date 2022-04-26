@@ -60,8 +60,6 @@
             :excel="false"
             @onChangeMessage="onChangeMessage"
           />
-          aaaa
-          {{ horaIs }}
 
           <Options-Component 
             @onChange="onChangeOptions"
@@ -101,6 +99,7 @@ import MessageInputComponent from './components/MessageInputComponent.vue'
 import BackPage from '@/components/common/BackPage.vue'
 import PreviewSmsComponent from './components/PreviewSmsComponent.vue'
 import moment from 'moment'
+import 'moment/locale/es'
 
 export default {
   components: {
@@ -162,7 +161,8 @@ export default {
     horaIs: function () {
 
       const horaNowMasTwoMinute = moment().add(2, 'm').format('HH:mm')
-      const defaultDateMoreTwoMinute = moment().add(2, 'm').format('YYYY-MM-DD HH:mm:ss')
+      // const defaultDateMoreTwoMinute = moment().add(2, 'm').format('YYYY-MM-DD HH:mm:ss')
+      const defaultDateMoreTwoMinute = moment().format('ll')
 
       return defaultDateMoreTwoMinute
     }
@@ -238,7 +238,7 @@ export default {
         if (response.data.success) {
           this.$store.dispatch('app/showToast', response.data.message)
         }
-        this.$router.push({ name: 'create-campaing-sms' })
+        this.$router.push({ name: 'reports' })
       })
       // this.$refs.form.reset()
     },
