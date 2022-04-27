@@ -31,6 +31,8 @@ export default [
     path: '/reports',
     name: 'reports',
     component: () => import('@/pages/Reports/Reports.vue')
+    // component: () => import('@/pages/Reports/components/Paginate.vue')
+
   },
   {
     path: '/reports/sms/detail/:campaign_id',
