@@ -5,6 +5,7 @@
     <FiltersReportComponent
       @onfilter="onfilter"
       @onreadyfilters="onreadyfilters"
+      @onreadyusers="onreadyusers"
     />
 
     <v-card>
@@ -162,6 +163,9 @@ export default {
     },
     onreadyfilters() {
       this.$emit('onreadyfilters')
+    },
+    onreadyusers(data) {
+      this.$emit('onreadyusers',data)
     }
   }
 }

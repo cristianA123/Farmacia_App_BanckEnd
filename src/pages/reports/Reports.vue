@@ -13,6 +13,8 @@
       :search_text="search_text"
       :isLoading="isLoading"
       @onfilter="on_filter"
+      @onreadyusers="onreadyusers"
+      @onDetail="onDetail"
     />
 
   </div>
@@ -21,6 +23,7 @@
 <script>
 import TableReportComponent from './components/TableReportComponent.vue'
 import BackendApi from '@/services/backend.service'
+import moment from 'moment'
 
 export default {
   components: {
@@ -34,13 +37,17 @@ export default {
       headers: [
         { text: 'Usuario' , value: 'user_name' },
         { text: 'Campaña' , value: 'name' },
-        { text: 'Fecha' , value: 'created_at' },
+        { text: 'Fecha de lanzamineto' , value: 'created_at' },
         { text: 'Estado' , value: 'status' },
         { text: 'Creditos' , value: 'total_cost' },
         { text: 'Acciones', value: 'actions' }
       ],
       isLoading: false
     }
+  },
+  mounted() {
+    this.onreadyusers()
+
   },
   methods: {
     getReports(filters) {
@@ -76,6 +83,28 @@ export default {
       } 
 
       this.getReports(filters)
+    },
+    onDetail(item) {
+      this.$router.push({ path: '/reports/sms/detail/' + item.id })
+    },
+    onreadyusers (users) {
+
+      this.isLoading = true
+      const payload = {
+        users: users,
+        services: [1,2],
+        start_date : moment().format('YYYY-MM-DD'),
+        final_date : moment().format('YYYY-MM-DD')
+      }
+
+      if ( users !== undefined ) {
+        BackendApi.post('/userCampaignBetween', payload).then((response) => {
+          if (response.data.success) {
+            this.reports = response.data.data
+          }
+          this.isLoading = false
+        })
+      }
     }
   }
 }

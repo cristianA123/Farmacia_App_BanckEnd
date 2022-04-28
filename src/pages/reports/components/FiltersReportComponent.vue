@@ -180,17 +180,20 @@ export default {
       
       BackendApi.get('/userforreport').then((response) => {
         const data = [{ id:0, name: 'Todos' }]
+        const usersid = []
 
         response.data.data.forEach((user) => {
           data.push({
             id: user.id,
             name: user.name
           })
+          usersid.push(user.id)
         })
 
         this.isLoadingUsers = false
         this.$refs.comboUsers.list(data)
-        this.submit()
+        this.$emit('onreadyusers', usersid)
+
       })
     },
     getServices () {
