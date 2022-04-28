@@ -68,6 +68,15 @@
           <v-chip
             v-if="item.status === 3"
             class="ma-2"
+            text-color="white"
+            small
+          >
+            Procesando
+          </v-chip>
+
+          <v-chip
+            v-if="item.status === 3"
+            class="ma-2"
             color="orange"
             text-color="white"
             small
@@ -145,7 +154,8 @@ export default {
   },
   methods: {
     detalle(item) {
-      this.$emit('onDetail', item)
+      
+      this.$router.push({ path: '/reports/sms/detail/' + item.id })
     },
     onfilter(data) {
       this.$emit('onfilter', data)

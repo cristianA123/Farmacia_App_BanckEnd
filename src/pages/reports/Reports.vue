@@ -13,7 +13,6 @@
       :search_text="search_text"
       :isLoading="isLoading"
       @onfilter="on_filter"
-      @onDetail="onDetail"
     />
 
   </div>
@@ -77,9 +76,6 @@ export default {
       } 
 
       this.getReports(filters)
-    },
-    onDetail(item) {
-      this.$router.push({ path: '/reports/sms/detail/' + item.id })
     }
   }
 }
