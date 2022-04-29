@@ -68,8 +68,8 @@ export default {
       isUpdate : false,
       headers: [
         { text: 'Nombre', value: 'name' },
-        { text: 'Número de links', value: 'number_of_links' },
-        { text: 'Número de clicks', value: 'number_of_clicks' },
+        { text: 'Links', value: 'number_of_links' },
+        { text: 'Clicks', value: 'number_of_clicks' },
         { text: 'campaña', value: 'campaign_id' },
         { text: 'Última modificacion', value: 'updated' },
         { text: 'Acciones', value: 'actions' }
@@ -99,7 +99,6 @@ export default {
     getFiles () {
       this.urls = []
       this.loadingGetFiles = true
-
       BackendApi.get('/groupurl').then((response) => {
         if (response.data.success) {
           this.urls = response.data.data
