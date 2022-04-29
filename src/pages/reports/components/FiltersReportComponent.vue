@@ -138,7 +138,6 @@ export default {
   data() {
     return {
       validForm: true,
-
       services: [
         { id: 0, name: 'Todos' },
         { id: 1, name: 'SMS' },
@@ -206,16 +205,6 @@ export default {
         { id:2, name: 'Ivr' }
       ]
 
-      /*BackendApi.get('/userforreport').then((response) => {
-        const data = [{ id:0, name: 'Todos' }]
-
-        response.data.data.forEach((user) => {
-          data.push({
-            id: user.id,
-            name: user.name
-          })
-        })*/
-        
       this.isLoadingServices = false
       this.$refs.comboServices.list(data)
 
@@ -229,6 +218,7 @@ export default {
       this.maxDateStart = new Date(this.dateEnd).toISOString()
     },
     submit () {
+      console.log('asd')
       if (this.$refs.form.validate()) {
         
         const filters = {

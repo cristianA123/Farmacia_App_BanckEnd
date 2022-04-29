@@ -88,11 +88,11 @@ export default {
   mounted () {
 
     // this.campaign_id = this.$route.params.campaign_id
-    this.getSmsCampaign()
+    this.getCampaings()
   },
   methods: {
 
-    getSmsCampaign () {
+    getCampaings () {
       const payload = {
         campaign_id: this.$route.params.campaign_id,
         service_id: 1,
@@ -107,8 +107,6 @@ export default {
           this.pagination.total = response.data.data.last_page
           console.log(this.campaigns)
         }
-      }).catch((error) => {
-        console.log(error)
       })
 
     },
