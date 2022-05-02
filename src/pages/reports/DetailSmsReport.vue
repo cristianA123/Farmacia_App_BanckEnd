@@ -6,7 +6,15 @@
       </div>
       <v-spacer></v-spacer>
     </div>
-    <v-card>
+
+    <!-- dash campaing detail -->
+    <DashDetailComponent/>
+
+    <!-- componente url campaing detail -->
+    <UrlDashDetailComponent/>
+
+    <!-- pagination -->
+    <!-- <v-card>
       <v-card-title>
         Resultados:
         <v-spacer></v-spacer>
@@ -55,81 +63,32 @@
         :length="pagination.total"
         @input="onPageChange"
       ></v-pagination>
-    </v-card>
+    </v-card> -->
+    <DetailCampaignComponent/>
+
   </div>
 
 </template>
 
 <script>
 import BackendApi from '@/services/backend.service'
+import DashDetailComponent from './components/DashDetailComponent.vue'
+import UrlDashDetailComponent from './components/UrlDashDetailComponent.vue'
+import DetailCampaignComponent from './components/DetailCampaignComponent.vue'
 
 export default {
   name:'DetailSmsReport',
+  components:{
+    DashDetailComponent,
+    UrlDashDetailComponent,
+    DetailCampaignComponent
+  },
   data () {
     return {
-      campaigns : [],
-      headers: [
-        { text: 'Telefono', value: 'phone' },
-        { text: 'Mensaje', value: 'content' },
-        { text: 'Fecha programada', value: 'send_at' },
-        { text: 'Estado', value: 'status' }
-        // { text: 'Última modificacion', value: 'updated' },
-        // { text: 'Acciones', value: 'actions' }
-      ],
-      campaign_id: null,
-      searchText: '',
-      pagination: {
-        current: 1,
-        total: 0
-      },
-      service_id: null
-    }
-  },
-  mounted () {
-
-    // this.campaign_id = this.$route.params.campaign_id
-    this.getCampaings()
-  },
-  methods: {
-
-    getCampaings () {
-      const payload = {
-        campaign_id: this.$route.params.campaign_id,
-        service_id: 1,
-        searchtext : ''
-      }
-
-      BackendApi.post('/smsCampaignDetail?page=' + this.pagination.current, payload).then((response) => {
-        if (response.data.success) {
-
-          this.campaigns = response.data.data.data
-          this.pagination.current = response.data.data.current_page
-          this.pagination.total = response.data.data.last_page
-          console.log(this.campaigns)
-        }
-      })
-
-    },
-    onPageChange() {
-      this.getSmsCampaign()
-    },
-    getSms() {
-      console.log(this.searchText)
-      const payload = {
-        campaign_id : 3,
-        service_id : 1,
-        searchtext : this.searchText
-      }
-
-      BackendApi.post('/smsCampaignDetail?page=' + this.pagination.current,payload)
-        .then((response) => {
-          this.campaigns = response.data.data.data
-          console.log(this.campaigns)
-          this.pagination.current = response.data.data.current_page
-          this.pagination.total = response.data.data.last_page
-        })
+      
     }
   }
+
 }
 </script>
 
