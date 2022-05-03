@@ -59,6 +59,10 @@ export default {
         searchtext : searchText
       }
 
+      if ( searchText !== '' ) {
+        this.pagination.current = 1
+      }
+
       BackendApi.post('/smsCampaignDetail?page=' + this.pagination.current,payload)
         .then((response) => {
           if (response.data.success) {

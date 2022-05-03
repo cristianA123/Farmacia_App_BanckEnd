@@ -369,19 +369,6 @@ export default {
       this.isLoading = true
       this.selectedUsers = []
       this.contacts = []
-      // let paramsAux = {}
-
-      // if ( this.searchText !== null) {
-      //   paramsAux = params = {
-      //     searchtext : this.searchText,
-      //     page : 1
-      //   }
-      // } else {
-      //   paramsAux = params = {
-      //     searchtext : this.searchText,
-      //     page:this.pagination.current
-      //   }
-      // }
 
       const params = {
         searchtext : this.searchText,
