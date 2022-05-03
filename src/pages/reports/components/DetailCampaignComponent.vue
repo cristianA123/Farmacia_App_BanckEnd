@@ -5,7 +5,7 @@
       <v-spacer></v-spacer>
       <v-text-field
         v-model="searchText"
-        v-debounce:250="getSms"
+        v-debounce:250="ongetSms"
         append-icon="mdi-magnify"
         class="flex-grow-1 mr-md-2"
         dense
@@ -33,20 +33,20 @@
           </template>
           <v-list>
             <v-list-item
-              @click="openDialogCreate(item)"
               link
+              @click="openDialogCreate(item)"
             >
               Modificar
             </v-list-item>
           </v-list>
         </v-menu>
       </template>
-      <p>{{campaigns}}</p>
+      <p>{{ campaigns }}</p>
     </v-data-table>
     <v-pagination
       v-model="pagination.current"
       :length="pagination.total"
-      @input="onPageChange"
+      @input="ongetSms"
     ></v-pagination>
   </v-card>
 </template>
@@ -56,9 +56,20 @@ import BackendApi from '@/services/backend.service'
 
 export default {
   name:'DetailCampaignComponent',
+  props: {
+    pagination: {
+      type: Object,
+      default: () => ({})
+    },
+    campaigns: {
+      type: Array,
+      default: () => ({})
+
+    }
+  },
   data () {
     return {
-      campaigns : [],
+      // campaigns : [],
       headers: [
         { text: 'Telefono', value: 'phone' },
         { text: 'Mensaje', value: 'content' },
@@ -67,41 +78,41 @@ export default {
       ],
       campaign_id: null,
       searchText: '',
-      pagination: {
-        current: 1,
-        total: 0
-      },
+      // pagination: {
+      //   current: 1,
+      //   total: 0
+      // },
       service_id: null
     }
   },
   mounted () {
 
-    this.getSms()
+    this.ongetSms()
   },
   methods: {
 
-    onPageChange() {
-      this.getSms()
-    },
-    getSms() {
-      console.log(this.searchText)
-      const payload = {
-        campaign_id : this.$route.params.campaign_id,
-        service_id : 1,
-        searchtext : this.searchText
-      }
+    ongetSms() {
 
-      BackendApi.post('/smsCampaignDetail?page=' + this.pagination.current,payload)
-        .then((response) => {
-          if (response.data.success) {
+      this.$emit('ongetSms', this.searchText)
 
-            this.campaigns = response.data.data.data
-            console.log(this.campaigns)
-            this.pagination.current = response.data.data.current_page
-            this.pagination.total = response.data.data.last_page
-          }
+      // console.log(this.searchText)
+      // const payload = {
+      //   campaign_id : this.$route.params.campaign_id,
+      //   service_id : 1,
+      //   searchtext : this.searchText
+      // }
 
-        })
+      // BackendApi.post('/smsCampaignDetail?page=' + this.pagination.current,payload)
+      //   .then((response) => {
+      //     if (response.data.success) {
+
+      //       this.campaigns = response.data.data.data
+      //       console.log(this.campaigns)
+      //       this.pagination.current = response.data.data.current_page
+      //       this.pagination.total = response.data.data.last_page
+      //     }
+
+      //   })
     }
   }
 }
