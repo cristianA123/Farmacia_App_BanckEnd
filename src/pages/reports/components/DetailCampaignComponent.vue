@@ -55,7 +55,7 @@
 import BackendApi from '@/services/backend.service'
 
 export default {
-  name:'DetailSmsReport',
+  name:'DetailCampaignComponent',
   data () {
     return {
       campaigns : [],
@@ -76,46 +76,31 @@ export default {
   },
   mounted () {
 
-    // this.campaign_id = this.$route.params.campaign_id
-    this.getCampaings()
+    this.getSms()
   },
   methods: {
 
-    getCampaings () {
-      const payload = {
-        campaign_id: this.$route.params.campaign_id,
-        service_id: 1,
-        searchtext : ''
-      }
-
-      BackendApi.post('/smsCampaignDetail?page=' + this.pagination.current, payload).then((response) => {
-        if (response.data.success) {
-
-          this.campaigns = response.data.data.data
-          this.pagination.current = response.data.data.current_page
-          this.pagination.total = response.data.data.last_page
-          console.log(this.campaigns)
-        }
-      })
-
-    },
     onPageChange() {
-      this.getSmsCampaign()
+      this.getSms()
     },
     getSms() {
       console.log(this.searchText)
       const payload = {
-        campaign_id : 3,
+        campaign_id : this.$route.params.campaign_id,
         service_id : 1,
         searchtext : this.searchText
       }
 
       BackendApi.post('/smsCampaignDetail?page=' + this.pagination.current,payload)
         .then((response) => {
-          this.campaigns = response.data.data.data
-          console.log(this.campaigns)
-          this.pagination.current = response.data.data.current_page
-          this.pagination.total = response.data.data.last_page
+          if (response.data.success) {
+
+            this.campaigns = response.data.data.data
+            console.log(this.campaigns)
+            this.pagination.current = response.data.data.current_page
+            this.pagination.total = response.data.data.last_page
+          }
+
         })
     }
   }

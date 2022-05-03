@@ -5,6 +5,7 @@
         <div class="display-1"> </div>
       </div>
       <v-spacer></v-spacer>
+      
       <v-menu offset-y left transition="slide-y-transition">
         <template v-slot:activator="{ on }">
           <v-btn 
@@ -43,6 +44,7 @@
       >
         <v-icon>mdi-cog-outline</v-icon>
       </v-btn>
+      
     </div>
 
     <v-navigation-drawer
@@ -95,6 +97,16 @@
       @onMoveAgenda="onMoveAgenda"
     />
 
+    <div>
+      <v-text-field
+        v-model="searchText"
+        v-debounce:250="getContacts"
+        append-icon="mdi-magnify"
+        dense
+        clearable
+        placeholder="Ej.: Filtrar por numero, nombre1, nombre2,  email, apellido1, apellido2 etc" 
+      />
+    </div>
     <v-data-table
       v-model="selectedUsers"
       :headers="headers"
@@ -103,9 +115,10 @@
       :items="contacts"
       :items-per-page="5"
       :search="searchTable"
+      hide-default-footer
       class="elevation-1"
     >
-      <template v-slot:top>
+      <!-- <template v-slot:top>
         <v-row>
           <v-col
             class="py-0"
@@ -242,8 +255,15 @@
 
           </v-list>
         </v-menu>
-      </template>
+      </template> -->
+
     </v-data-table>
+
+    <v-pagination
+      v-model="pagination.current"
+      :length="pagination.total"
+      @input="onPageChange"
+    ></v-pagination>
 
     <new-contact
       ref="newContact"
@@ -272,6 +292,13 @@ export default {
   },
   data() {
     return {
+      //pagination
+      pagination: {
+        current: 1,
+        total: 10
+      },
+      searchText:'',
+      // otros
       duplicateAcept: false,
       searchTable: '',
       isLoading: false,
@@ -332,15 +359,42 @@ export default {
     this.getContacts()
   },
   methods: {
+    //pagination
+    onPageChange() {
+      this.getContacts()
+    },
+    
+    //otros
     getContacts () {
       this.isLoading = true
       this.selectedUsers = []
       this.contacts = []
+      // let paramsAux = {}
 
-      BackendApi.get('/contactByAgenda/' + this.$route.params.agendaId).then((response) => {
+      // if ( this.searchText !== null) {
+      //   paramsAux = params = {
+      //     searchtext : this.searchText,
+      //     page : 1
+      //   }
+      // } else {
+      //   paramsAux = params = {
+      //     searchtext : this.searchText,
+      //     page:this.pagination.current
+      //   }
+      // }
+
+      const params = {
+        searchtext : this.searchText,
+        page:  (this.searchText === '') ? this.pagination.current : 1
+      }
+
+      BackendApi.get('/contactByAgenda/' + this.$route.params.agendaId, {
+        params: params
+      }).then((response) => {
         if (response.data.success) {
-          this.contacts = response.data.data
-          console.log(this.contacts)
+          this.contacts = response.data.data.data
+          this.pagination.current = response.data.data.current_page
+          this.pagination.total = response.data.data.last_page
         } else {
           this.$store.dispatch('app/showToast', response.data.message)
         }
