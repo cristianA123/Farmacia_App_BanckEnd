@@ -20,7 +20,7 @@
                 <v-col cols="12">
                   <v-text-field
                     v-model="name"
-                    label="Nombre de archivo"
+                    label="Nombre de la URL"
                     :rules="[v => !!v || 'Nombre es obligatorio']"
                     required
                   ></v-text-field>

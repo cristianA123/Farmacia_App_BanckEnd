@@ -51,6 +51,7 @@
       :options="options" 
       :message="message"
       :creditToUse="creditToUse"
+      :isBtnLoading="isBtnLoading"
       :availableCredit="availableCredit"
       @onPreviewSmsSubmit="PreviewSmsSubmit"
     />
@@ -89,7 +90,9 @@ export default {
         bidireccional: false
       },
       creditToUse : 0,
-      availableCredit : 0
+      availableCredit : 0,
+      isBtnLoading: true
+
     }
   },
   methods: {
@@ -99,16 +102,23 @@ export default {
         numberOfContacts: this.phones.length
       }
 
-      BackendApi.post('/calculateMessageCredits', payload).then((response) => {
-        if (response.data.success) {
-          this.creditToUse = response.data.data.creditsToUse
-        }
-      })
+      BackendApi.post('/calculateMessageCredits', payload)
+        .then((response) => {
+          if (response.data.success) {
+            this.creditToUse = response.data.data.creditsToUse
+          }
+        })
+        .catch((error) => {
+          console.log('salio el error')
+          console.log(error)
+        })
     },
     availableCreditByUser() {
       BackendApi.get('/creditsUsedByUser').then((response) => {
         if (response.data.success) {
           this.availableCredit = response.data.data.availableCredit
+          this.isBtnLoading = false
+
         }
       })
     },
@@ -139,12 +149,17 @@ export default {
         options: this.options
       }
 
-      BackendApi.post('/campaign', payload).then((response) => {
-        if (response.data.success) {
-          this.$store.dispatch('app/showToast', response.data.message)
-          this.$router.push({ name:  'reports' })
-        }
-      })
+      BackendApi.post('/campaign', payload)
+        .then((response) => {
+          if (response.data.success) {
+            this.$store.dispatch('app/showToast', response.data.message)
+            this.$router.push({ name:  'reports' })
+          }
+        })
+        .catch((error) => {
+          console.log('salio el error')
+          console.log(error)
+        })
     }
   }
 }

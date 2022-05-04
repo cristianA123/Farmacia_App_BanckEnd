@@ -73,7 +73,7 @@
                 </tr>
                 <tr>
                   <td>Clics:</td>
-                  <td>{{ item.views }}</td>
+                  <td>{{ item.number_of_links }}</td>
                 </tr>
                 <tr>
                   <td>Link:</td>
@@ -81,7 +81,6 @@
                 </tr>
               </table>
             </v-card-text>
-
             <v-card-actions>
               <v-btn
                 text
