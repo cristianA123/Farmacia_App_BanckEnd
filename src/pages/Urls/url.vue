@@ -14,6 +14,22 @@
       </v-btn>
     </div>
 
+    <v-row
+      v-if="itemsEmpty && !isLoading"
+      justify="center"
+    >
+      <v-col
+        cols="9"
+        lg="3"
+      >
+        <v-icon 
+          size="200"
+          color="#a8a8a8"
+        >mdi-file-sync-outline</v-icon>
+        <p style="color: #a8a8a8">No tiene archivos cargados. Para cargar archivos clic en "Subir archivo"</p>
+      </v-col>
+    </v-row>
+
     <v-data-table
       :headers="headers"
       :items="urls"
