@@ -22,6 +22,7 @@
                     v-model="name"
                     label="Nombre de archivo"
                     :rules="[v => !!v || 'Nombre es obligatorio']"
+                    :error-messages="isValidName"
                     outlined
                     required
                   ></v-text-field>
@@ -39,6 +40,7 @@
                       v-model="file"
                       label="Nombre de archivo"
                       :rules="[v => !!v || 'El archivo es obligatorio']"
+                      :error-messages="isValidFile"
                       outlined
                       required
                     /> 
@@ -56,6 +58,7 @@
                     v-model="file"
                     label="Nombre de archivo"
                     :rules="[v => !!v || 'El archivo es obligatorio']"
+                    :error-messages="isValidFile"
                     outlined
                     required
                   /> 
@@ -93,6 +96,10 @@ import BackendApi from '@/services/backend.service'
 export default {
   data() {
     return {
+      backendErrors: {
+        name:'',
+        file:''
+      },
       isEditFile: false,
       dialog: false,
       item: null,
@@ -105,7 +112,14 @@ export default {
   computed: {
     isEdit: function () {
       return this.item === undefined ? false : true
+    },
+    isValidName () {
+      return this.backendErrors.name === undefined ? '' : this.backendErrors.name[0]
+    },
+    isValidFile () {
+      return this.backendErrors.file === undefined ? '' : this.backendErrors.file[0]
     }
+
   },
   methods: {
     open(item) {
@@ -144,24 +158,37 @@ export default {
         formData.append('name', this.name)
 
         if (this.isEdit) {
-          BackendApi.post('/bucket/' + this.item.id, formData).then((response) => {
-            if (response.data.success) {
-              this.close()
-            }
-          })
+          BackendApi.post('/bucket/' + this.item.id, formData)
+            .then((response) => {
+              if (response.data.success) {
+                this.close()
+              }
+            })
+            .catch( (error) => {
+              this.backendErrors = error.response.data.errors
+              
+              this.isLoading = false
+
+            })
         } else {
-          BackendApi.post('/uploadFile', formData).then((response) => {
+          BackendApi.post('/uploadFile', formData)
+            .then((response) => {
 
-            if (response.data.success) {
-              const { long_url, id } = response.data.data
+              if (response.data.success) {
+                const { long_url, id } = response.data.data
 
-              this.close()
+                this.close()
 
-              /*BackendApi.post('/createUrlByFile', { long_url: long_url, file_id: id }).then((response) => {
-                
-              })  */
-            }
-          })
+                /*BackendApi.post('/createUrlByFile', { long_url: long_url, file_id: id }).then((response) => {
+                  
+                })  */
+              }
+            })
+            .catch( (error) => {
+              this.backendErrors = error.response.data.errors
+              this.isLoading = false
+
+            })
         }
 
       }

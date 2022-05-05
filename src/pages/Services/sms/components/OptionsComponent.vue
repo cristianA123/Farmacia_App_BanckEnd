@@ -24,6 +24,7 @@
         <v-switch
           v-model="is_scheduled"
           class="ma-0 pa-0"
+          :error-messages="isValidsScheduled"
           prepend-icon="mdi-clock-outline"
           label="Agendado"
         />
@@ -50,12 +51,23 @@ export default {
   components: {
     DateTimePicker
   },
+  props: {
+    backendErrors: {
+      type: Object,
+      default: () => ({ message:'' })
+    }
+  },
   data() {
     return {
       is_bidireccional: false,
       is_scheduled: false,
       scheduled: null,
       is_push: false
+    }
+  },
+  computed: {
+    isValidsScheduled: function () {
+      return this.backendErrors.scheduled === undefined ? '' : this.backendErrors.scheduled[0] 
     }
   },
   watch: {

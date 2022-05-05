@@ -25,8 +25,8 @@
             solo
             flat
             placeholder="Nombre"
+            :error-messages="isValidName"
             autofocus
-            :rules="[v=>!!v ||'El nombre es obligatorio']"
             required
           ></v-text-field>
 
@@ -52,6 +52,9 @@ import BackendApi from '@/services/backend.service'
 export default {
   data () {
     return {
+      backendErrors:{
+        name:''
+      },
       dialog: false,
       name: '',
       agenda: null
@@ -61,6 +64,9 @@ export default {
     isEdit: function () {
 
       return this.agenda === undefined ? false : true
+    },
+    isValidName: function () {
+      return this.backendErrors.name === undefined ? '' : this.backendErrors.name
     }
   },
   methods: {
@@ -88,26 +94,30 @@ export default {
             if (response.data.success) {
               this.$store.dispatch('app/showToast', 'Agenda actualizada exitosamente')
               this.$emit('onCreated')
+              this.close()
+
             }
           }).catch((error) => {
-            this.$store.dispatch('app/showToast', error.response.data.message)
+            this.backendErrors = error.response.data.errors
+
           })
         } else {
           const payload = {
             name: this.name
           }
 
-          BackendApi.post('/agenda', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } }).then((response) => {
-            if (response.data.success) {
-              this.$store.dispatch('app/showToast', 'Agenda creada exitosamente')
-              this.$emit('onCreated')
-            } else {
-              this.$store.dispatch('app/showToast', response.data.message)
-            }
-          })
+          BackendApi.post('/agenda', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } })
+            .then((response) => {
+              if (response.data.success) {
+                this.$store.dispatch('app/showToast', 'Agenda creada exitosamente')
+                this.$emit('onCreated')
+                this.close()
+              }
+            })
+            .catch ( (error) => {
+              this.backendErrors = error.response.data.errors
+            } )
         }
-
-        this.close()
       }
     }
   }

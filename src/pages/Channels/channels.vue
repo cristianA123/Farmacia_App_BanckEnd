@@ -34,6 +34,7 @@
                 >
                   <v-text-field
                     v-model="editedItem.name"
+                    :error-messages="isValidName"
                     label="Nombre"
                     outlined
                   ></v-text-field>
@@ -44,6 +45,7 @@
                 >
                   <v-text-field
                     v-model="editedItem.price"
+                    :error-messages="isValidPrice"
                     label="Precio"
                     outlined
                   ></v-text-field>
@@ -64,6 +66,7 @@
                 >
                   <v-text-field
                     v-model="editedItem.api_Key"
+                    :error-messages="isValidApi_Key"
                     label="Apikey"
                     outlined
                   ></v-text-field>
@@ -74,6 +77,7 @@
                 >
                   <v-select
                     v-model="editedItem.provider_id"
+                    :error-messages="isValidProvider_id"
                     label="Proveedor"
                     solo
                     dense
@@ -91,6 +95,7 @@
                 >
                   <v-text-field
                     v-model="editedItem.sender"
+                    :error-messages="isValidSender"
                     label="Sender"
                     outlined
                   ></v-text-field>
@@ -101,6 +106,7 @@
                 >
                   <v-text-field
                     v-model="editedItem.authorization"
+                    :error-messages="isValidAuthorization"
                     label="Authorization"
                     outlined
                   ></v-text-field>
@@ -177,6 +183,14 @@ import BackendApi from '@/services/backend.service'
 
 export default {
   data: () => ({
+    backendErrors:{
+      name:'',
+      price:'',
+      api_Key:'',
+      authorization:'',
+      provider_id:'',
+      sender:''
+    },
     selectedInterval: 0,
     intervals: [
       'Last 7 days',
@@ -230,6 +244,24 @@ export default {
   computed: {
     formTitle () {
       return this.editedIndex === -1 ? 'Nuevo ruta de proveedor' : 'Editar ruta de proveedor'
+    },
+    isValidName () {
+      return this,this.backendErrors.name === undefined ? '' : this.backendErrors.name[0]
+    },
+    isValidPrice () {
+      return this,this.backendErrors.price === undefined ? '' : this.backendErrors.price[0]
+    },
+    isValidApi_Key () {
+      return this,this.backendErrors.api_Key === undefined ? '' : this.backendErrors.api_Key[0]
+    },
+    isValidAuthorization () {
+      return this,this.backendErrors.authorization === undefined ? '' : this.backendErrors.authorization[0]
+    },
+    isValidSender () {
+      return this,this.backendErrors.sender === undefined ? '' : this.backendErrors.sender[0]
+    },
+    isValidProvider_id () {
+      return this,this.backendErrors.provider_id === undefined ? '' : this.backendErrors.provider_id[0]
     }
   },
 
@@ -289,27 +321,34 @@ export default {
       const payload =  this.editedItem
 
       if (this.editedIndex > -1) {
-        BackendApi.put('/channel/' + this.itemSelected, payload).then((response) => {
-          if (response.data.success) {
-            this.items = response.data.data
-            this.initialize()
-          } else {
-            this.$store.dispatch('app/showToast', response.data.message)
-          }
-          this.isLoading = false
-        })
+        BackendApi.put('/channel/' + this.itemSelected, payload)
+          .then((response) => {
+            if (response.data.success) {
+              this.items = response.data.data
+              this.initialize()
+            }
+            this.close()
+            this.isLoading = false
+          })
+          .catch( (error) => {
+            this.backendErrors = error.response.data.errors
+          })
       } else {
-        BackendApi.post('/channel', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } }).then((response) => {
-          if (response.data.success) {
-            this.items = response.data.data
-            this.initialize()
-          } else {
-            this.$store.dispatch('app/showToast', response.data.message)
-          }
-          this.isLoading = false
-        }).catch( (erro) => console.log(erro) )
+        BackendApi.post('/channel', payload, { headers: { 'Authorization': 'Bearer ' + window.localStorage.token } })
+          .then((response) => {
+            if (response.data.success) {
+              this.items = response.data.data
+              this.initialize()
+            }
+            this.isLoading = false
+            this.close()
+
+          })
+          .catch( (error) => {
+            this.backendErrors = error.response.data.errors
+            console.log(error) 
+          })
       }
-      this.close()
     }
   }
 }

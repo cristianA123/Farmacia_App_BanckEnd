@@ -21,17 +21,14 @@
                   <v-text-field
                     v-model="name"
                     label="Nombre de la URL"
-                    :rules="[v => !!v || 'Nombre es obligatorio']"
+                    :error-messages="isValidName"
                     required
                   ></v-text-field>
                   <v-text-field
                     v-model="url"
                     type="url"
                     label="Url"
-                    :rules="[
-                      v => !!v || 'Url es obligatorio',
-                      v => /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi.test(v)|| 'Url no es válido' 
-                    ]"
+                    :error-messages="isValidUrl"
                     required
                   ></v-text-field>
                 </v-col>
@@ -71,6 +68,10 @@ export default {
   props: {
   },
   data: () => ({
+    backendErrors: {
+      long_url:'',
+      name:''
+    },
     isLoading: false,
     item : null,
     name : '',
@@ -80,6 +81,12 @@ export default {
   computed: {
     isEdit: function () {
       return this.item === undefined ? false : true
+    },
+    isValidName: function () {
+      return this.backendErrors.name === undefined ? '' : this.backendErrors.name[0]
+    },
+    isValidUrl: function () {
+      return this.backendErrors.long_url === undefined ? '' : this.backendErrors.long_url[0]
     }
   },
   methods: {
@@ -110,20 +117,30 @@ export default {
         }
   
         if ( !this.isEdit ) {
-          await BackendApi.post('/url', payload).then((response) => {
-            if (response.data.success) {
-              this.close()
-              this.$store.dispatch('app/showToast', response.data.message)
-            }
-          })
+          await BackendApi.post('/url', payload)
+            .then((response) => {
+              if (response.data.success) {
+                this.close()
+                this.$store.dispatch('app/showToast', response.data.message)
+              }
+            })
+            .catch( (error) => {
+              this.backendErrors = error.response.data.errors
+              this.isLoading = false
+            } )
         } else {
   
-          BackendApi.put('/url/' + this.item.id, payload).then((response) => {
-            if (response.data.success) {
-              this.close()
-              this.$store.dispatch('app/showToast', response.data.message)
-            }
-          })
+          BackendApi.put('/url/' + this.item.id, payload)
+            .then((response) => {
+              if (response.data.success) {
+                this.close()
+                this.$store.dispatch('app/showToast', response.data.message)
+              }
+            })
+            .catch( (error) => {
+              this.backendErrors = error.response.data.errors
+              this.isLoading = false
+            } )
         }
       }
     }

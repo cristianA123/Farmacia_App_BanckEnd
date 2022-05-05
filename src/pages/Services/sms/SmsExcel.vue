@@ -25,6 +25,7 @@
             v-model="name"
             label="Ingrese nombre de campaña"
             prepend-icon="mdi-tag-text-outline"
+            :error-messages="isValidName"
             :rules="[v=>!!v || 'El nombre es obligatorio']"
             outlined
             required
@@ -36,7 +37,7 @@
             :loading="isFileLoading"
             outlined
             :rules="[v=>!!v || 'Seleccione excel']"
-            :error-messages="errorMessageFile"
+            :error-messages="isValidFile"
             required
             @change="onChangeExcel"
           />
@@ -63,10 +64,12 @@
           <Message-Input-Component 
             :agenda="false"
             :excel="true"
+            :backendErrors="backendErrors"
             @onChangeMessage="onChangeMessage"
           />
 
           <Options-Component
+            :backendErrors="backendErrors"
             @onChange="onChangeOptions"
           />
         </v-card-text>
@@ -120,6 +123,12 @@ export default {
   },
   data() {
     return {
+      backendErrors : {
+        name:'',
+        scheduled:'',
+        message:'',
+        file:''
+      },
       headers: [
         { text: 'Número', value: 'CELULAR' },
         { text: 'VAR 1', value: 'VAR1' },
@@ -158,6 +167,12 @@ export default {
     },
     exampleExelComputed: function () {
       return this.excelExample
+    },
+    isValidName: function () {
+      return this.backendErrors.name === undefined ? '' : this.backendErrors.name[0]
+    },
+    isValidFile: function () {
+      return this.backendErrors.file === undefined ? '' : this.backendErrors.file[0]
     }
   },
   methods: {
@@ -194,7 +209,7 @@ export default {
     onChangeExcel(file) {
       
       if (file) {
-       
+      
         this.isFileLoading = true
     
         if (file.name.split('.').pop() === 'xlsx' || file.name.split('.').pop() === 'xls') {
@@ -203,19 +218,30 @@ export default {
 
           formData.append('file', file)
 
-          BackendApi.post('/sms/upload/excelcampaing', formData).then((response) => {
-            console.log(response)
-            if (response.data.success) {
-              this.fileId = response.data.data.id
-              this.excelExample = response.data.data.example
-              this.rows = response.data.data.rows
-              this.destinatarios = this.fileUploaded
-              this.errorFile(null)
-            } else {
-              this.errorFile(response.data.message)
-            }
-            this.isFileLoading = false
-          })
+          BackendApi.post('/sms/upload/excelcampaing', formData)
+            .then((response) => {
+              console.log(response)
+              if (response.data.success) {
+                this.fileId = response.data.data.id
+                this.excelExample = response.data.data.example
+                this.rows = response.data.data.rows
+                this.destinatarios = this.fileUploaded
+                this.errorFile(null)
+                this.backendErrors = {
+                  name:'',
+                  scheduled:'',
+                  message:'',
+                  file:''
+                }
+              } else {
+                this.errorFile(response.data.message)
+              }
+              this.isFileLoading = false
+            })
+            .catch ( (error) => {
+              this.fileId = null
+              this.backendErrors = error.response.data.errors
+            })
         } else {
           console.log('error')
           this.errorFile('No es un archivo Excel')
@@ -241,13 +267,17 @@ export default {
         long_url: this.long_url
       }
 
-      BackendApi.post('/campaign', payload).then((response) => {
-        if (response.data.success) {
-          this.$store.dispatch('app/showToast', response.data.message)
-          this.$router.push({ name: 'reports' })
+      BackendApi.post('/campaign', payload)
+        .then((response) => {
+          if (response.data.success) {
+            this.$store.dispatch('app/showToast', response.data.message)
+            this.$router.push({ name: 'reports' })
 
-        }
-      })
+          }
+        })
+        .catch( (error) => {
+          this.backendErrors = error.response.data.errors
+        } )
     },
     onChangeMessage(msg, url_id, long_url) {
       this.message = msg

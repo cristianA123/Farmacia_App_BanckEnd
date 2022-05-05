@@ -47,8 +47,16 @@ export default {
   },
   data () {
     return {
+      backendErrors : {
+        file:''
+      },
       file: null,
       dialog: false
+    }
+  },
+  computed : {
+    isValidFile : function () {
+      return this.backendErrors.file === undefined ? '' : this.backendErrors.file[0]
     }
   },
   methods: {
@@ -64,14 +72,20 @@ export default {
 
         payload.append('file', this.file)
 
-        BackendApi.post('/agenda/' + this.$route.params.agendaId + '/contactUpload', payload).then((response) => {
+        BackendApi.post('/agenda/' + this.$route.params.agendaId + '/contactUpload', payload)
+          .then((response) => {
 
-          if (response.data.success) {
-            this.$store.dispatch('app/showToast', response.data.message)
-          }
-        })
+            if (response.data.success) {
+              this.$store.dispatch('app/showToast', response.data.message)
+              this.close()  
 
-        this.close()  
+            }
+          })
+          .catch ( (error) => {
+            this.backendErrors = error.response.data.errors
+            this.$store.dispatch('app/showToast', error.response.data.message)
+          })
+
       }
     }
   }

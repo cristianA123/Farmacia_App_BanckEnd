@@ -57,9 +57,10 @@
     <v-textarea
       v-model="message"
       label="Escriba el mensaje a enviar"
+      :error-messages="isValidMessage"
+      :rules="[v=>!!v || 'Escriba el mensaje a enviar, puede utilizar los botones para el uso de Variables']"
       :messages="computedCounterMessage"
       prepend-icon="mdi-message-text-outline"
-      :rules="[v=>!!v || 'Escriba el mensaje a enviar, puede utilizar los botones para el uso de Variables']"
       outlined
     />
 
@@ -88,6 +89,10 @@ export default {
     excel: {
       type: Boolean,
       default: false
+    },
+    backendErrors: {
+      type: Object,
+      default: () => ({ message:'' })
     }
   },
   data() {
@@ -109,6 +114,9 @@ export default {
       const countCredits = SmsCounter.count(this.message).messages
 
       return  '[' + countCharacters + ' Restantes / ' + countCredits + ' Crédito]'
+    },
+    isValidMessage: function () {
+      return this.backendErrors.message === undefined ? '' : this.backendErrors.message[0] 
     }
   },
   watch: {

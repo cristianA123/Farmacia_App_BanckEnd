@@ -12,6 +12,7 @@
           item-value="id"
           label="Canal"
           :items="channels"
+          :error-messages="isValidChannel_id"
           outlined
           hide-details
         ></v-select>
@@ -43,6 +44,10 @@ export default {
     user: {
       type: Object,
       default: () => {}
+    },
+    backendErrors: {
+      type: Object,
+      default: () => ({ provider_id : '' })
     }
   },
   data() {
@@ -54,6 +59,9 @@ export default {
     isEdit: function () {
       
       return this.$route.params.userId !== undefined
+    },
+    isValidChannel_id () {
+      return this.backendErrors.channel_id === undefined ? '' : this.backendErrors.channel_id
     }
   },
   mounted() {

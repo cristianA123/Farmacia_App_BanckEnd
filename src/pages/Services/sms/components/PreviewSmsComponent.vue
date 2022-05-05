@@ -10,7 +10,7 @@
         <v-spacer></v-spacer>
         <v-btn text dense @click="show=false">Cerrar</v-btn>
       </v-card-title>
-
+calculateMessageCredits
       <v-card-text>
 
         <div class="d-flex flex-column flex-grow-1">

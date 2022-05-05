@@ -44,7 +44,7 @@
                 >
                   <v-text-field 
                     v-model="user.name" 
-                    :error-messages="errors.name"
+                    :error-messages="isValidName"
                     label="Nombre" 
                     placeholder="name"
                     :rules="[v => !!v || 'Nombre es obligatorio']"
@@ -53,7 +53,7 @@
                   />
                   <v-text-field 
                     v-model="user.company" 
-                    :error-messages="errors.company"
+                    :error-messages="isValidCompany"
                     label="Empresa" 
                     placeholder="name"
                     :rules="[v => !!v || 'Empresa es obligatorio']"
@@ -62,7 +62,7 @@
                   />
                   <v-text-field 
                     v-model="user.email" 
-                    :error-messages="errors.email"
+                    :error-messages="isValidEmail"
                     label="Email" 
                     :rules="[
                       v => !!v || 'Email es obligatorio',
@@ -73,7 +73,7 @@
                   />
                   <v-text-field 
                     v-model="user.credit" 
-                    :error-messages="errors.credit"
+                    :error-messages="isValidCredit"
                     label="Credito inicial [min: 100, máx: 7280]" 
                     :rules="creditRules"
                     prepend-icon="mdi-currency-usd"
@@ -93,6 +93,7 @@
                           <ServicesCheckComponent
                             :services="services"
                             :user="user"
+                            :backendErrors="backendErrors"
                             @onChange="onChangeServicesCheck"
                           />
                         </v-card-text>
@@ -188,6 +189,13 @@ export default {
   },
   data() {
     return {
+      backendErrors:{
+        name:'',
+        email:'',
+        company:'',
+        credit:'',
+        channel_id:''
+      },
       user: {},
       breadcrumbs: [
         {
@@ -225,12 +233,26 @@ export default {
     isEdit: function () {
       
       return this.$route.params.userId ? true : false
+    },
+    isValidName () {
+      return this.backendErrors.name === undefined ? '' : this.backendErrors.name
+    },
+    isValidEmail () {
+      return this.backendErrors.email === undefined ? '' : this.backendErrors.email
+    },
+    isValidCompany () {
+      return this.backendErrors.company === undefined ? '' : this.backendErrors.company
+    },
+    isValidCredit () {
+      return this.backendErrors.credit === undefined ? '' : this.backendErrors.credit
     }
+
   },
   mounted() {
     if (this.isEdit) {
       this.getUserInfo()
     } else {
+      this.$refs.form.reset()
       this.user = {
         name: '',
         email: '',
@@ -278,24 +300,28 @@ export default {
             }
           }).catch((error) => {
             this.isLoading = false
-            this.$store.dispatch('app/showError', { message: error.response.data.message, error: '' } )
+            this.backendErrors = error.response.data.errors
+            // this.$store.dispatch('app/showError', { message: error.response.data.message, error: '' } )
           })
 
         } else {
 
-          BackendApi.post('/user', payload).then((response) => {
-            if (response.data.success) {
+          BackendApi.post('/user', payload)
+            .then((response) => {
+              if (response.data.success) {
+                this.isLoading = false
+                this.$store.dispatch('app/showToast', response.data.message)
+                this.$refs.dialogPassword.open(response.data.data.userPassword)
+              }
+            })
+            .catch((error) => {
+              this.backendErrors = error.response.data.errors
               this.isLoading = false
-              this.$store.dispatch('app/showToast', response.data.message)
-              this.$refs.dialogPassword.open(response.data.data.userPassword)
-            }
-          }).catch((error) => {
-            this.isLoading = false
-            this.$store.dispatch('app/showError', { message: 'No se pudo crear el usuario', error: '' } )
-            this.errors = {
-              email: 'Este email ya existe'
-            }
-          })
+              // this.$store.dispatch('app/showError', { message: 'No se pudo crear el usuario', error: '' } )
+              this.errors = {
+                email: 'Este email ya existe'
+              }
+            })
         }
       }
     },

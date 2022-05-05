@@ -24,6 +24,7 @@
             solo
             flat
             placeholder="Número telefónico"
+            :error-messages="isNumberValid"
             :rules="[ 
               v => !!v || 'El número telefónico es obligatorio',
               v => (v.length === 9 && v.slice(0,1) === '9') || 'Uno o más números son incorrectos'
@@ -180,6 +181,9 @@ import BackendApi from '@/services/backend.service'
 export default {
   data () {
     return {
+      backendErrors: {
+        number: 0
+      },
       contact: null,
       contactId: null,
       number: '',
@@ -198,8 +202,10 @@ export default {
   },
   computed: {
     isEdit: function () {
-
       return this.contact === undefined ? false : true
+    },
+    isNumberValid: function () {
+      return this.backendErrors.number === undefined ? '' : this.backendErrors.number[0]
     }
   },
   methods: {
@@ -253,13 +259,18 @@ export default {
             contact_id: this.contact.id
           }
 
-          BackendApi.put('/contact/' + this.$route.params.agendaId, payload).then((response) => {
-            this.$store.dispatch('app/showToast', response.data.message)
-            if (response.data.success) {
-              this.$emit('onCreated')
-              this.close()
-            } 
-          })
+          BackendApi.put('/contact/' + this.$route.params.agendaId, payload)
+            .then((response) => {
+              this.$store.dispatch('app/showToast', response.data.message)
+              if (response.data.success) {
+                this.$emit('onCreated')
+                this.close()
+              } 
+            })
+            .catch ((error) => {
+              this.backendErrors = error.response.data.errors
+              this.$store.dispatch('app/showToast', 'Revise los datos del contacto')
+            })
         } else {
 
           const payload = {
@@ -276,16 +287,18 @@ export default {
             agenda_id:this.$route.params.agendaId
           }
 
-          BackendApi.post('/contact', payload).then((response) => {
-            if (response.data.success) {
-              this.$store.dispatch('app/showToast', 'Contacto creado exitosamente')
-              this.$emit('onCreated')
-              this.close()
-            }
-          }).catch((error) => {
-            this.$store.dispatch('app/showToast', 'Revise los datos del contacto')
-            //const errors = error.response.data.errors
-          })
+          BackendApi.post('/contact', payload)
+            .then((response) => {
+              if (response.data.success) {
+                this.$store.dispatch('app/showToast', 'Contacto creado exitosamente')
+                this.$emit('onCreated')
+                this.close()
+              }
+            }).catch((error) => {
+              this.backendErrors = error.response.data.errors
+              this.$store.dispatch('app/showToast', 'Revise los datos del contacto')
+              //const errors = error.response.data.errors
+            })
         }
       }
     }

@@ -21,6 +21,7 @@
             v-model="name"
             label="Ingrese nombre de campaña"
             prepend-icon="mdi-tag-text-outline"
+            :error-messages="isValidName"
             :rules="[
               v => !!v || 'Ingrese nombre de campaña'
             ]"
@@ -58,10 +59,12 @@
           <Message-Input-Component
             :agenda="true"
             :excel="false"
+            :backendErrors="backendErrors"
             @onChangeMessage="onChangeMessage"
           />
 
           <Options-Component 
+            :backendErrors="backendErrors"
             @onChange="onChangeOptions"
           />
         </v-card-text>
@@ -110,6 +113,11 @@ export default {
   },
   data() {
     return {
+      backendErrors : {
+        name:'',
+        scheduled:'',
+        message:''
+      },
       name: '',
       options: {},
       headers: [
@@ -165,6 +173,9 @@ export default {
       const defaultDateMoreTwoMinute = moment().format('ll')
 
       return defaultDateMoreTwoMinute
+    },
+    isValidName: function () {
+      return this.backendErrors.name === undefined ? '' : this.backendErrors.name[0] 
     }
   },
   created() {
@@ -234,12 +245,16 @@ export default {
         long_url: this.long_url
       }
 
-      BackendApi.post('/campaign', payload).then((response) => {
-        if (response.data.success) {
-          this.$store.dispatch('app/showToast', response.data.message)
-        }
-        this.$router.push({ name: 'reports' })
-      })
+      BackendApi.post('/campaign', payload)
+        .then((response) => {
+          if (response.data.success) {
+            this.$store.dispatch('app/showToast', response.data.message)
+          }
+          this.$router.push({ name: 'reports' })
+        })
+        .catch ( (error) => {
+          this.backendErrors = error.response.data.errors
+        } )
       // this.$refs.form.reset()
     },
     onChangeMessage(msg, url_id, long_url) {

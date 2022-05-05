@@ -24,10 +24,12 @@
           <MessageInputComponent 
             :agenda="false"
             :excel="false"
+            :backendErrors="backendErrors"
             @onChangeMessage="onChangeMessage"
           />
           
           <Options-Component 
+            :backendErrors="backendErrors"
             @onChange="onChangeOptions"
           />
 
@@ -77,19 +79,20 @@ export default {
   },
   data() {
     return {
+      backendErrors : undefined,
       phones: [957314449],
       dialogPreview: false,
       isLoading: true,
       campaing_type_id: 1,
       url_audio: '',
-      message: 'Hola',
+      message: '',
       url_id: null,
       options: {
         is_push: false,
         scheduled: null,
         bidireccional: false
       },
-      creditToUse : 0,
+      creditToUse : undefined,
       availableCredit : 0,
       isBtnLoading: true
 
@@ -106,11 +109,16 @@ export default {
         .then((response) => {
           if (response.data.success) {
             this.creditToUse = response.data.data.creditsToUse
+
+            return true
           }
         })
         .catch((error) => {
+          this.backendErrors = error.response.data.errors
           console.log('salio el error')
           console.log(error)
+
+          return false
         })
     },
     availableCreditByUser() {
@@ -122,10 +130,16 @@ export default {
         }
       })
     },
-    submit() {
+    async submit() {
       if (this.$refs.form.validate()) {
-        this.calculateCreditToUse()
-        this.availableCreditByUser()
+        const a = await this.calculateCreditToUse()
+
+        console.log(a)
+        console.log('aaaaa')
+        console.log(this.creditToUse)
+        console.log(typeof (this.creditToUse))
+          
+        await this.availableCreditByUser()
         this.$refs.dialogPreview.open()
       }
     },
@@ -157,6 +171,7 @@ export default {
           }
         })
         .catch((error) => {
+          this.backendErrors = error.response.data.errors
           console.log('salio el error')
           console.log(error)
         })
