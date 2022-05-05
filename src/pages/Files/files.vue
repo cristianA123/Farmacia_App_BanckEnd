@@ -13,15 +13,37 @@
       </v-btn>
     </div>
 
-    <template>
-      <v-row>
+    <v-col>
+      <!--Skeleton Loader --->
+      <v-row  
+        v-if="isLoading"
+      >
+        <v-col>
+          <v-skeleton-loader
+            class="mx-auto"
+            max-width="300"
+            type="card"
+          ></v-skeleton-loader>
+        </v-col>
+      </v-row>
+      
+      <!--Empty items --->
+      <EmptyItems
+        v-if="itemsEmpty && !isLoading"
+        icon="mdi-file-sync-outline"
+        text="No tiene archivos cargados. Para cargar archivos clic en Subir archivo" 
+      />
+
+      <!--Show Items --->
+      <v-row
+        v-else
+      >
         <v-col
           v-for="item in items"
           :key="item.id"
         >
           <v-card
-            max-width="344"
-            class="mx-auto"
+            width="300px"
           >
             <v-list-item>
               <v-list-item-avatar color="grey"> <v-icon>mdi-file-image</v-icon> </v-list-item-avatar>
@@ -71,7 +93,8 @@
           </v-card>
         </v-col>
       </v-row>
-    </template>
+
+    </v-col>
     
     <DialogUploadComponent
       ref="dialogUpload"
@@ -85,28 +108,24 @@
 <script>
 import DialogUploadComponent from './components/dialogUploadComponent.vue'
 import BackendApi from '@/services/backend.service'
+import EmptyItems from '@/components/common/EmptyItems'
 
 export default {
   components: {
-    DialogUploadComponent
+    DialogUploadComponent,
+    EmptyItems
   },
   data() {
     return {
       show: false,
-      items: [
-        {
-          name: 'Nuevo archivo',
-          created_at: 'Hace 3 horas',
-          size: '2 Mb',
-          short_url: 'https://cut.pe/dq32'
-        },
-        {
-          name: 'Nuevo archivo',
-          created_at: 'Hace 3 horas',
-          size: '2 Mb',
-          short_url: 'https://cut.pe/14dsad'
-        }
-      ]
+      items: [],
+      isLoading: false
+    }
+  },
+  computed: {
+    itemsEmpty: function () {
+
+      return this.items.length === 0 ? true : false
     }
   },
   mounted() {
@@ -117,7 +136,9 @@ export default {
       this.$refs.dialogUpload.open(item)
     },
     getBuckets() {
+      this.isLoading = true
       BackendApi.get('/buckets').then((response) => {
+        this.isLoading = false
         if (response.data.success) {
           this.items = response.data.data
         }

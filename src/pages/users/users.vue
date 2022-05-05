@@ -13,7 +13,16 @@
       </v-btn>
     </div>
 
-    <v-card>
+    <!--Empty items --->
+    <EmptyItems
+      v-if="itemsEmpty && !isLoading"
+      icon="mdi-contacts"
+      text="No tiene agendas creadas. Para crear agendas cortas clic en botón Crear Nueva Agenda" 
+    />
+
+    <v-card
+      v-else
+    >
       <v-col>
         <v-row>
           <v-spacer></v-spacer>
@@ -32,7 +41,7 @@
       <v-data-table
         :loading="isLoading"
         :headers="headers"
-        :items="users"
+        :items="items"
         :search="searchText"
         class="flex-grow-1"
       >
@@ -189,10 +198,12 @@
 <script>
 import BackendApi from '@/services/backend.service'
 import userAvatar from '@/components/reports/userAvatar'
+import EmptyItems from '@/components/common/EmptyItems'
 
 export default {
   components: {
-    userAvatar
+    userAvatar,
+    EmptyItems
   },
   data() {
     return {
@@ -201,7 +212,7 @@ export default {
       dialogConfirmDisabledUser: false,
       dialogConfirmEnabledUser: false,
       isLoading: false,
-      users: [],
+      items: [],
       myUser: null,
       searchText: '',
       headers: [
@@ -215,6 +226,10 @@ export default {
     }
   },
   computed: {
+    itemsEmpty: function () {
+
+      return this.items.length === 0 ? true : false
+    },
     configFormat: function () {
       return {
         decimalDigits: 0,
@@ -235,7 +250,7 @@ export default {
 
       BackendApi.get('/user').then((response) => {
         if (response.data.success) {
-          this.users = response.data.data
+          this.items = response.data.data
           this.isLoading = false
         } else {
           this.$store.dispatch('app/showToast', response.data.message)
