@@ -37,7 +37,7 @@ export default {
     text: 'Configuración',
     key: '',
     items: [
-      { icon: 'mdi-account',  text: 'Mi usuario', link: '/config/user' },
+      //{ icon: 'mdi-account',  text: 'Mi usuario', link: '/config/user' },
       { icon: 'mdi-account-group', text: 'Sub usuarios', link: '/config/users' }
     ]
   },

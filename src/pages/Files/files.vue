@@ -14,6 +14,7 @@
     </div>
 
     <v-col>
+      <!--Skeleton Loader --->
       <v-row  
         v-if="isLoading"
       >
@@ -25,23 +26,15 @@
           ></v-skeleton-loader>
         </v-col>
       </v-row>
-
-      <v-row
+      
+      <!--Empty items --->
+      <EmptyItems
         v-if="itemsEmpty && !isLoading"
-        justify="center"
-      >
-        <v-col
-          cols="9"
-          lg="3"
-        >
-          <v-icon 
-            size="200"
-            color="#a8a8a8"
-          >mdi-file-sync-outline</v-icon>
-          <p style="color: #a8a8a8">No tiene archivos cargados. Para cargar archivos clic en "Subir archivo"</p>
-        </v-col>
-      </v-row>
+        icon="mdi-file-sync-outline"
+        text="No tiene archivos cargados. Para cargar archivos clic en Subir archivo" 
+      />
 
+      <!--Show Items --->
       <v-row
         v-else
       >
@@ -100,6 +93,7 @@
           </v-card>
         </v-col>
       </v-row>
+
     </v-col>
     
     <DialogUploadComponent
@@ -114,10 +108,12 @@
 <script>
 import DialogUploadComponent from './components/dialogUploadComponent.vue'
 import BackendApi from '@/services/backend.service'
+import EmptyItems from '@/components/common/EmptyItems'
 
 export default {
   components: {
-    DialogUploadComponent
+    DialogUploadComponent,
+    EmptyItems
   },
   data() {
     return {

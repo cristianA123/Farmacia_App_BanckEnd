@@ -13,7 +13,16 @@
       </v-btn>
     </div>
 
-    <template>
+    <!--Empty items --->
+    <EmptyItems
+      v-if="itemsEmpty && !isLoading"
+      icon="mdi-contacts"
+      text="No tiene agendas creadas. Para crear agendas cortas clic en botón Crear Nueva Agenda" 
+    />
+
+    <template
+      v-else
+    >
       <v-data-table
         :headers="headers"
         :items="items"
@@ -145,10 +154,12 @@
 <script>
 import newAgenda from './components/newAgenda'
 import BackendApi from '@/services/backend.service'
+import EmptyItems from '@/components/common/EmptyItems'
 
 export default {
   components: {
-    newAgenda
+    newAgenda,
+    EmptyItems
   },
   data () {
     return {
@@ -161,7 +172,14 @@ export default {
         { text: 'Acciones', value: 'actions' }
       ],
       items: [],
-      dialogConfirm: false
+      dialogConfirm: false,
+      isLoading: false
+    }
+  },
+  computed: {
+    itemsEmpty: function () {
+
+      return this.items.length === 0 ? true : false
     }
   },
   mounted() {
@@ -169,7 +187,9 @@ export default {
   },
   methods: {
     getAgendas() {
+      this.isLoading = false
       BackendApi.get('/agenda').then((response) => {
+        this.isLoading = false
         if (response.data.success) {
 
           this.items = response.data.data

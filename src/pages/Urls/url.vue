@@ -14,25 +14,17 @@
       </v-btn>
     </div>
 
-    <v-row
+    <!--Empty items --->
+    <EmptyItems
       v-if="itemsEmpty && !isLoading"
-      justify="center"
-    >
-      <v-col
-        cols="9"
-        lg="3"
-      >
-        <v-icon 
-          size="200"
-          color="#a8a8a8"
-        >mdi-file-sync-outline</v-icon>
-        <p style="color: #a8a8a8">No tiene archivos cargados. Para cargar archivos clic en "Subir archivo"</p>
-      </v-col>
-    </v-row>
+      icon="mdi-file-link-outline"
+      text="No tiene url creados. Para crear urls cortas clic en botón Crear Url Corta" 
+    />
 
     <v-data-table
+      v-else
       :headers="headers"
-      :items="urls"
+      :items="items"
     >
       <template v-slot:[`item.actions`]="{ item }">
         <v-menu
@@ -71,16 +63,17 @@
 import _ from 'lodash'
 import DialogCreateComponent from './createUrl/dialogCreateComponent.vue'
 import BackendApi from '@/services/backend.service'
+import EmptyItems from '@/components/common/EmptyItems'
 
 export default {
   components: {
-    
-    DialogCreateComponent
+    DialogCreateComponent,
+    EmptyItems
   },
   data() {
     return {
       dialogUploadShow: false,
-      loadingGetFiles: false,
+      isLoading: false,
       isUpdate : false,
       headers: [
         { text: 'Nombre', value: 'name' },
@@ -90,7 +83,13 @@ export default {
         { text: 'Última modificacion', value: 'updated' },
         { text: 'Acciones', value: 'actions' }
       ],
-      urls: []
+      items: []
+    }
+  },
+  computed: {
+    itemsEmpty: function () {
+
+      return this.items.length === 0 ? true : false
     }
   },
   mounted() {
@@ -113,12 +112,12 @@ export default {
       this.getFiles()
     },
     getFiles () {
-      this.urls = []
-      this.loadingGetFiles = true
+      this.items = []
+      this.isLoading = true
       BackendApi.get('/groupurl').then((response) => {
         if (response.data.success) {
-          this.urls = response.data.data
-          this.loadingGetFiles = false
+          this.items = response.data.data
+          this.isLoading = false
         }
       }).catch((error) => {
         console.log(error)
