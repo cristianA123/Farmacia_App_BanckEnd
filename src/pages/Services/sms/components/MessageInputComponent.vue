@@ -90,7 +90,7 @@ export default {
       type: Boolean,
       default: false
     },
-    backendErrors: {
+    errors: {
       type: Object,
       default: () => ({ message:'' })
     }
@@ -116,7 +116,7 @@ export default {
       return  '[' + countCharacters + ' Restantes / ' + countCredits + ' Crédito]'
     },
     isValidMessage: function () {
-      return this.backendErrors.message === undefined ? '' : this.backendErrors.message[0] 
+      return this.errors.message === undefined ? '' : this.errors.message[0] 
     }
   },
   watch: {

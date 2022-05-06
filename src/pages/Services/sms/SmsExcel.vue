@@ -43,7 +43,7 @@
           />
           <!-- aqui es donde van los ejemplos -->
           <v-col
-            v-if="showExample"
+            v-if="showExample && !isValidFile"
             class="pt-0"
           >
             <p>Ejemplos:</p>
@@ -64,12 +64,12 @@
           <Message-Input-Component 
             :agenda="false"
             :excel="true"
-            :backendErrors="backendErrors"
+            :errors="errors"
             @onChangeMessage="onChangeMessage"
           />
 
           <Options-Component
-            :backendErrors="backendErrors"
+            :errors="errors"
             @onChange="onChangeOptions"
           />
         </v-card-text>
@@ -123,7 +123,7 @@ export default {
   },
   data() {
     return {
-      backendErrors : {
+      errors : {
         name:'',
         scheduled:'',
         message:'',
@@ -163,16 +163,20 @@ export default {
   },
   computed: {
     showExample: function () {
+
       return this.excelExample.length !== 0
     },
     exampleExelComputed: function () {
+
       return this.excelExample
     },
     isValidName: function () {
-      return this.backendErrors.name === undefined ? '' : this.backendErrors.name[0]
+
+      return this.errors.name === undefined ? '' : this.errors.name[0]
     },
     isValidFile: function () {
-      return this.backendErrors.file === undefined ? '' : this.backendErrors.file[0]
+
+      return this.errors.file === undefined ? '' : this.errors.file[0]
     }
   },
   methods: {
@@ -204,7 +208,7 @@ export default {
     },
     errorFile (text) {
       this.isFileLoading = false
-      this.errorMessageFile = text
+      this.errors.file = [text]
     },
     onChangeExcel(file) {
       
@@ -227,7 +231,7 @@ export default {
                 this.rows = response.data.data.rows
                 this.destinatarios = this.fileUploaded
                 this.errorFile(null)
-                this.backendErrors = {
+                this.errors = {
                   name:'',
                   scheduled:'',
                   message:'',
@@ -240,7 +244,7 @@ export default {
             })
             .catch ( (error) => {
               this.fileId = null
-              this.backendErrors = error.response.data.errors
+              this.errors = error.response.data.errors
             })
         } else {
           console.log('error')
@@ -276,7 +280,9 @@ export default {
           }
         })
         .catch( (error) => {
-          this.backendErrors = error.response.data.errors
+
+          this.$store.dispatch('app/showToast', 'No se pudo enviar la campaña, revise los datos ingresados')
+          this.errors = error.response.data.errors
         } )
     },
     onChangeMessage(msg, url_id, long_url) {

@@ -52,7 +52,7 @@ export default {
     DateTimePicker
   },
   props: {
-    backendErrors: {
+    errors: {
       type: Object,
       default: () => ({ message:'' })
     }
@@ -67,7 +67,8 @@ export default {
   },
   computed: {
     isValidsScheduled: function () {
-      return this.backendErrors.scheduled === undefined ? '' : this.backendErrors.scheduled[0] 
+      
+      return this.errors.scheduled === undefined ? '' : this.errors.scheduled[0] 
     }
   },
   watch: {
