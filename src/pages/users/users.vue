@@ -207,6 +207,10 @@ export default {
   },
   data() {
     return {
+      erros:{
+        email:'',
+        password:''
+      },
       selectedUser: null,
       dialogConfirmLoginUser: false,
       dialogConfirmDisabledUser: false,
@@ -239,6 +243,12 @@ export default {
         currencySymbolNumberOfSpaces: 0,
         currencySymbolPosition: 'left'
       }
+    },
+    isValidEmail () {
+      return this.erros.email === undefined ? '' : this.erros.email
+    },
+    isValidPassword () {
+      return this.erros.password === undefined ? '' : this.erros.password
     }
   },
   mounted() {
@@ -267,16 +277,20 @@ export default {
     },
     loginUser() {
 
-      BackendApi.post('/login/' + this.selectedUser.id).then((response) => {
-        if (response.data.success) {
-          $cookies.set('user', response.data.data.user)
-          $cookies.set('token', response.data.data.access_token)
-          $cookies.set('services', response.data.data.services)
-          window.location.href = '/'
-        } else {
-          this.$store.dispatch('app/showToast', response.data.message)
-        }
-      })
+      BackendApi.post('/login/' + this.selectedUser.id)
+        .then((response) => {
+          if (response.data.success) {
+            $cookies.set('user', response.data.data.user)
+            $cookies.set('token', response.data.data.access_token)
+            $cookies.set('services', response.data.data.services)
+            window.location.href = '/'
+          } else {
+            this.$store.dispatch('app/showToast', response.data.message)
+          }
+        })
+        .catch( (error) => {
+          this.erros = error.response.data.errors
+        } )
     },
     disableUser() {
       const payload = {

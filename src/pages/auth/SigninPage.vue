@@ -31,7 +31,7 @@
             ]"
             :type="showPassword ? 'text' : 'password'"
             :error="error"
-            :error-messages="errorMessages"
+            :error-messages="$store.state.authenticate.errorMessages"
             :label="$t('login.password')"
             name="password"
             outlined
