@@ -54,7 +54,7 @@
             </v-list-item>
 
             <v-img
-              :src="item.long_url"
+              :src="item.thumbnail"
               height="194"
             ></v-img>
 
@@ -126,6 +126,15 @@ export default {
     itemsEmpty: function () {
 
       return this.items.length === 0 ? true : false
+    },
+    image (item) {
+      if ( item.extension !== 'jpeg' || item.extension !== 'jpg' || item.extension !== 'png' || item.extension !== 'bmp' || item.extension !== 'gif' || item.extension !== 'eps' || item.extension !== 'svg') {
+        
+        return item.long_url
+      } else {
+        return item.long_url
+      }
+
     }
   },
   mounted() {

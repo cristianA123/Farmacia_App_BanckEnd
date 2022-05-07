@@ -24,12 +24,12 @@
           <MessageInputComponent 
             :agenda="false"
             :excel="false"
-            :backendErrors="backendErrors"
+            :errors="errors"
             @onChangeMessage="onChangeMessage"
           />
           
           <Options-Component 
-            :backendErrors="backendErrors"
+            :errors="errors"
             @onChange="onChangeOptions"
           />
 
@@ -79,7 +79,7 @@ export default {
   },
   data() {
     return {
-      backendErrors : undefined,
+      errors : undefined,
       phones: [957314449],
       dialogPreview: false,
       isLoading: true,
@@ -114,7 +114,7 @@ export default {
           }
         })
         .catch((error) => {
-          this.backendErrors = error.response.data.errors
+          this.errors = error.response.data.errors
           console.log('salio el error')
           console.log(error)
 
@@ -171,7 +171,7 @@ export default {
           }
         })
         .catch((error) => {
-          this.backendErrors = error.response.data.errors
+          this.errors = error.response.data.errors
           console.log('salio el error')
           console.log(error)
         })

@@ -59,12 +59,12 @@
           <Message-Input-Component
             :agenda="true"
             :excel="false"
-            :backendErrors="backendErrors"
+            :errors="errors"
             @onChangeMessage="onChangeMessage"
           />
 
           <Options-Component 
-            :backendErrors="backendErrors"
+            :errors="errors"
             @onChange="onChangeOptions"
           />
         </v-card-text>
@@ -113,7 +113,7 @@ export default {
   },
   data() {
     return {
-      backendErrors : {
+      errors : {
         name:'',
         scheduled:'',
         message:''
@@ -175,7 +175,7 @@ export default {
       return defaultDateMoreTwoMinute
     },
     isValidName: function () {
-      return this.backendErrors.name === undefined ? '' : this.backendErrors.name[0] 
+      return this.errors.name === undefined ? '' : this.errors.name[0] 
     }
   },
   created() {
@@ -253,7 +253,7 @@ export default {
           this.$router.push({ name: 'reports' })
         })
         .catch ( (error) => {
-          this.backendErrors = error.response.data.errors
+          this.errors = error.response.data.errors
         } )
       // this.$refs.form.reset()
     },

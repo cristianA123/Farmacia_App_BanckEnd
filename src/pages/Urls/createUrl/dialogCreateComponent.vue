@@ -68,7 +68,7 @@ export default {
   props: {
   },
   data: () => ({
-    backendErrors: {
+    errors: {
       long_url:'',
       name:''
     },
@@ -83,10 +83,10 @@ export default {
       return this.item === undefined ? false : true
     },
     isValidName: function () {
-      return this.backendErrors.name === undefined ? '' : this.backendErrors.name[0]
+      return this.errors.name === undefined ? '' : this.errors.name[0]
     },
     isValidUrl: function () {
-      return this.backendErrors.long_url === undefined ? '' : this.backendErrors.long_url[0]
+      return this.errors.long_url === undefined ? '' : this.errors.long_url[0]
     }
   },
   methods: {
@@ -125,7 +125,7 @@ export default {
               }
             })
             .catch( (error) => {
-              this.backendErrors = error.response.data.errors
+              this.errors = error.response.data.errors
               this.isLoading = false
             } )
         } else {
@@ -138,7 +138,7 @@ export default {
               }
             })
             .catch( (error) => {
-              this.backendErrors = error.response.data.errors
+              this.errors = error.response.data.errors
               this.isLoading = false
             } )
         }
