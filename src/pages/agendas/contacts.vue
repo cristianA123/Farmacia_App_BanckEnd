@@ -104,7 +104,7 @@
         show-select
         :loading="isLoading"
         :items="contacts"
-        :items-per-page="5"
+        :items-per-page="10"
         :search="searchTable"
         hide-default-footer
         class="elevation-1"
