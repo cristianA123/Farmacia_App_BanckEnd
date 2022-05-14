@@ -97,18 +97,31 @@
       @onMoveAgenda="onMoveAgenda"
     />
 
-    <v-card>
-      <v-card-text>
-        <v-data-table
-          v-model="selectedUsers"
-          :headers="headers"
-          show-select
-          :loading="isLoading"
-          :items="contacts"
-          items-per-page="100"
-          :search="searchTable"
-          hide-default-footer
-        >
+    <div>
+      <v-data-table
+        v-model="selectedUsers"
+        :headers="headers"
+        show-select
+        :loading="isLoading"
+        :items="contacts"
+        :items-per-page="10"
+        :search="searchTable"
+        hide-default-footer
+        class="elevation-1"
+      >
+
+        <template v-slot:top>
+          <v-text-field
+            class="pa-2"
+            v-model="searchText"
+            v-debounce:250="getContacts"
+            append-icon="mdi-magnify"
+            dense
+            clearable
+            placeholder="Ej.: Filtrar por numero, nombre1, nombre2,  email, apellido1, apellido2 etc" 
+            outlined
+          />
+        </template>
 
           <template v-slot:top>
             <v-text-field
