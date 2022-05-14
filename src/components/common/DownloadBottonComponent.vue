@@ -1,15 +1,13 @@
 <template>
-  <v-row>
-    <v-col>
-      <v-icon>mdi-cloud-download-outline</v-icon>
-      <v-btn  
-        text
-        @click="downloadFile(path)"
-      >
-        Descargar formato Excel
-      </v-btn>
-    </v-col>
-  </v-row>
+  <div>
+    <v-icon>mdi-cloud-download-outline</v-icon>
+    <v-btn  
+      text
+      @click="downloadFile(path)"
+    >
+      Formato Xlsx
+    </v-btn>
+  </div>
 </template>
 
 <script>

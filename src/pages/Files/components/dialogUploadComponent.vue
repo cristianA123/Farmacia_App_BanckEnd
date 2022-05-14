@@ -96,7 +96,7 @@ import BackendApi from '@/services/backend.service'
 export default {
   data() {
     return {
-      backendErrors: {
+      errors: {
         name:'',
         file:''
       },
@@ -111,18 +111,25 @@ export default {
   },
   computed: {
     isEdit: function () {
+
       return this.item === undefined ? false : true
     },
     isValidName () {
-      return this.backendErrors.name === undefined ? '' : this.backendErrors.name[0]
+
+      return this.errors.name === undefined ? '' : this.errors.name[0]
     },
     isValidFile () {
-      return this.backendErrors.file === undefined ? '' : this.backendErrors.file[0]
+
+      return this.errors.file === undefined ? '' : this.errors.file[0]
     }
 
   },
   methods: {
     open(item) {
+      this.errors = {
+        name:'',
+        file:''
+      }
       this.item = item
 
       if (this.isEdit) {
@@ -165,10 +172,8 @@ export default {
               }
             })
             .catch( (error) => {
-              this.backendErrors = error.response.data.errors
-              
+              this.errors = error.response.data.errors
               this.isLoading = false
-
             })
         } else {
           BackendApi.post('/uploadFile', formData)
@@ -185,9 +190,11 @@ export default {
               }
             })
             .catch( (error) => {
-              this.backendErrors = error.response.data.errors
+              if (error.response.data?.success !== undefined) {
+                this.errors = error.response.data.errors
+              }
+              
               this.isLoading = false
-
             })
         }
 

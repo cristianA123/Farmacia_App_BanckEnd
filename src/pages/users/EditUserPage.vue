@@ -235,15 +235,19 @@ export default {
       return this.$route.params.userId ? true : false
     },
     isValidName () {
+
       return this.backendErrors.name === undefined ? '' : this.backendErrors.name
     },
     isValidEmail () {
+
       return this.backendErrors.email === undefined ? '' : this.backendErrors.email
     },
     isValidCompany () {
+
       return this.backendErrors.company === undefined ? '' : this.backendErrors.company
     },
     isValidCredit () {
+      
       return this.backendErrors.credit === undefined ? '' : this.backendErrors.credit
     }
 

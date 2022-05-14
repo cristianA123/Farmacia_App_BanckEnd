@@ -2,7 +2,7 @@
   <div class="d-flex flex-column flex-grow-1">
     <div class="d-flex align-center pb-3">
       <div>
-        <div class="display-1">Enviar SMS a una base de contactos Excel</div>
+        <div class="display-1">SMS Excel</div>
       </div>
       <v-spacer></v-spacer>
       <BackPage 
@@ -10,83 +10,102 @@
       />
     </div>
 
-    <v-card>
-      <v-form
-        ref="form"
-        lazy-validation
-        @submit.prevent="submit"
-      >
-        <v-card-text>
-          <DownloadBottonComponent
-            path="/files/sms_campaing.xlsx"
-          />
+    <v-form
+      ref="form"
+      lazy-validation
+      @submit.prevent="submit"
+    >
 
-          <v-text-field
-            v-model="name"
-            label="Ingrese nombre de campaña"
-            prepend-icon="mdi-tag-text-outline"
-            :error-messages="isValidName"
-            :rules="[v=>!!v || 'El nombre es obligatorio']"
-            outlined
-            required
-          />
-          
-          <v-file-input
-            v-model="file"
-            label="Cargue su base de contactos"
-            :loading="isFileLoading"
-            outlined
-            :rules="[v=>!!v || 'Seleccione excel']"
-            :error-messages="isValidFile"
-            required
-            @change="onChangeExcel"
-          />
-          <!-- aqui es donde van los ejemplos -->
-          <v-col
-            v-if="showExample && !isValidFile"
-            class="pt-0"
-          >
-            <p>Ejemplos:</p>
-            <v-data-table
-              :headers="headers"
-              :items="excelExample"
-              :items-per-page="5"
-              class="elevation-1"
+      <v-card-text>
+        <v-card
+          outlined
+        >
+          <v-card-title>
+            Mensaje
+            <v-spacer></v-spacer>
+
+            <DownloadBottonComponent
+              path="/files/sms_campaing.xlsx"
+            />
+          </v-card-title>
+          <v-card-text>
+            <v-text-field
+              v-model="name"
+              label="Ingrese nombre de campaña"
+              prepend-icon="mdi-tag-text-outline"
+              :error-messages="isValidName"
+              :rules="[v=>!!v || 'El nombre es obligatorio']"
+              outlined
+              required
+            />
+            
+            <v-file-input
+              v-model="file"
+              label="Cargue su base de contactos"
+              :loading="isFileLoading"
+              outlined
+              :rules="[v=>!!v || 'Seleccione excel']"
+              :error-messages="isValidFile"
+              required
+              @change="onChangeExcel"
+            />
+            <!-- aqui es donde van los ejemplos -->
+            <v-col
+              v-if="showExample && !isValidFile"
+              class="pt-0"
             >
-              
-            </v-data-table>
-          </v-col>
+              <p>Ejemplos:</p>
+              <v-data-table
+                :headers="headers"
+                :items="excelExample"
+                :items-per-page="5"
+                class="elevation-1"
+              >
+                
+              </v-data-table>
+            </v-col>
 
-          <!--    <InputFileDragAndDrop 
-            :dialog="true"
-          /> -->
+            <!--    <InputFileDragAndDrop 
+              :dialog="true"
+            /> -->
 
-          <Message-Input-Component 
-            :agenda="false"
-            :excel="true"
-            :errors="errors"
-            @onChangeMessage="onChangeMessage"
-          />
+            <Message-Input-Component 
+              :agenda="false"
+              :excel="true"
+              :errors="errors"
+              @onChangeMessage="onChangeMessage"
+            />
+          </v-card-text>
+        </v-card>
 
-          <Options-Component
-            :errors="errors"
-            @onChange="onChangeOptions"
-          />
-        </v-card-text>
+        <br>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
+        <Options-Component
+          :errors="errors"
+          @onChange="onChangeOptions"
+        />
+
+      </v-card-text>
+
+      <v-card-actions>
+        <v-row
+          justify="center"
+        >
           <v-btn
-            text
-            color="primary"
-            type="submit"
+            class="my-2"
+            color="green"
+            dark
+            @click="submit"
           >
+            <v-icon>
+              mdi-chevron-right
+            </v-icon>
             Siguiente paso
           </v-btn>
-        </v-card-actions>
-      </v-form>
+        </v-row>
+      </v-card-actions>
 
-    </v-card>
+    </v-form>
 
     <PreviewSmsComponent
       ref="dialogPreview"
@@ -224,7 +243,6 @@ export default {
 
           BackendApi.post('/sms/upload/excelcampaing', formData)
             .then((response) => {
-              console.log(response)
               if (response.data.success) {
                 this.fileId = response.data.data.id
                 this.excelExample = response.data.data.example
@@ -238,11 +256,13 @@ export default {
                   file:''
                 }
               } else {
+
                 this.errorFile(response.data.message)
               }
               this.isFileLoading = false
             })
             .catch ( (error) => {
+              this.isFileLoading = false
               this.fileId = null
               this.errors = error.response.data.errors
             })

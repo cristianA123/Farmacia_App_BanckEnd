@@ -47,6 +47,15 @@ const setup = (store) => {
         })
         break
       }
+      case 413: {
+        store.dispatch('app/showError', {
+          message: 'Oops! Archivo muy pesado.',
+          error: {
+            message: ''
+          } 
+        })
+        break
+      }
       }
 
       return Promise.reject(err)

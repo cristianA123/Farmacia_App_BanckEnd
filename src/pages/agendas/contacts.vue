@@ -2,7 +2,7 @@
   <div class="d-flex flex-column flex-grow-1">
     <div class="d-flex align-center py-3">
       <div>
-        <div class="display-1"> </div>
+        <div class="display-1">Contactos</div>
       </div>
       <v-spacer></v-spacer>
       
@@ -97,180 +97,191 @@
       @onMoveAgenda="onMoveAgenda"
     />
 
-    <div>
-      <v-data-table
-        v-model="selectedUsers"
-        :headers="headers"
-        show-select
-        :loading="isLoading"
-        :items="contacts"
-        :items-per-page="5"
-        :search="searchTable"
-        hide-default-footer
-        class="elevation-1"
-      >
+    <v-card>
+      <v-card-text>
+        <v-data-table
+          v-model="selectedUsers"
+          :headers="headers"
+          show-select
+          :loading="isLoading"
+          :items="contacts"
+          items-per-page="100"
+          :search="searchTable"
+          hide-default-footer
+        >
 
-        <template v-slot:top>
-          <v-text-field
-            class="pa-2"
-            v-model="searchText"
-            v-debounce:250="getContacts"
-            append-icon="mdi-magnify"
-            dense
-            clearable
-            placeholder="Ej.: Filtrar por numero, nombre1, nombre2,  email, apellido1, apellido2 etc" 
-            outlined
-          />
-        </template>
+          <template v-slot:top>
+            <v-text-field
+              class="pa-2"
+              v-model="searchText"
+              v-debounce:250="getContacts"
+              append-icon="mdi-magnify"
+              dense
+              clearable
+              placeholder="Ej.: Filtrar por numero, nombre1, nombre2,  email, apellido1, apellido2 etc" 
+              outlined
+            />
+          </template>
 
-        <template v-slot:top>
-          <v-row>
-            <v-col
-              class="py-0"
-            >
-              <div
-                class="pa-2"
+          <template v-slot:top>
+            <v-row>
+              <v-col
+                class="py-0"
               >
-                <v-menu 
-                  offset-y 
-                  left
+                <div
+                  class="pa-2"
                 >
-                  <template v-slot:activator="{ on }">
-                    <transition name="slide-fade" mode="out-in">
-                      <v-btn v-show="selectedUsers.length > 0" v-on="on">
-                        Acciones
-                        <v-icon right>mdi-menu-down</v-icon>
-                      </v-btn>
-                    </transition>
-                  </template>
-                  <v-list dense>
-                    <v-list-item @click="deleteItems">
-                      <v-list-item-title>Eliminar seleccionados</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item @click="moveItems">
-                      <v-list-item-title>Mover a otra agenda</v-list-item-title>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </div>
-            </v-col>
-            <v-col
-              class="pb-0 pr-6"
-            >
-              <v-text-field
-                v-model="searchTable"
-                label="Buscar contacto"
-                outlined
-              />
-            </v-col>
-          </v-row>
-        </template>
-        <template v-slot:item.id="{ item }">
-          <div class="font-weight-bold"># <copy-label :text="item.id + ''" /></div>
-        </template>
-        <template v-slot:item.is_valid="{ item }">
-          <v-chip
-            v-if="item.is_valid === 1"
-            color="green"
-            text-color="white"
-            small
-          >
-            Correcto
-          </v-chip>
-          <v-chip
-            v-else
-            color="red"
-            text-color="white"
-            small
-          >
-            Incorrecto
-          </v-chip>
-        </template>
-        <template v-slot:item.actions="{ item }">
-          <v-menu
-            offset-y
-          >
-            <template v-slot:activator="{ attrs, on }">
-              <v-btn
-                v-bind="attrs"
-                v-on="on"
-                text
-              >
-                Acciones
-              </v-btn>
-            </template>
-
-            <v-list>
-              <v-list-item
-                @click="detalle(item)"
-                link
-              >
-                Ver detalle
-              </v-list-item>
-              <v-list-item
-                @click="openNewContact(item)"
-                link
-              >
-                Modificar
-              </v-list-item>
-
-              <template>
-                <div class="text-center">
-                  <v-dialog
-                    v-model="dialogConfirm"
-                    persistent
-                    max-width="400"
+                  <v-menu 
+                    offset-y 
+                    left
                   >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-list-item
-                        v-on="on"
-                        v-bind="attrs"
-                        link
-                      >
-                        Eliminar
-                      </v-list-item>
+                    <template v-slot:activator="{ on }">
+                      <transition name="slide-fade" mode="out-in">
+                        <v-btn v-show="selectedUsers.length > 0" v-on="on">
+                          Acciones
+                          <v-icon right>mdi-menu-down</v-icon>
+                        </v-btn>
+                      </transition>
                     </template>
-                    <v-card>
-                      <v-card-title class="text-h5">
-                        Seguro de eliminar este contacto?
-                      </v-card-title>
-                      <v-card-text>Una vez eliminado este contacto, no podrá recuperarla. Las campañas que se esten procesando y que hagan uso de esta agenda se enviarán con normalidad.</v-card-text>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                          color="secondary"
-                          text
-                          @click="dialogConfirm = false"
-                        >
-                          Cancelar
-                        </v-btn>
-                        <v-btn
-                          color="success"
-                          text
-                          @click="deleteItem(item)"
-                        >
-                          Confirmo
-                        </v-btn>
-                      </v-card-actions>
-                    </v-card>
-
-                  </v-dialog>
+                    <v-list dense>
+                      <v-list-item @click="deleteItems">
+                        <v-list-item-title>Eliminar seleccionados</v-list-item-title>
+                      </v-list-item>
+                      <v-list-item @click="moveItems">
+                        <v-list-item-title>Mover a otra agenda</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
                 </div>
+              </v-col>
+              <v-col
+                class="pb-0 pr-6"
+              >
+                <v-text-field
+                  v-model="searchTable"
+                  label="Buscar contacto"
+                  outlined
+                />
+              </v-col>
+            </v-row>
+          </template>
+          <template v-slot:item.id="{ item }">
+            <div class="font-weight-bold"># <copy-label :text="item.id + ''" /></div>
+          </template>
+          <template v-slot:item.is_valid="{ item }">
+            <v-chip
+              v-if="item.is_valid === 1"
+              color="green"
+              text-color="white"
+              small
+            >
+              Correcto
+            </v-chip>
+            <v-chip
+              v-else
+              color="red"
+              text-color="white"
+              small
+            >
+              Incorrecto
+            </v-chip>
+          </template>
+          <template v-slot:item.actions="{ item }">
+            <v-menu
+              offset-y
+            >
+              <template v-slot:activator="{ attrs, on }">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                  text
+                >
+                  Acciones
+                </v-btn>
               </template>
 
-            </v-list>
-          </v-menu>
-        </template>
+              <v-list>
+                <v-list-item
+                  @click="detalle(item)"
+                  link
+                >
+                  Ver detalle
+                </v-list-item>
+                <v-list-item
+                  @click="openNewContact(item)"
+                  link
+                >
+                  Modificar
+                </v-list-item>
 
-      </v-data-table>
+                <template>
+                  <div class="text-center">
+                    <v-dialog
+                      v-model="dialogConfirm"
+                      persistent
+                      max-width="400"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-list-item
+                          v-on="on"
+                          v-bind="attrs"
+                          link
+                        >
+                          Eliminar
+                        </v-list-item>
+                      </template>
+                      <v-card>
+                        <v-card-title class="text-h5">
+                          Seguro de eliminar este contacto?
+                        </v-card-title>
+                        <v-card-text>Una vez eliminado este contacto, no podrá recuperarla. Las campañas que se esten procesando y que hagan uso de esta agenda se enviarán con normalidad.</v-card-text>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            color="secondary"
+                            text
+                            @click="dialogConfirm = false"
+                          >
+                            Cancelar
+                          </v-btn>
+                          <v-btn
+                            color="success"
+                            text
+                            @click="deleteItem(item)"
+                          >
+                            Confirmo
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
 
-      <v-pagination
-        v-model="pagination.current"
-        :length="pagination.total"
-        @input="onPageChange"
-      />
+                    </v-dialog>
+                  </div>
+                </template>
 
-    </div>
+              </v-list>
+            </v-menu>
+          </template>
+
+        </v-data-table>
+      </v-card-text>
+
+      <v-card-actions>
+        <v-row justify="center">
+          <v-col 
+            class="my-0 py-0"
+            cols="10"
+          >
+            <v-container class="max-width">
+              <v-pagination
+                v-model="pagination.current"
+                :length="pagination.total"
+                @input="onPageChange"
+              />
+            </v-container>
+          </v-col>
+        </v-row>
+      </v-card-actions>
+    </v-card>
 
     <new-contact
       ref="newContact"
@@ -375,7 +386,6 @@ export default {
     getContacts () {
       this.isLoading = true
       this.selectedUsers = []
-      this.contacts = []
 
       const params = {
         searchtext : this.searchText,

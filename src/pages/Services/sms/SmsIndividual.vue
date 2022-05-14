@@ -10,13 +10,16 @@
       />
     </div>
 
-    <v-card>
-      <v-form
-        ref="form"
-        lazy-validation
+    <v-form
+      ref="form"
+      lazy-validation
+    >
+      <v-card
+        outlined
       >
-        <v-card-text>
+        <v-card-title>Mensaje</v-card-title>
 
+        <v-card-text>
           <Input-Individual-Phones 
             @onInputNewIndividualPhone="onInputNewIndividualPhone"
           />
@@ -27,26 +30,34 @@
             :errors="errors"
             @onChangeMessage="onChangeMessage"
           />
-          
-          <Options-Component 
-            :errors="errors"
-            @onChange="onChangeOptions"
-          />
-
         </v-card-text>
+      </v-card>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
+      <br>
+      
+      <Options-Component 
+        :errors="errors"
+        @onChange="onChangeOptions"
+      />
+
+      <v-card-actions>
+        <v-row
+          justify="center"
+        >
           <v-btn
-            text
-            color="primary"
+            class="my-2"
+            color="green"
+            dark
             @click="submit"
           >
+            <v-icon>
+              mdi-chevron-right
+            </v-icon>
             Siguiente paso
           </v-btn>
-        </v-card-actions>
-      </v-form>
-    </v-card>
+        </v-row>
+      </v-card-actions>
+    </v-form>
 
     <PreviewSmsComponent
       ref="dialogPreview"
@@ -62,6 +73,7 @@
 </template>
 
 <script>
+
 import OptionsComponent from './components/OptionsComponent.vue'
 import InputIndividualPhones from '@/components/common/InputIndividualPhones.vue'
 import BackendApi from '@/services/backend.service'

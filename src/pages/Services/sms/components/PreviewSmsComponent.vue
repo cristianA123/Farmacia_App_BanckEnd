@@ -8,14 +8,13 @@
       <v-card-title>
         Verifique los datos de su campaña:
         <v-spacer></v-spacer>
-        <v-btn text dense @click="show=false">Cerrar</v-btn>
+        <v-btn text @click="show=false">X</v-btn>
       </v-card-title>
-calculateMessageCredits
       <v-card-text>
 
         <div class="d-flex flex-column flex-grow-1">
           <div class="d-flex align-center pb-3">
-            <div style="background-image: url(http://localhost:8080/images/services/sms_preview.png); width: 250px; height: 450px; background-size: 100%;">
+            <div style="background-image: url(http://localhost:8080/images/services/sms_preview.png); width: 250px; height: 430px; background-size: 100%;">
               <div style="padding: 5px 25px; 25px  25px;"><div><span id="span_sms_text" style="background-color: rgb(230, 230, 235);text-align: left;padding: 5px 7px;margin: 100px 25px 25px 20px;border-radius: 10px;float: left;white-space: pre-wrap;font-size: 12px;color: black;">{{ messageComputed }} </span></div></div>
             </div>
             <div>
@@ -55,14 +54,14 @@ calculateMessageCredits
                       <td style="width:150px;"><strong>Créditos a usar (aprox):</strong></td>
                       <td>
                         
-                        <span><strong>{{ creditToUse }}</strong></span>
+                        <span><strong>{{ creditToUse | formatCurrency(configFormat) }}</strong></span>
                       </td>
                     </tr>
                     <tr>
                       <td style="width:150px;"><strong>Créditos disponibles:</strong></td>
                       <td>
                         
-                        <span><strong>{{ availableCredit }}</strong></span>
+                        <span><strong>{{ availableCredit| formatCurrency(configFormat) }}</strong></span>
                       </td>
                     </tr>
                   </table>
@@ -75,13 +74,13 @@ calculateMessageCredits
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
-          color="success"
+          color="green"
+          dark
           :loading="isBtnLoading"
           @click="submit"
         >
           <v-icon
             right
-            dark
           >
             mdi-send-outline
           </v-icon>
@@ -179,6 +178,16 @@ export default {
 
       return messageTemporal
 
+    },
+    configFormat: function () {
+      return {
+        decimalDigits: 0,
+        decimalSeparator: '.',
+        thousandsSeparator: ',',
+        currencySymbol: '',
+        currencySymbolNumberOfSpaces: 0,
+        currencySymbolPosition: 'left'
+      }
     },
     scheduled: function () {
       const a = moment(this.options.scheduled).format('lll')

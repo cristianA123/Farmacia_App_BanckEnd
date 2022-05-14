@@ -10,12 +10,15 @@
       />
     </div>
 
-    <v-card>
-      <v-form
-        ref="form"
-        lazy-validation
-        @submit.prevent="submit"
+    <v-form
+      ref="form"
+      lazy-validation
+      @submit.prevent="submit"
+    >
+      <v-card
+        outlined
       >
+        <v-card-title>Mensaje</v-card-title>
         <v-card-text>
           <v-text-field
             v-model="name"
@@ -62,25 +65,35 @@
             :errors="errors"
             @onChangeMessage="onChangeMessage"
           />
-
-          <Options-Component 
-            :errors="errors"
-            @onChange="onChangeOptions"
-          />
         </v-card-text>
+      </v-card>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
+      <br>
+      
+      <Options-Component 
+        :errors="errors"
+        @onChange="onChangeOptions"
+      />
+
+      <v-card-actions>
+        <v-row
+          justify="center"
+        >
           <v-btn
-            text
-            color="primary"
+            class="my-2"
+            color="green"
+            dark
             @click="submit"
           >
-            Enviar mensaje
+            <v-icon>
+              mdi-chevron-right
+            </v-icon>
+            Siguiente paso
           </v-btn>
-        </v-card-actions>
-      </v-form>
-    </v-card>
+        </v-row>
+      </v-card-actions>
+    </v-form>
+
     <PreviewSmsComponent
       ref="dialogPreview"
       :options="options" 

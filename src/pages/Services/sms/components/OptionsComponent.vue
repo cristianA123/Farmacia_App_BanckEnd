@@ -1,47 +1,48 @@
 <template>
-  <div>
-    <br>
-    <span>Opciones</span>
-    <v-divider></v-divider>
-    <br>
-    <v-switch
-      v-model="is_bidireccional"
-      class="ma-0 pa-0"
-      prepend-icon="mdi-swap-vertical"
-      label="Bidireccional"
-    />
+  <v-card
+    outlined
+  >
+    <v-card-title>Opciones</v-card-title>
+    
+    <v-card-text>
+      <v-switch
+        v-model="is_bidireccional"
+        class="ma-0 pa-0"
+        prepend-icon="mdi-swap-vertical"
+        label="Bidireccional"
+      />
 
-    <v-switch
-      v-model="is_push"
-      class="ma-0 pa-0"
-      prepend-icon="mdi-message-flash-outline"
-      label="Push"
-    />
-    <v-row>
-      <v-col
-        class="pt-0 mt-0"
-      >
-        <v-switch
-          v-model="is_scheduled"
-          class="ma-0 pa-0"
-          :error-messages="isValidsScheduled"
-          prepend-icon="mdi-clock-outline"
-          label="Agendado"
-        />
-      </v-col>
-      <v-col
-        style="margin-top: -20px !important; padding-bottom: 0; padding-top: 0; "
-      >
-        <Date-Time-Picker 
-          v-if="is_scheduled"
-          v-model="scheduled"
-          class="ma-0 pa-0 pl-3"
-          label="Seleccione fecha y hora de lanzamiento" 
-        />
-      </v-col>
-    </v-row>
-
-  </div>
+      <v-switch
+        v-model="is_push"
+        class="ma-0 pa-0"
+        prepend-icon="mdi-message-flash-outline"
+        label="Push"
+      />
+      <v-row>
+        <v-col
+          class="pt-0 mt-0"
+        >
+          <v-switch
+            v-model="is_scheduled"
+            class="ma-0 pa-0"
+            :error-messages="isValidsScheduled"
+            prepend-icon="mdi-clock-outline"
+            label="Agendado"
+          />
+        </v-col>
+        <v-col
+          style="margin-top: -20px !important; padding-bottom: 0; padding-top: 0; "
+        >
+          <Date-Time-Picker 
+            v-if="is_scheduled"
+            v-model="scheduled"
+            class="ma-0 pa-0 pl-3"
+            label="Seleccione fecha y hora de lanzamiento" 
+          />
+        </v-col>
+      </v-row>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>

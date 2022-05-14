@@ -71,12 +71,13 @@
             class="ma-2"
             text-color="white"
             small
+            dark
           >
             Procesando
           </v-chip>
 
           <v-chip
-            v-if="item.status === 3"
+            v-if="item.status === 4"
             class="ma-2"
             color="orange"
             text-color="white"
