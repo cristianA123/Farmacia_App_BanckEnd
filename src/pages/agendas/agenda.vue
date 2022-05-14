@@ -127,84 +127,84 @@
 </template>
 
 <script>
-import newAgenda from "./components/newAgenda";
-import BackendApi from "@/services/backend.service";
-import EmptyItems from "@/components/common/EmptyItems";
+import newAgenda from './components/newAgenda'
+import BackendApi from '@/services/backend.service'
+import EmptyItems from '@/components/common/EmptyItems'
 
 export default {
   components: {
     newAgenda,
-    EmptyItems,
+    EmptyItems
   },
   data() {
     return {
       headers: [
-        { text: "Nombre", value: "name" },
-        { text: "Contactos", value: "all_contacts" },
-        { text: "Entregabilidad", value: "deliverability" },
-        { text: "Estado", value: "status" },
-        { text: "Última modificación", value: "updated_at" },
-        { text: "Acciones", value: "actions" },
+        { text: 'Nombre', value: 'name' },
+        { text: 'Contactos', value: 'all_contacts' },
+        { text: 'Entregabilidad', value: 'deliverability' },
+        { text: 'Estado', value: 'status' },
+        { text: 'Última modificación', value: 'updated_at' },
+        { text: 'Acciones', value: 'actions' }
       ],
       items: [],
       dialogConfirm: false,
-      isLoading: false,
-    };
+      isLoading: false
+    }
   },
   computed: {
     itemsEmpty: function () {
-      return this.items.length === 0 ? true : false;
-    },
+      return this.items.length === 0 ? true : false
+    }
   },
   mounted() {
-    this.getAgendas();
+    this.getAgendas()
   },
   methods: {
     getAgendas() {
-      this.isLoading = false;
-      BackendApi.get("/agenda")
+      this.isLoading = false
+      BackendApi.get('/agenda')
         .then((response) => {
-          this.isLoading = false;
+          this.isLoading = false
           if (response.data.success) {
-            this.items = response.data.data;
-            console.log(this.items);
+            this.items = response.data.data
+            console.log(this.items)
           } else {
-            this.$store.dispatch("app/showToast", response.data.message);
+            this.$store.dispatch('app/showToast', response.data.message)
           }
         })
         .catch((error) => {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
     openNewAgenda(agenda) {
-      this.$refs.newAgenda.open(agenda);
+      this.$refs.newAgenda.open(agenda)
     },
     confirmDelete(agenda) {
-      this.deleteItem(agenda);
+      this.deleteItem(agenda)
     },
     deleteItem(agenda) {
-      BackendApi.delete("/agenda/" + agenda.id).then((response) => {
+      BackendApi.delete('/agenda/' + agenda.id).then((response) => {
         if (response.data.success) {
           this.$store.dispatch(
-            "app/showToast",
-            "Agenda eliminada exitosamente"
-          );
-          this.dialogConfirm = false;
-          this.getAgendas();
+            'app/showToast',
+            'Agenda eliminada exitosamente'
+          )
+          this.dialogConfirm = false
+          this.getAgendas()
         } else {
-          this.$store.dispatch("app/showToast", response.data.message);
+          this.$store.dispatch('app/showToast', response.data.message)
         }
-      });
+      })
     },
     manage(agenda) {
       this.$router.push({
-        path: "/tools/agendas/" + agenda.id + "/contacts",
-        params: { agenda: agenda },
-      });
+        path: '/tools/agendas/' + agenda.id + '/contacts',
+        params: { agenda: agenda }
+      })
     },
     onCreated() {
-      this.getAgendas();
-    },
-  },
-};
+      this.getAgendas()
+    }
+  }
+}
 </script>

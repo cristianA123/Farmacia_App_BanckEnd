@@ -1,4 +1,4 @@
-import axios from 'axios'
+import backendApi from '@/services/backend.service'
 import store from '../../store'
 import router from '../../router'
 
@@ -23,7 +23,7 @@ export default {
     login ({ commit }, user) {
       commit('setLoadingAuth', true)
       
-      axios.post('/login', {
+      backendApi.post('/login', {
         email: user.email,
         password: user.password
       }).then((response) => {
