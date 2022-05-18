@@ -21,12 +21,17 @@
         hide-default-footer 
         class="elevation-1"
       ></v-data-table>
-        
-      <v-pagination
-        v-model="pagination.current"
-        :length="pagination.total"
-        @input="onPageChange"
-      ></v-pagination>
+
+      <v-col>
+        <v-row>
+          <v-pagination
+            v-model="pagination.current"
+            :length="pagination.total"
+            @input="onPageChange"
+          ></v-pagination>
+        </v-row>
+      </v-col>
+
     </v-card>
   </div>
 
