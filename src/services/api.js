@@ -7,10 +7,8 @@ const config = {
 }
 
 if (process.env.NODE_ENV === 'production') { 
-  config.baseURL = 'ec2-54-187-23-87.us-west-2.compute.amazonaws.com:9000/web-api'
+  config.baseURL = process.env.VUE_APP_BACKEND_ENDPOINT
 }
-
-console.log(process.env)
 
 const instance = axios.create(config)
 
