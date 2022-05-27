@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import DatetimePicker from 'vuetify-datetime-picker'
+import VueClipboard from 'vue-clipboard2'
 
 // VUEX - https://vuex.vuejs.org/
 import store from './store'
@@ -46,6 +47,7 @@ import vueDebounce from 'vue-debounce'
 Vue.use(vueDebounce)
 Vue.use(VueCookies)
 Vue.use(DatetimePicker)
+Vue.use(VueClipboard)
 
 // Set this to false to prevent the production tip on Vue startup.
 Vue.config.productionTip = false

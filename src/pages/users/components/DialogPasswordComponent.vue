@@ -9,7 +9,7 @@
         Contraseña generada
       </v-card-title>
       <v-card-text>
-        <p>Usuario: Holis</p>
+        <p>Usuario: {{ email }}</p>
         <p>Contraseña: {{ password }}</p>
       </v-card-text>
       <v-card-actions>
@@ -26,7 +26,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -43,6 +42,11 @@ export default {
     },
     onOk() {
       this.$emit('onOk')
+    },
+    doCopy(text) {
+      this.$copyText(text).then((e) => {
+        console.log(e)
+      })
     }
   }
 }

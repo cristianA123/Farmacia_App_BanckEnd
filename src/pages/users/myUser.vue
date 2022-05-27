@@ -129,7 +129,6 @@ export default {
   methods: {
     myUser() {
       BackendApi.get('/myUser').then((response) => {
-        console.log(response)
         response.data.success ? this.data = response.data.data : this.$store.dispatch('app/showToast', response.data.message)
       })
     }

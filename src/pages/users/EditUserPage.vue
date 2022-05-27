@@ -100,7 +100,7 @@
                       </v-card>
                     </v-col>
 
-                    <v-col>
+<!--                     <v-col>
                       <v-card
                         outlined
                       >
@@ -114,7 +114,7 @@
                           </v-btn>
                         </v-card-text>
                       </v-card>
-                    </v-col>
+                    </v-col> -->
                   </v-row>
 
                   <div class="d-flex">
@@ -276,7 +276,6 @@ export default {
         if (response.data.success) {
           this.user = response.data.data
           this.services = response.data.data.father_services
-          this.$store.dispatch('app/showToast', response.data.message)
         }
       })
     },
@@ -299,7 +298,6 @@ export default {
           BackendApi.post('/user', payload).then((response) => {
             if (response.data.success) {
               this.isLoading = false
-              this.$store.dispatch('app/showToast', response.data.message)
               this.$router.push({ name: 'users' })
             }
           }).catch((error) => {
@@ -314,8 +312,8 @@ export default {
             .then((response) => {
               if (response.data.success) {
                 this.isLoading = false
-                this.$store.dispatch('app/showToast', response.data.message)
-                this.$refs.dialogPassword.open(response.data.data.userPassword)
+                console.log(response.data.data)
+                this.$refs.dialogPassword.open(response.data.data.email, response.data.data.userPassword)
               }
             })
             .catch((error) => {
