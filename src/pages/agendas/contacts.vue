@@ -112,9 +112,9 @@
 
         <template v-slot:top>
           <v-text-field
-            class="pa-2"
             v-model="searchText"
             v-debounce:250="getContacts"
+            class="pa-2"
             append-icon="mdi-magnify"
             dense
             clearable
@@ -125,9 +125,9 @@
 
         <template v-slot:top>
           <v-text-field
-            class="pa-2"
             v-model="searchText"
             v-debounce:250="getContacts"
+            class="pa-2"
             append-icon="mdi-magnify"
             dense
             clearable
@@ -179,11 +179,11 @@
           </v-row>
         </template>
 
-        <template v-slot:item.id="{ item }">
+        <template v-slot:[`item.id`]="{ item }">
           <div class="font-weight-bold"># <copy-label :text="item.id + ''" /></div>
         </template>
 
-        <template v-slot:item.is_valid="{ item }">
+        <template v-slot:[`item.is_valid`]="{ item }">
           <v-chip
             v-if="item.is_valid === 1"
             color="green"
@@ -202,15 +202,15 @@
           </v-chip>
         </template>
         
-        <template v-slot:item.actions="{ item }">
+        <template v-slot:[`item.actions`]="{ item }">
           <v-menu
             offset-y
           >
             <template v-slot:activator="{ attrs, on }">
               <v-btn
+                text
                 v-bind="attrs"
                 v-on="on"
-                text
               >
                 Acciones
               </v-btn>
@@ -218,14 +218,14 @@
 
             <v-list>
               <v-list-item
-                @click="detalle(item)"
                 link
+                @click="detalle(item)"
               >
                 Ver detalle
               </v-list-item>
               <v-list-item
-                @click="openNewContact(item)"
                 link
+                @click="openNewContact(item)"
               >
                 Modificar
               </v-list-item>
@@ -239,9 +239,9 @@
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <v-list-item
-                        v-on="on"
-                        v-bind="attrs"
                         link
+                        v-bind="attrs"
+                        v-on="on"
                       >
                         Eliminar
                       </v-list-item>
@@ -300,9 +300,9 @@
     </v-card>
 
     <new-contact
-      ref="newContact"
-      :agendaId="$route.params.agendaId"
-      @onCreated="onCreated" 
+      ref="newContact"  
+      :agenda-id="$route.params.agendaId" 
+      @onCreated="onCreated"
     />
 
     <new-contacts-from-excel
