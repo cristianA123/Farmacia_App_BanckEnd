@@ -83,7 +83,10 @@
                 Modificar
               </v-btn>
               <v-spacer></v-spacer>
-              <v-btn icon>
+              <v-btn 
+                icon
+                @click="openView(item.thumbnail)"
+              >
                 <v-icon>mdi-eye</v-icon>
               </v-btn>
               <v-btn icon>
@@ -93,7 +96,6 @@
           </v-card>
         </v-col>
       </v-row>
-
     </v-col>
     
     <DialogUploadComponent
@@ -141,6 +143,9 @@ export default {
     this.getBuckets()
   },
   methods: {
+    openView (url) {
+      window.open(url)
+    },
     openDialogUpload(item) {
       this.$refs.dialogUpload.open(item)
     },

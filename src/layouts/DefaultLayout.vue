@@ -57,7 +57,7 @@
       <v-footer app inset>
         <v-spacer></v-spacer>
         <div class="overline">
-          Enviamas 2021
+          Enviamas 2022
         </div>
       </v-footer>
     </v-main>
