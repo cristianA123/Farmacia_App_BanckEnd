@@ -20,11 +20,6 @@ export default [{
   component: () => import('@/pages/Files/files.vue')
 },
 {
-  path: '/tools/filescloud/:file',
-  name: 'show file',
-  component: () => import('@/components/common/ShowFile.vue')
-},
-{
   path: '/tools/shorturl',
   name: 'short-url',
   component: () => import('@/pages/Urls/url.vue')

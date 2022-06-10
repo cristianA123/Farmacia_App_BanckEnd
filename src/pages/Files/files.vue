@@ -70,8 +70,8 @@
                 </tr>
                 <tr>
                   <td>Link:</td>
-                  <!-- <td>{{ item.long_url.length > 25 ? item.long_url.substring(0,25) + '...' : item.long_url }} </td> -->
-                  <td>{{ item.short_url }} </td>
+                  <td>{{ item.long_url.length > 25 ? item.long_url.substring(0,25) + '...' : item.long_url }} </td>
+                  <!-- <td>{{ item.short_url }} </td> -->
                 </tr>
               </table>
             </v-card-text>
@@ -92,12 +92,10 @@
                     @click="ShowFile(item)"
                   >
                     <v-icon>mdi-eye</v-icon>
-                    <a 
-                      id="nose" 
-                      ref="linkFile" 
+                    <a  
+                      :id="item.id" 
                       :href="item.long_url" 
                       target="_blank"
-                      v-on="on" 
                     ></a>
                   </v-btn>
                 </template>
@@ -184,11 +182,7 @@ export default {
       this.getBuckets()
     },
     ShowFile (item) {
-      document.getElementById('nose').click()
-      // this.$refs.linkFile.click()
-      console.log(item.long_url)
-      // location.href('https://www.youtube.com/watch?v=PKnr2uNAlMk')
-      // this.$router.push('https://www.youtube.com/watch?v=PKnr2uNAlMk') 
+      document.getElementById(item.id).click()
     },
     copyLink (item) {
       navigator.clipboard.writeText(item.long_url)
