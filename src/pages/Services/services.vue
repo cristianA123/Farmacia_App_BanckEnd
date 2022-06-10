@@ -16,7 +16,7 @@
           :key="service.id"
           class="pl-0"
           cols="12"
-          sm="12"
+          sm="6"
           md="6"
           lg="3"
         >
