@@ -78,7 +78,7 @@
                   <v-select
                     v-model="editedItem.provider_id"
                     :error-messages="isValidProvider_id"
-                    label="Proveedor"
+                    label="Seleccione proveedor"
                     solo
                     dense
                     hide-details
@@ -147,6 +147,7 @@
             <v-btn
               color="blue darken-1"
               text
+              :loading="isLoading"
               @click="save"
             >
               Save
@@ -161,9 +162,9 @@
         :headers="headers"
         :items="items"
         class="flex-grow-1"
-        :loading = "isLoading"
+        :loading="isLoading"
       >
-        <template v-slot:item.actions="{ item }">
+        <template v-slot:[`item.actions`]="{ item }">
           <v-icon
             small
             class="mr-2"
@@ -199,6 +200,7 @@ export default {
       'Last year'
     ],
     isLoading: false,
+    btnLoading: false,
     dialog: false,
     dialogDelete: false,
     itemSelected: 0,
@@ -220,24 +222,24 @@ export default {
     editedItem: {
       name: '',
       description: '',
-      price:0,
+      price:1,
       api_Key: '',
       sender: '',
       authorization: '',
       var1: '',
       var2: '',
-      provider_id: 0
+      provider_id: null
     },
     defaultItem: {
       name: '',
       description: '',
-      price:0,
+      price:1,
       api_Key: '',
       sender: '',
       authorization: '',
       var1: '',
       var2: '',
-      provider_id: 0
+      provider_id: null
     }
   }),
 
@@ -246,22 +248,22 @@ export default {
       return this.editedIndex === -1 ? 'Nuevo ruta de proveedor' : 'Editar ruta de proveedor'
     },
     isValidName () {
-      return this,this.backendErrors.name === undefined ? '' : this.backendErrors.name[0]
+      return this.backendErrors?.name === undefined ? '' : this.backendErrors?.name[0]
     },
     isValidPrice () {
-      return this,this.backendErrors.price === undefined ? '' : this.backendErrors.price[0]
+      return this.backendErrors?.price === undefined ? '' : this.backendErrors.price[0]
     },
     isValidApi_Key () {
-      return this,this.backendErrors.api_Key === undefined ? '' : this.backendErrors.api_Key[0]
+      return this.backendErrors?.api_Key === undefined ? '' : this.backendErrors.api_Key[0]
     },
     isValidAuthorization () {
-      return this,this.backendErrors.authorization === undefined ? '' : this.backendErrors.authorization[0]
+      return this.backendErrors?.authorization === undefined ? '' : this.backendErrors.authorization[0]
     },
     isValidSender () {
-      return this,this.backendErrors.sender === undefined ? '' : this.backendErrors.sender[0]
+      return this.backendErrors?.sender === undefined ? '' : this.backendErrors.sender[0]
     },
     isValidProvider_id () {
-      return this,this.backendErrors.provider_id === undefined ? '' : this.backendErrors.provider_id[0]
+      return this.backendErrors?.provider_id === undefined ? '' : this.backendErrors.provider_id[0]
     }
   },
 
@@ -285,7 +287,7 @@ export default {
         if (response.data.success) {
           this.items = response.data.data
         } else {
-          this.$store.dispatch('app/showToast', response.data.message)
+          // this.$store.dispatch('app/showToast', response.data.message)
         }
         this.isLoading = false
       })
@@ -295,7 +297,7 @@ export default {
         if (response.data.success) {
           this.intervals = response.data.data
         } else {
-          this.$store.dispatch('app/showToast', response.data.message)
+          // this.$store.dispatch('app/showToast', response.data.message)
         }
         this.isLoading = false
       })
@@ -317,7 +319,7 @@ export default {
     },
     
     save () {
-      this.isLoading = true
+      this.btnLoading = true
       const payload =  this.editedItem
 
       if (this.editedIndex > -1) {
@@ -328,9 +330,11 @@ export default {
               this.initialize()
             }
             this.close()
-            this.isLoading = false
+            this.btnLoading = false
           })
           .catch( (error) => {
+            // this.close()
+            this.btnLoading = false
             this.backendErrors = error.response.data.errors
           })
       } else {
@@ -340,13 +344,15 @@ export default {
               this.items = response.data.data
               this.initialize()
             }
-            this.isLoading = false
+            this.btnLoading = false
             this.close()
 
           })
           .catch( (error) => {
             this.backendErrors = error.response.data.errors
-            console.log(error) 
+            console.log(error)
+            this.btnLoading = false
+            // this.close() 
           })
       }
     }
