@@ -15,58 +15,60 @@
         <div class="d-flex flex-column flex-grow-1">
           <div class="d-flex align-center pb-3">
             <div class="phone_preview">
-              <div style="padding: 5px 25px; 25px  25px;"><div><span id="span_sms_text" style="background-color: rgb(230, 230, 235);text-align: left;padding: 5px 7px;margin: 100px 25px 25px 20px;border-radius: 10px;float: left;white-space: pre-wrap;font-size: 12px;color: black;">{{ messageComputed }} </span></div></div>
-            </div>
-            <div>
-              <v-card
-                outlined 
-                class="pa-2"
-                max-width="300px"
-              >
-                <v-card-title>Resumen:</v-card-title>
-                <v-card-text>
-                  <table>
-                    <tr>
-                      <td style="width:150px;">Push:</td>
-                      <td>
-                        <v-icon v-if="options.is_push">mdi-check</v-icon>
-                        <span v-else>NO</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Bidireccional:</td>
-                      <td>
-                        <v-icon v-if="options.is_bidireccional">mdi-check</v-icon>
-                        <span v-else>NO</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Agendado:</td>
-                      <td>
-                        <span v-if="options.scheduled !== null">{{ scheduled }}</span>
-                        <span v-else>NO</span>
-                      </td>
-                    </tr>
-                  </table>
-                  <v-divider></v-divider>
-                  <table>
-                    <tr>
-                      <td style="width:150px;"><strong>Créditos a usar (aprox):</strong></td>
-                      <td>
-                        
-                        <span><strong>{{ creditToUse | formatCurrency(configFormat) }}</strong></span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="width:150px;"><strong>Créditos disponibles:</strong></td>
-                      <td>
-                        
-                        <span><strong>{{ availableCredit| formatCurrency(configFormat) }}</strong></span>
-                      </td>
-                    </tr>
-                  </table>
-                </v-card-text>
-              </v-card>
+              <div style="background-image: url(http://ec2-54-186-135-155.us-west-2.compute.amazonaws.com/images/services/sms_preview.png); width: 250px; height: 430px; background-size: 100%;">
+                <div style="padding: 5px 25px; 25px  25px;"><div><span id="span_sms_text" style="background-color: rgb(230, 230, 235);text-align: left;padding: 5px 7px;margin: 100px 25px 25px 20px;border-radius: 10px;float: left;white-space: pre-wrap;font-size: 12px;color: black;">{{ messageComputed }} </span></div></div>
+              </div>
+              <div>
+                <v-card
+                  outlined 
+                  class="pa-2"
+                  max-width="300px"
+                >
+                  <v-card-title>Resumen:</v-card-title>
+                  <v-card-text>
+                    <table>
+                      <tr>
+                        <td style="width:150px;">Push:</td>
+                        <td>
+                          <v-icon v-if="options.is_push">mdi-check</v-icon>
+                          <span v-else>NO</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Bidireccional:</td>
+                        <td>
+                          <v-icon v-if="options.is_bidireccional">mdi-check</v-icon>
+                          <span v-else>NO</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Agendado:</td>
+                        <td>
+                          <span v-if="options.scheduled !== null">{{ scheduled }}</span>
+                          <span v-else>NO</span>
+                        </td>
+                      </tr>
+                    </table>
+                    <v-divider></v-divider>
+                    <table>
+                      <tr>
+                        <td style="width:150px;"><strong>Créditos a usar (aprox):</strong></td>
+                        <td>
+                          
+                          <span><strong>{{ creditToUse | formatCurrency(configFormat) }}</strong></span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="width:150px;"><strong>Créditos disponibles:</strong></td>
+                        <td>
+                          
+                          <span><strong>{{ availableCredit| formatCurrency(configFormat) }}</strong></span>
+                        </td>
+                      </tr>
+                    </table>
+                  </v-card-text>
+                </v-card>
+              </div>
             </div>
           </div>
         </div>

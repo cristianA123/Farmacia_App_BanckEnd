@@ -93,8 +93,8 @@
 
             <v-list>
               <v-list-item
-                @click="updateUser(item.id)"
                 link
+                @click="updateUser(item.id)"
               >
                 Modificar
               </v-list-item>
@@ -103,8 +103,8 @@
               v-if="item.status"
             >
               <v-list-item
-                @click="confirmDisabled(item)"
                 link
+                @click="confirmDisabled(item)"
               >
                 Deshabilitar
               </v-list-item>
@@ -113,16 +113,18 @@
               v-else
             >
               <v-list-item
-                @click="confirmEnabled(item)"
                 link
+                @click="confirmEnabled(item)"
               >
                 Habilitar
               </v-list-item>
             </v-list>
-            <v-list>
+            <v-list
+              v-if="isAdmin"
+            >
               <v-list-item
-                @click="confirmLoginUser(item)"
                 link
+                @click="confirmLoginUser(item)"
               >
                 Iniciar sesión
               </v-list-item>
@@ -249,6 +251,9 @@ export default {
     },
     isValidPassword () {
       return this.erros.password === undefined ? '' : this.erros.password
+    },
+    isAdmin () {
+      return $cookies.get('user').isAdmin
     }
   },
   mounted() {

@@ -19,7 +19,8 @@
       </template>
 
       <!-- Navigation menu -->
-      <main-menu :menu="navigation.menu" />
+      <!-- <main-menu :menu="navigation.menu" /> -->
+      <main-menu :menu="validateRole" />
 
     </v-navigation-drawer>
 
@@ -90,7 +91,15 @@ export default {
     }
   },
   computed: {
-    ...mapState('app', ['product', 'isContentBoxed', 'menuTheme', 'toolbarTheme', 'isToolbarDetached'])
+    ...mapState('app', ['product', 'isContentBoxed', 'menuTheme', 'toolbarTheme', 'isToolbarDetached']),
+    validateRole () {
+      return ($cookies.get('user').isAdmin) ? config.navigation.menu : this.filternavigation()
+    }
+  },
+  methods: {
+    filternavigation () {
+      return config.navigation.menu.filter( (e) => e.text !== 'Canales')
+    }
   }
 }
 </script>

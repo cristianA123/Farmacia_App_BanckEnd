@@ -32,8 +32,14 @@
       
         <template v-slot:item.name="{ item }">
           {{ item.name }}
-          <br>
-          {{ item.service }}
+          <v-chip
+            class="ma-2"
+            outlined
+            x-small
+          >
+            {{ item.service }}
+          </v-chip>
+          
         </template>
 
         <template v-slot:item.status="{ item }">
