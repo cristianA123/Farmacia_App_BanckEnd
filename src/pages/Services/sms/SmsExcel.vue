@@ -6,7 +6,7 @@
       </div>
       <v-spacer></v-spacer>
       <BackPage 
-        to="create-campaing-sms"
+        to="services"
       />
     </div>
 
@@ -111,11 +111,11 @@
       ref="dialogPreview"
       :options="options" 
       :message="message"
-      :isExcel="true"
-      :exampleContact="exampleExelComputed"
-      :isBtnLoading="isBtnLoading"
-      :creditToUse="creditToUse"
-      :availableCredit="availableCredit"
+      :is-excel="true"
+      :example-contact="exampleExelComputed"
+      :is-btn-loading="isBtnLoading"
+      :credit-to-use="creditToUse"
+      :available-credit="availableCredit"
       @onPreviewSmsSubmit="PreviewSmsSubmit"
     />
 

@@ -12,27 +12,15 @@
     >
       <v-row>
         <v-col
-          v-for="service in services"
+          v-for="(service ) in services"
           :key="service.id"
           class="pl-0"
           cols="12"
-          sm="12"
+          sm="6"
+          md="6"
           lg="3"
         >
-          <v-card
-            :color="selectedService == service.id ? 'success' : null"
-            elevation="24"
-            @click="selectServie(service)"
-          >
-            <v-card-title
-              :class="{ 'white-text': selectedService == service.id ? true : false }"
-            >
-              {{ service.name }}
-            </v-card-title>
-            <v-card-text>
-              <v-icon style="font-size: 90px;" :class="{ 'white-text': selectedService == service.id ? true : false }">{{ service.icon }}</v-icon>
-            </v-card-text>
-          </v-card>
+          <CardComponent :title="service.name" :img="service.icon" :descripcion="descriptionOfServices[service.service_id - 1]" :types-campaing="typesCampaing[service.service_id - 1]"></CardComponent>
         </v-col>
       </v-row>
     </v-col>
@@ -42,8 +30,12 @@
 
 <script>
 import BackendApi from '@/services/backend.service'
+import CardComponent from './components/CardComponent.vue'
 
 export default {
+  components: {
+    CardComponent
+  },
   data() {
     return {
       breadcrumbs: [{
@@ -52,8 +44,50 @@ export default {
         to: '/services'
       }],
       services: [],
+      descriptionOfServices: ['160 Caracteres = ~1 crédito', '10 Segundos = ~1 crédito'],
       selectedService: null,
-      options: null
+      typesCampaing: [
+        [
+          {
+            name: 'Individual',
+            icon: 'mdi-cellphone-text',
+            description: 'Ingresa manualmente los destinatarios',
+            path: 'sms-individual'
+          },
+          {
+            name: 'Desde Excel',
+            icon: 'mdi-file-excel-box-outline',
+            description: 'Suba un archivo Excel',
+            path: 'sms-excel'
+          },
+          {
+            name: 'Desde Agendas',
+            icon: 'mdi-contacts-outline',
+            description: 'Utiliza una de tus agendas de contactos',
+            path: 'sms-agendas'
+          }
+        ],
+        [
+          {
+            name: 'Individual',
+            icon: 'mdi-cellphone-text',
+            description: 'Ingresa manualmente los destinatarios',
+            path: 'ivr-individual'
+          },  
+          {
+            name: 'Desde Excel',
+            icon: 'mdi-file-excel-box-outline',
+            description: 'Suba un archivo Excel',
+            path: 'ivr-excel'
+          },
+          {
+            name: 'Desde Agendas',
+            icon: 'mdi-contacts-outline',
+            description: 'Utiliza una de tus agendas de contactos',
+            path: 'ivr-agendas'
+          }
+        ]
+      ]
     }
   },
   mounted() {

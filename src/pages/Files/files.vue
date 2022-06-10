@@ -70,28 +70,50 @@
                 </tr>
                 <tr>
                   <td>Link:</td>
-                  <td>{{ item.short_url }}</td>
+                  <td>{{ item.long_url.length > 25 ? item.long_url.substring(0,25) + '...' : item.long_url }} </td>
+                  <!-- <td>{{ item.short_url }} </td> -->
                 </tr>
               </table>
             </v-card-text>
             <v-card-actions>
               <v-btn
-                text
+                icon
                 color="deep-purple accent-4"
                 @click="openDialogUpload(item)"
               >
-                Modificar
+                <v-icon>mdi-pencil</v-icon>
               </v-btn>
               <v-spacer></v-spacer>
-              <v-btn 
-                icon
-                @click="openView(item.thumbnail)"
-              >
-                <v-icon>mdi-eye</v-icon>
-              </v-btn>
-              <v-btn icon>
-                <v-icon>mdi-content-copy</v-icon>
-              </v-btn>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    icon
+                    v-on="on"
+                    @click="ShowFile(item)"
+                  >
+                    <v-icon>mdi-eye</v-icon>
+                    <a  
+                      :id="item.id" 
+                      :href="item.long_url" 
+                      target="_blank"
+                    ></a>
+                  </v-btn>
+                </template>
+                <span>Ver archivo</span>
+              </v-tooltip>
+
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    icon
+                    v-on="on"
+                    @click="copyLink(item)"
+                  >
+                    <v-icon>mdi-content-copy</v-icon>
+                  </v-btn>
+                </template>
+                <span>Copiar Link</span>
+              </v-tooltip>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -160,6 +182,12 @@ export default {
     },
     diaglogUploadFinish() {
       this.getBuckets()
+    },
+    ShowFile (item) {
+      document.getElementById(item.id).click()
+    },
+    copyLink (item) {
+      navigator.clipboard.writeText(item.long_url)
     }
   }
 }

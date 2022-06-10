@@ -6,7 +6,7 @@
       </div>
       <v-spacer></v-spacer>
       <BackPage 
-        to="create-campaing-sms"
+        to="services"
       />
     </div>
 
@@ -63,9 +63,9 @@
       ref="dialogPreview"
       :options="options" 
       :message="message"
-      :creditToUse="creditToUse"
-      :isBtnLoading="isBtnLoading"
-      :availableCredit="availableCredit"
+      :credit-to-use="creditToUse"
+      :is-btn-loading="isBtnLoading"
+      :available-credit="availableCredit"
       @onPreviewSmsSubmit="PreviewSmsSubmit"
     />
 
@@ -178,12 +178,20 @@ export default {
       BackendApi.post('/campaign', payload)
         .then((response) => {
           if (response.data.success) {
-            this.$store.dispatch('app/showToast', response.data.message)
+            this.$store.dispatch('app/showSuccess', response.data.message)
             this.$router.push({ name:  'reports' })
           }
         })
         .catch((error) => {
           this.errors = error.response.data.errors
+          console.log( error.response.data)
+          const badRequest = {
+            error :{
+              message:  error.response.data.message
+            }
+          }
+          
+          this.$store.dispatch('app/showError', badRequest)
           console.log('salio el error')
           console.log(error)
         })
