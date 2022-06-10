@@ -5,7 +5,7 @@ export default [{
   meta: {
     layout: 'auth'
   }
-}, 
+},
 {
   path: '/error/not-found',
   name: 'error-not-found',
@@ -13,29 +13,35 @@ export default [{
   meta: {
     layout: 'error'
   }
-}, 
+},
 {
   path: '/tools/filescloud',
   name: 'files-cloud',
-  component: () => import( '@/pages/Files/files.vue')
-}, {
+  component: () => import('@/pages/Files/files.vue')
+},
+{
+  path: '/tools/filescloud/:file',
+  name: 'show file',
+  component: () => import('@/components/common/ShowFile.vue')
+},
+{
   path: '/tools/shorturl',
   name: 'short-url',
-  component: () => import( '@/pages/Urls/url.vue')
-}, 
+  component: () => import('@/pages/Urls/url.vue')
+},
 {
   path: '/tools/agendas',
   name: 'agendas',
-  component: () => import( '@/pages/Agendas/agenda.vue')
-}, 
+  component: () => import('@/pages/Agendas/agenda.vue')
+},
 {
   path: '/tools/agendas/:agendaId/contacts',
   name: 'contacts',
-  component: () => import( '@/pages/Agendas/contacts.vue'),
+  component: () => import('@/pages/Agendas/contacts.vue'),
   props: true
-}, 
+},
 {
   path: '/channels/vendors',
   name: 'channels-vendors',
-  component: () => import( '@/pages/Channels/channels.vue')
+  component: () => import('@/pages/Channels/channels.vue')
 }]
