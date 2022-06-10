@@ -56,19 +56,6 @@
 
     </v-hover>
 
-    <!-- <div
-      class="content-btns"
-    >
-      <button
-        v-for="typeCampaing in typesCampaing"
-        :key="typeCampaing.name"
-        class="primer-btn"
-        outlined
-        @click="$router.push({ name: typeCampaing.path })"
-      >{{ typeCampaing.name }}
-      </button>
-    </div> -->
-
   </div>
 </template>
 
@@ -108,11 +95,18 @@ export default {
 </script>
 
 <style>
+.v-card__text{
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: 16px;
+  padding-top: 16px;
+}
+
 .v-card--reveal {
   align-items: center;
   bottom: 0;
+  padding-left: 0;
   justify-content: center;
-  /* opacity: 0.5; */
   position: absolute;
   background: #e29056c5;
   width: 100%;
@@ -121,70 +115,15 @@ export default {
 
 .btn-active{
   color: #fff;
-  /* padding-bottom: 5px; */
-  /* background: #E29156; */
   font-weight: 700;
   font-size: 0.875rem;
-  /* opacity: 1.0 !important; */
   border-radius: 5px;
   border: 1px solid #FFFFFF;
 }
 
 .btn-active:hover{
   color: #E29156;
-  /* opacity: 1 !important; */
   background: #FFFFFF;
-}
-
-.contenedor-padre {
-  position: relative;
-
-}
-
-.contenedor-padre:hover .content-btns {
-  visibility: visible;
-  background: #e29056b4;
-  border-radius: 6px;
-
-}
-
-.primer-btn {
-  color: #fff;
-  padding: 5px;
-  padding-bottom: 5px;
-  /* background: #e29056b4; */
-  font-weight: 700;
-  font-size: 0.875rem;
-  opacity: 1.0 !important;
-  border-radius: 5px;
-  border: 1px solid #FFFFFF;
-}
-
-.primer-btn:hover {
-  color: #e29056b4;
-  opacity: 1 !important;
-  background: #FFFFFF;
-}
-
-.content-btns {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  align-items: flex-end;
-  visibility: hidden;
-  position: absolute;
-  z-index: 20;
-  top: 0;
-  right: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  padding-right: 20px;
-}
-
-.carta {
-position: relative;
 }
 
 </style>
