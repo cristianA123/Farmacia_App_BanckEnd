@@ -24,7 +24,7 @@
         <v-card-text
           class="d-flex justify-center align-center "
         >
-          160 Caracteres = ~1 crédito
+          {{ descripcion }}
         </v-card-text>
 
         <v-expand-transition>
@@ -69,7 +69,11 @@ export default {
     },
     img: {
       type: String,
-      default: 'http://localhost:8080/images/services/img_canal_email.png'
+      default: 'https://cdn.discordapp.com/attachments/783095481227935744/984848205038645328/img_canal_email.png'
+    }, 
+    descripcion: {
+      type: String,
+      default: '160 Caracteres = ~1 crédito'
     },
     typesCampaing: {
       type: Array,

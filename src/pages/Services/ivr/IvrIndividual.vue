@@ -6,7 +6,7 @@
       </div>
       <v-spacer></v-spacer>
       <BackPage 
-        to="create-campaing-ivr"
+        to="services"
       />
     </div>
 
