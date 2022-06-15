@@ -12,51 +12,57 @@
 
     <v-form
       ref="form"
+      @submit.prevent="submit"
       lazy-validation
     >
       <v-card
         outlined
       >
-        <v-card-title>Mensaje</v-card-title>
-
         <v-card-text>
-          <Input-Individual-Phones 
-            @onInputNewIndividualPhone="onInputNewIndividualPhone"
-          />
-          
-          <MessageInputComponent 
-            :agenda="false"
-            :excel="false"
-            :errors="errors"
-            @onChangeMessage="onChangeMessage"
-          />
+          <v-row>
+            <v-col
+              lg="7"
+            >
+              <Input-Individual-Phones 
+                @onInputNewIndividualPhone="onInputNewIndividualPhone"
+              />
+              
+              <MessageInputComponent 
+                :agenda="false"
+                :excel="false"
+                :errors="errors"
+                @onChangeMessage="onChangeMessage"
+              />
+
+            </v-col>
+            <v-col
+              lg="5"
+            >
+              <Options-Component 
+                :errors="errors"
+                @onChange="onChangeOptions"
+              />
+            </v-col>
+          </v-row>
         </v-card-text>
-      </v-card>
-
-      <br>
-      
-      <Options-Component 
-        :errors="errors"
-        @onChange="onChangeOptions"
-      />
-
-      <v-card-actions>
-        <v-row
-          justify="center"
-        >
-          <v-btn
-            class="my-2"
-            color="green"
-            dark
-            @click="submit"
+        <v-card-actions>
+          <v-row
+            justify="center"
           >
-            <v-icon>
-              mdi-chevron-right
-            </v-icon>
-            Siguiente paso
-          </v-btn>
-        </v-row>
-      </v-card-actions>
+            <v-btn
+              type="submit"
+              class="my-2"
+              color="green"
+              dark
+            >
+              <v-icon>
+                mdi-chevron-right
+              </v-icon>
+              Siguiente paso
+            </v-btn>
+          </v-row>
+        </v-card-actions>
+      </v-card>
     </v-form>
 
     <PreviewSmsComponent

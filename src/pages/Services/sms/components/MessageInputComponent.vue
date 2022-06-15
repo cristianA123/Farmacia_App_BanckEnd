@@ -18,12 +18,13 @@
       </div>
       <div
         v-if="excel"
-        class="ml-3"
+        class="ml-1"
       >
         <v-btn
           v-for="button in vars_excel"
           :key="button.id"
-          class="primary mx-1"
+          class="mr-1"
+          outlined
           @click="addVarOnMessage(button)"
         >
           {{ button }}
@@ -39,7 +40,8 @@
             v-bind="attrs"
             v-on="on"
           >
-            URL
+            <v-icon>mdi-link-variant</v-icon>
+            URL's
           </v-btn>
         </template>
         <v-list>

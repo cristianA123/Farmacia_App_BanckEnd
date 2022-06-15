@@ -2,7 +2,8 @@
   <div>
     <v-text-field
       v-model="destinatarios"
-      label="Ingrese destinatarios (máximo 10 números)"
+      label="Destinatarios"
+      placeholder="957314449,966278731"
       maxlength="98"
       counter
       prepend-icon="mdi-cellphone-message"

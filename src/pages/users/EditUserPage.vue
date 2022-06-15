@@ -46,7 +46,7 @@
                     v-model="user.name" 
                     :error-messages="isValidName"
                     label="Nombre" 
-                    placeholder="name"
+                    placeholder="Mi nombre"
                     :rules="[v => !!v || 'Nombre es obligatorio']"
                     outlined
                     prepend-icon="mdi-account-outline"
@@ -55,7 +55,7 @@
                     v-model="user.company" 
                     :error-messages="isValidCompany"
                     label="Empresa" 
-                    placeholder="name"
+                    placeholder="Mi empresa"
                     :rules="[v => !!v || 'Empresa es obligatorio']"
                     prepend-icon="mdi-briefcase-outline"
                     outlined

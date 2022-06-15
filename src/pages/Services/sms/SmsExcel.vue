@@ -5,6 +5,8 @@
         <div class="display-1">SMS Excel</div>
       </div>
       <v-spacer></v-spacer>
+
+      <v-spacer></v-spacer>
       <BackPage 
         to="services"
       />
@@ -21,89 +23,91 @@
           outlined
         >
           <v-card-title>
-            Mensaje
-            <v-spacer></v-spacer>
-
             <DownloadBottonComponent
               path="/files/sms_campaing.xlsx"
             />
           </v-card-title>
           <v-card-text>
-            <v-text-field
-              v-model="name"
-              label="Ingrese nombre de campaña"
-              prepend-icon="mdi-tag-text-outline"
-              :error-messages="isValidName"
-              :rules="[v=>!!v || 'El nombre es obligatorio']"
-              outlined
-              required
-            />
-            
-            <v-file-input
-              v-model="file"
-              label="Cargue su base de contactos"
-              :loading="isFileLoading"
-              outlined
-              :rules="[v=>!!v || 'Seleccione excel']"
-              :error-messages="isValidFile"
-              required
-              @change="onChangeExcel"
-            />
-            <!-- aqui es donde van los ejemplos -->
-            <v-col
-              v-if="showExample && !isValidFile"
-              class="pt-0"
-            >
-              <p>Ejemplos:</p>
-              <v-data-table
-                :headers="headers"
-                :items="excelExample"
-                :items-per-page="5"
-                class="elevation-1"
+            <v-row>
+              <v-col
+                class="mt-0 pt-2"
               >
+                <v-text-field
+                  v-model="name"
+                  label="Nombre de campaña"
+                  placeholder="Ej. Campaña navideña"
+                  prepend-icon="mdi-tag-text-outline"
+                  :error-messages="isValidName"
+                  :rules="[v=>!!v || 'El nombre es obligatorio']"
+                  outlined
+                  required
+                />
                 
-              </v-data-table>
-            </v-col>
+                <v-file-input
+                  v-model="file"
+                  label="Subir excel"
+                  :loading="isFileLoading"
+                  outlined
+                  :rules="[v=>!!v || 'Seleccione excel']"
+                  :error-messages="isValidFile"
+                  required
+                  @change="onChangeExcel"
+                />
 
-            <!--    <InputFileDragAndDrop 
-              :dialog="true"
-            /> -->
+                <!-- aqui es donde van los ejemplos -->
+                <v-col
+                  v-if="showExample && !isValidFile"
+                  class="pt-0"
+                >
+                  <p>Ejemplos:</p>
+                  <v-data-table
+                    :headers="headers"
+                    :items="excelExample"
+                    :items-per-page="5"
+                    class="elevation-1"
+                  >
+                    
+                  </v-data-table>
+                </v-col>
 
-            <Message-Input-Component 
-              :agenda="false"
-              :excel="true"
-              :errors="errors"
-              @onChangeMessage="onChangeMessage"
-            />
+                <Message-Input-Component 
+                  :agenda="false"
+                  :excel="true"
+                  :errors="errors"
+                  @onChangeMessage="onChangeMessage"
+                />
+
+                <br>
+                
+                <Options-Component
+                  class="ml-3"
+                  :errors="errors"
+                  @onChange="onChangeOptions"
+                />
+              </v-col>
+            </v-row>
           </v-card-text>
+
+          <v-card-actions>
+            <v-row
+              justify="center"
+            >
+              <v-btn
+                class="my-2"
+                color="green"
+                dark
+                @click="submit"
+              >
+                <v-icon>
+                  mdi-chevron-right
+                </v-icon>
+                Siguiente paso
+              </v-btn>
+            </v-row>
+          </v-card-actions>
+
         </v-card>
-
-        <br>
-
-        <Options-Component
-          :errors="errors"
-          @onChange="onChangeOptions"
-        />
-
       </v-card-text>
-
-      <v-card-actions>
-        <v-row
-          justify="center"
-        >
-          <v-btn
-            class="my-2"
-            color="green"
-            dark
-            @click="submit"
-          >
-            <v-icon>
-              mdi-chevron-right
-            </v-icon>
-            Siguiente paso
-          </v-btn>
-        </v-row>
-      </v-card-actions>
 
     </v-form>
 
