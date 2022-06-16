@@ -8,54 +8,55 @@
       >
 
         <v-card-title class="pa-2">
-          Url
+          Selecciones una URL
           <v-spacer></v-spacer>
           <v-btn icon @click="dialog = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-title>
 
-        <v-divider></v-divider>
+        <v-card-text>
+          <v-col
+            v-if="url == 0"
+            class="d-flex"
+            cols="12"
+            sm="6"
+          >
+            <v-select
+              v-model="urlSelected"
+              full-width
+              :items="urls"
+              item-text="name"
+              item-value="id"
+              label="Seleccione Url"
+              outlined
+            ></v-select>
+          </v-col>
 
-        <v-col
-          v-if="url == 0"
-          class="d-flex"
-          cols="12"
-          sm="6"
-        >
-          <v-select
-            v-model="urlSelected"
-            :items="urls"
-            item-text="name"
-            item-value="id"
-            label="Seleccione Url"
-            outlined
-          ></v-select>
-        </v-col>
+          <!-- task form -->
+          <div
+            v-if="url == 1"
+          >
+            <v-text-field
+              v-model="long_url"
+              class="px-2 py-1"
+              solo
+              flat
+              placeholder="Ingrese URL"
+              autofocus
+              outlined
+              required
+            ></v-text-field>
 
-        <!-- task form -->
-        <div
-          v-if="url == 1"
-        >
-          <v-text-field
-            v-model="long_url"
-            class="px-2 py-1"
-            solo
-            flat
-            placeholder="Nombre"
-            autofocus
-            required
-          ></v-text-field>
+            <v-divider></v-divider>
+          </div>
 
-          <v-divider></v-divider>
-        </div>
-
-        <v-divider></v-divider>
+        </v-card-text>
 
         <v-card-actions class="pa-2">
           <v-btn outlined @click="close">Cancelar</v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="primary" type="submit">Guardar</v-btn>
+          <v-btn color="primary" type="submit">Seleccionar</v-btn>
         </v-card-actions>
 
       </v-form>

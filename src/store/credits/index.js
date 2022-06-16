@@ -17,19 +17,9 @@ export default {
     }
   },
   actions: {
-    availableCredits ({ commit }) {
+    fileData ({ commit }) {
 
-      store.commit('setLoading', true)
-
-      BackendApi.get('/availablecredit').then((response) => {
-        
-        const { availableCredit } = response.data.data
-
-        store.commit('setAvailableCredits', availableCredit)
-        store.commit('setLoading', false)
-      }).catch((error) => {
-        console.log(error)
-      })
+      console.log(commit)
     }
   }
 }

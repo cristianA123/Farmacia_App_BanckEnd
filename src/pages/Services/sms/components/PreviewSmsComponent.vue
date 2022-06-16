@@ -2,92 +2,126 @@
   <!--- Dialog Preview SMS --->
   <v-dialog
     v-model="show"
-    width="600px"
+    width="800px"
   >
     <v-card>
       <v-card-title>
-        Verifique los datos de su campaña:
+        Resumen de campaña:
         <v-spacer></v-spacer>
         <v-btn text @click="show=false">X</v-btn>
       </v-card-title>
       <v-card-text>
-
-        <div class="d-flex flex-column flex-grow-1">
-          <div class="d-flex align-center pb-3">
-            <div style="background-image: url(https://cdn.discordapp.com/attachments/783095481227935744/984913157703225354/sms_preview.png); width: 250px; height: 430px; background-size: 100%;">
-              <!-- <div style="background-image: url(./../../../../../public/images/services/sms_preview.png); width: 250px; height: 430px; background-size: 100%;"> -->
-              <!-- <div style="background-image: url(http://localhost:8080/images/services/sms_preview.png); width: 250px; height: 430px; background-size: 100%;"> -->
+        <v-row
+          align="center"
+          justify="center"
+        > 
+          <v-col
+            class="mt-0 pt-0"
+            sm="4"
+          >
+            <div 
+              style="background-image: url(https://cdn.discordapp.com/attachments/783095481227935744/984913157703225354/sms_preview.png); 
+              width: 250px; 
+              height: 430px; 
+              background-size: 100%;"
+            >
               <div style="padding: 5px 25px; 25px  25px;"><div><span id="span_sms_text" style="background-color: rgb(230, 230, 235);text-align: left;padding: 5px 7px;margin: 100px 25px 25px 20px;border-radius: 10px;float: left;white-space: pre-wrap;font-size: 12px;color: black;">{{ messageComputed }} </span></div></div>
             </div>
-            <div>
-              <v-card
-                outlined 
-                class="pa-2"
-                max-width="300px"
-              >
-                <v-card-title>Resumen:</v-card-title>
-                <v-card-text>
-                  <table>
-                    <tr>
-                      <td style="width:150px;">Push:</td>
-                      <td>
-                        <v-icon v-if="options.is_push">mdi-check</v-icon>
-                        <span v-else>NO</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Bidireccional:</td>
-                      <td>
-                        <v-icon v-if="options.is_bidireccional">mdi-check</v-icon>
-                        <span v-else>NO</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Agendado:</td>
-                      <td>
-                        <span v-if="options.scheduled !== null">{{ scheduled }}</span>
-                        <span v-else>NO</span>
-                      </td>
-                    </tr>
-                  </table>
-                  <v-divider></v-divider>
-                  <table>
-                    <tr>
-                      <td style="width:150px;"><strong>Créditos a usar (aprox):</strong></td>
-                      <td>
-                        
-                        <span><strong>{{ creditToUse | formatCurrency(configFormat) }}</strong></span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="width:150px;"><strong>Créditos disponibles:</strong></td>
-                      <td>
-                        
-                        <span><strong>{{ availableCredit| formatCurrency(configFormat) }}</strong></span>
-                      </td>
-                    </tr>
-                  </table>
-                </v-card-text>
-              </v-card>
-            </div>
-          </div>
-        </div>
+          </v-col>
+
+          <v-col
+            class="mt-0 pt-0"
+            sm="8"
+          >
+            <v-card
+              outlined
+              color="#385F73"
+              dark
+              width="500px"
+            >
+              <v-card-text>
+                <span><strong>Opciones activadas</strong></span>
+                <v-divider></v-divider>
+                <table>
+                  <tr>
+                    <td>Bidireccional:</td>
+                    <td>
+                      <v-icon v-if="options.is_bidireccional">mdi-check</v-icon>
+                      <span v-else>NO</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width:150px;">Push:</td>
+                    <td>
+                      <v-icon v-if="options.is_push">mdi-check</v-icon>
+                      <span v-else>NO</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Agendado:</td>
+                    <td>
+                      <span v-if="options.scheduled !== null">{{ scheduled }}</span>
+                      <span v-else>NO</span>
+                    </td>
+                  </tr>
+                </table>
+                <br>
+                <span><strong>Pre-filtro excel</strong></span>
+                <v-divider></v-divider>
+                <table>
+                  <tr>
+                    <td style="width:350px;">Cantidad de registros:</td>
+                    <td>
+                      
+                      <span>{{ fileData.rows | formatCurrency(configFormat) }}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width:350px;">Números con formato inválido:</td>
+                    <td>
+                      
+                      <span>2</span>
+                    </td>
+                  </tr>
+                </table>
+                <table>
+                  <tr>
+                    <td style="width:350px;">Mensajes con más de 160 caracteres:</td>
+                    <td>
+                      
+                      <span>106</span>
+                    </td>
+                  </tr>
+                </table>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+
       </v-card-text>
       <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn
-          color="green"
-          dark
-          :loading="isBtnLoading"
-          @click="submit"
+        <v-col
+          class="mt-0 pt-0"
         >
-          <v-icon
-            right
+          <v-row
+            justify="center"
           >
-            mdi-send-outline
-          </v-icon>
-          Lanzar campaña
-        </v-btn>
+            <v-btn
+              color="green"
+              dark
+              :loading="isBtnLoading"
+              @click="submit"
+            >
+              <v-icon
+                right
+                class="mr-1"
+              >
+                mdi-send-outline
+              </v-icon>
+              Lanzar campaña
+            </v-btn>
+          </v-row>
+        </v-col>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -99,6 +133,10 @@ import 'moment/locale/es'
 
 export default {
   props: {
+    fileData: {
+      type: Object,
+      default: () => {}
+    },  
     options: {
       type: Object,
       default: () => {}

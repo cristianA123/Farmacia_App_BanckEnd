@@ -22,70 +22,26 @@
         <v-card
           outlined
         >
-          <v-card-title>
-            <DownloadBottonComponent
-              path="/files/sms_campaing.xlsx"
-            />
-          </v-card-title>
           <v-card-text>
-            <v-row>
-              <v-col
-                class="mt-0 pt-2"
+            <v-col
+              class="pt-0"
+            >
+              <v-data-table
+                :headers="headers"
+                :items="$store.state.sms.file.example"
+                :items-per-page="5"
+                hide-default-footer
               >
-                <v-text-field
-                  v-model="name"
-                  label="Nombre de campaña"
-                  placeholder="Ej. Campaña navideña"
-                  prepend-icon="mdi-tag-text-outline"
-                  :error-messages="isValidName"
-                  :rules="[v=>!!v || 'El nombre es obligatorio']"
-                  outlined
-                  required
-                />
                 
-                <v-file-input
-                  v-model="file"
-                  label="Subir excel"
-                  :loading="isFileLoading"
-                  outlined
-                  :rules="[v=>!!v || 'Seleccione excel']"
-                  :error-messages="isValidFile"
-                  required
-                  @change="onChangeExcel"
-                />
+              </v-data-table>
+            </v-col>
 
-                <!-- aqui es donde van los ejemplos -->
-                <v-col
-                  v-if="showExample && !isValidFile"
-                  class="pt-0"
-                >
-                  <p>Ejemplos:</p>
-                  <v-data-table
-                    :headers="headers"
-                    :items="excelExample"
-                    :items-per-page="5"
-                    class="elevation-1"
-                  >
-                    
-                  </v-data-table>
-                </v-col>
-
-                <Message-Input-Component 
-                  :agenda="false"
-                  :excel="true"
-                  :errors="errors"
-                  @onChangeMessage="onChangeMessage"
-                />
-
-                <br>
-                
-                <Options-Component
-                  class="ml-3"
-                  :errors="errors"
-                  @onChange="onChangeOptions"
-                />
-              </v-col>
-            </v-row>
+            <Message-Input-Component 
+              :agenda="false"
+              :excel="true"
+              :errors="errors"
+              @onChangeMessage="onChangeMessage"
+            />
           </v-card-text>
 
           <v-card-actions>
@@ -93,28 +49,44 @@
               justify="center"
             >
               <v-btn
-                class="my-2"
-                color="green"
+                color="primary"
                 dark
-                @click="submit"
+                type="submit"
               >
+                Siguiente
                 <v-icon>
                   mdi-chevron-right
                 </v-icon>
-                Siguiente paso
               </v-btn>
             </v-row>
           </v-card-actions>
-
         </v-card>
       </v-card-text>
 
-    </v-form>
+      <template>
+        <div class="text-center">
+          <v-bottom-sheet 
+            v-model="optionsShow"
+            inset
+          >
+            
+            <Options-Component
+              class="ml-3"
+              :errors="errors"
+              @onChange="onChangeOptions"
+              @onSubmit="openPreviewComponent"
+            />
+            
+          </v-bottom-sheet>
+        </div>
+      </template>
 
+    </v-form>
     <PreviewSmsComponent
       ref="dialogPreview"
       :options="options" 
       :message="message"
+      :fileData="$store.state.sms.file"
       :is-excel="true"
       :example-contact="exampleExelComputed"
       :is-btn-loading="isBtnLoading"
@@ -127,12 +99,11 @@
 </template>
 
 <script>
-import OptionsComponent from './components/OptionsComponent.vue'
+import OptionsComponent from '../components/OptionsComponent.vue'
 import BackendApi from '@/services/backend.service'
-import MessageInputComponent from './components/MessageInputComponent.vue'
+import MessageInputComponent from '../components/MessageInputComponent.vue'
 import BackPage from '@/components/common/BackPage.vue'
-import DownloadBottonComponent from '@/components/common/DownloadBottonComponent.vue'
-import PreviewSmsComponent from './components/PreviewSmsComponent'
+import PreviewSmsComponent from '../components/PreviewSmsComponent'
 // import InputFileDragAndDrop  from '@/components/common/InputFileDragAndDrop.vue'
 
 export default {
@@ -140,17 +111,15 @@ export default {
     OptionsComponent,
     MessageInputComponent,
     BackPage,
-    DownloadBottonComponent,
     PreviewSmsComponent
     // InputFileDragAndDrop
   },
   data() {
     return {
+      optionsShow: false,
       errors : {
-        name:'',
         scheduled:'',
-        message:'',
-        file:''
+        message:''
       },
       headers: [
         { text: 'Número', value: 'CELULAR' },
@@ -192,14 +161,6 @@ export default {
     exampleExelComputed: function () {
 
       return this.excelExample
-    },
-    isValidName: function () {
-
-      return this.errors.name === undefined ? '' : this.errors.name[0]
-    },
-    isValidFile: function () {
-
-      return this.errors.file === undefined ? '' : this.errors.file[0]
     }
   },
   methods: {
@@ -279,16 +240,20 @@ export default {
     async submit() {
 
       if (this.$refs.form.validate()) {
-        await this.availableCreditByUser()
-        this.$refs.dialogPreview.open()
+        this.optionsShow = true
       }
+    },
+    async openPreviewComponent() {
+      await this.availableCreditByUser()
+      this.optionsShow = false
+      this.$refs.dialogPreview.open()
     },
     PreviewSmsSubmit() {
       const payload = {
         service_id: 1,
         campaign_type_id: 3,
-        name: this.name,
-        destinations: this.fileId,
+        name: this.$store.state.sms.name,
+        destinations: this.$store.state.sms.file.id,
         message: this.message,
         url_id: this.url_id,
         options: this.options,
