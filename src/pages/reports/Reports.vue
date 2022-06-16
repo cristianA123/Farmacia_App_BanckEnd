@@ -7,16 +7,24 @@
       <v-spacer></v-spacer>
     </div>
 
+    <v-btn
+      depressed
+      class="mb-3"
+      color="primary"
+      @click="descargarExcel"
+    >
+      Descargar como excel
+    </v-btn>
     <TableReportComponent
       :headers="headers"
       :items="reports"
       :search_text="search_text"
-      :isLoading="isLoading"
+      :is-loading="isLoading"
       @onfilter="on_filter"
       @onreadyusers="onreadyusers"
       @onDetail="onDetail"
     />
-
+    
   </div>
 </template>
 
@@ -24,6 +32,7 @@
 import TableReportComponent from './components/TableReportComponent.vue'
 import BackendApi from '@/services/backend.service'
 import moment from 'moment'
+import xlsx from 'json-as-xlsx'
 
 export default {
   components: {
@@ -57,6 +66,7 @@ export default {
         if (response.data.success) {
           this.reports = response.data.data
         }
+        console.log(this.reports)
         this.isLoading = false
       })
     },
@@ -102,9 +112,37 @@ export default {
           if (response.data.success) {
             this.reports = response.data.data
           }
+          console.log(this.reports)
           this.isLoading = false
         })
       }
+    },
+    descargarExcel () {
+
+      const data = [
+        {
+          sheet: 'Campañas',
+          columns: [
+            { label: 'Usuario', value: 'user' },
+            { label: 'Email', value: 'email' },
+            { label: 'Campaña', value: 'name' },
+            { label: 'Servicio', value: 'service' },
+            { label: 'Fecha de lanzamiento', value: 'created_at' },
+            { label: 'Estado',  value: (row) => (row.status === 0 ? 'cancelado' : ( row.status === 1 ? 'finalizado' : (row.status === 2 ? 'pendiente' : ( row.status === 3 ? 'procesando' : 'agendado')))) },
+            { label: 'Usuario', value: 'user' },
+            { label: 'Creditos', value: 'total_cost' }
+          ],
+          content: [
+            ...this.reports
+          ]
+        }]
+
+      const settings = {
+        sheetName: 'Reporte',
+        fileName: 'Reporte de servicios'
+      }
+
+      xlsx(data, settings)
     }
   }
 }

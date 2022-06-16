@@ -13,6 +13,14 @@
     <!-- componente url campaing detail -->
     <UrlDashDetailComponent v-if="has_url"/>
 
+    <v-btn
+      depressed
+      class="mb-3"
+      color="primary"
+      @click="descargarExcel"
+    >
+      Descargar como excel
+    </v-btn>
     <!-- pagination -->
     <DetailCampaignComponent
       ref="detailCampaignComponent"
@@ -29,6 +37,8 @@ import DashDetailComponent from './components/DashDetailComponent.vue'
 import UrlDashDetailComponent from './components/UrlDashDetailComponent.vue'
 import DetailCampaignComponent from './components/DetailCampaignComponent.vue'
 
+import xlsx from 'json-as-xlsx'
+
 export default {
   name:'DetailSmsReport',
   components:{
@@ -43,7 +53,14 @@ export default {
       pagination: {
         current: 1,
         total: 0
-      }
+      },
+      allSmsOfCampaing: [],
+      search: ''
+    }
+  },
+  computed:{
+    changedSearch () {
+      return this.search
     }
   },
   mounted() {
@@ -53,6 +70,7 @@ export default {
 
     ongetSms(searchText) {
       console.log(searchText)
+      this.search = searchText
       const payload = {
         campaign_id : this.$route.params.campaign_id,
         service_id : 1,
@@ -74,10 +92,43 @@ export default {
             if ( response.data.data.data[0].url_id === null && response.data.data.data[0].long_url === null) {
               this.has_url = false
             }
-
           }
-
         })
+
+    },
+    async descargarExcel () {
+
+      const payload = {
+        campaign_id : this.$route.params.campaign_id,
+        service_id : 1,
+        searchtext : ''
+      }
+
+      await BackendApi.post('/smsCampaignDetailAll', payload)
+        .then((response) => {
+          if (response.data.success) {
+            this.allSmsOfCampaing = response.data.data
+          }
+        })
+      const data = [
+        {
+          sheet: 'Sms',
+          columns: [
+            { label: 'Telefono', value: 'phone' },
+            { label: 'Mensaje', value: 'content' },
+            { label: 'Fecha programada', value: 'scheduled' },
+            { label: 'Estado', value: 'status' }
+          ],
+          content: [
+            ...this.allSmsOfCampaing
+          ]
+        }]
+      const settings = {
+        sheetName: 'Sms',
+        fileName: 'Reporte de campaña'
+      }
+
+      xlsx(data, settings)
     }
   }
 
