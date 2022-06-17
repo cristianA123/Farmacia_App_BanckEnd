@@ -7,24 +7,29 @@ export default [
   },
   //SMS
   {
-    path: '/sms/create_campaing',
+    path: '/services/sms/create_campaing',
     name: 'create-campaing-sms',
     component: () => import('@/pages/Services/sms/CreateCampaing.vue')
   },
   {
-    path: '/sms/create_campaing/sms_individual',
+    path: '/services/sms/create_campaing/sms_individual',
     name: 'sms-individual',
     component: () => import('@/pages/Services/sms/SmsIndividual.vue')
   },
   {
-    path: '/sms/create_campaing/sms_agendas',
+    path: '/services/sms/create_campaing/sms_agendas',
     name: 'sms-agendas',
     component: () => import('@/pages/Services/sms/SmsAgendas.vue')
   },
   {
-    path: '/sms/create_campaing/sms_excel',
+    path: '/services/sms/create_campaing/sms_excel',
     name: 'sms-excel',
-    component: () => import('@/pages/Services/sms/SmsExcel.vue')
+    component: () => import('@/pages/Services/sms/SmsExcel/SmsExcelStepOne.vue')
+  },
+  {
+    path: '/services/sms/create_campaing/sms_excel',
+    name: 'sms-excel-step-two',
+    component: () => import('@/pages/Services/sms/SmsExcel/SmsExcelStepTwo.vue')
   },
   //REPORTS
   {

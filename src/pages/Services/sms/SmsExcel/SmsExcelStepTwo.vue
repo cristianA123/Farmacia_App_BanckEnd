@@ -5,6 +5,8 @@
         <div class="display-1">SMS Excel</div>
       </div>
       <v-spacer></v-spacer>
+
+      <v-spacer></v-spacer>
       <BackPage 
         to="services"
       />
@@ -20,54 +22,19 @@
         <v-card
           outlined
         >
-          <v-card-title>
-            Mensaje
-            <v-spacer></v-spacer>
-
-            <DownloadBottonComponent
-              path="/files/sms_campaing.xlsx"
-            />
-          </v-card-title>
           <v-card-text>
-            <v-text-field
-              v-model="name"
-              label="Ingrese nombre de campaña"
-              prepend-icon="mdi-tag-text-outline"
-              :error-messages="isValidName"
-              :rules="[v=>!!v || 'El nombre es obligatorio']"
-              outlined
-              required
-            />
-            
-            <v-file-input
-              v-model="file"
-              label="Cargue su base de contactos"
-              :loading="isFileLoading"
-              outlined
-              :rules="[v=>!!v || 'Seleccione excel']"
-              :error-messages="isValidFile"
-              required
-              @change="onChangeExcel"
-            />
-            <!-- aqui es donde van los ejemplos -->
             <v-col
-              v-if="showExample && !isValidFile"
               class="pt-0"
             >
-              <p>Ejemplos:</p>
               <v-data-table
                 :headers="headers"
-                :items="excelExample"
+                :items="$store.state.sms.file.example"
                 :items-per-page="5"
-                class="elevation-1"
+                hide-default-footer
               >
                 
               </v-data-table>
             </v-col>
-
-            <!--    <InputFileDragAndDrop 
-              :dialog="true"
-            /> -->
 
             <Message-Input-Component 
               :agenda="false"
@@ -76,41 +43,50 @@
               @onChangeMessage="onChangeMessage"
             />
           </v-card-text>
+
+          <v-card-actions>
+            <v-row
+              justify="center"
+            >
+              <v-btn
+                color="primary"
+                dark
+                type="submit"
+              >
+                Siguiente
+                <v-icon>
+                  mdi-chevron-right
+                </v-icon>
+              </v-btn>
+            </v-row>
+          </v-card-actions>
         </v-card>
-
-        <br>
-
-        <Options-Component
-          :errors="errors"
-          @onChange="onChangeOptions"
-        />
-
       </v-card-text>
 
-      <v-card-actions>
-        <v-row
-          justify="center"
-        >
-          <v-btn
-            class="my-2"
-            color="green"
-            dark
-            @click="submit"
+      <template>
+        <div class="text-center">
+          <v-bottom-sheet 
+            v-model="optionsShow"
+            inset
           >
-            <v-icon>
-              mdi-chevron-right
-            </v-icon>
-            Siguiente paso
-          </v-btn>
-        </v-row>
-      </v-card-actions>
+            
+            <Options-Component
+              class="ml-3"
+              :errors="errors"
+              @onChange="onChangeOptions"
+              @onSubmit="openPreviewComponent"
+            />
+            
+          </v-bottom-sheet>
+        </div>
+      </template>
 
     </v-form>
-
     <PreviewSmsComponent
       ref="dialogPreview"
       :options="options" 
       :message="message"
+      :fileData="$store.state.sms.file"
       :is-excel="true"
       :example-contact="exampleExelComputed"
       :is-btn-loading="isBtnLoading"
@@ -123,12 +99,11 @@
 </template>
 
 <script>
-import OptionsComponent from './components/OptionsComponent.vue'
+import OptionsComponent from '../components/OptionsComponent.vue'
 import BackendApi from '@/services/backend.service'
-import MessageInputComponent from './components/MessageInputComponent.vue'
+import MessageInputComponent from '../components/MessageInputComponent.vue'
 import BackPage from '@/components/common/BackPage.vue'
-import DownloadBottonComponent from '@/components/common/DownloadBottonComponent.vue'
-import PreviewSmsComponent from './components/PreviewSmsComponent'
+import PreviewSmsComponent from '../components/PreviewSmsComponent'
 // import InputFileDragAndDrop  from '@/components/common/InputFileDragAndDrop.vue'
 
 export default {
@@ -136,17 +111,15 @@ export default {
     OptionsComponent,
     MessageInputComponent,
     BackPage,
-    DownloadBottonComponent,
     PreviewSmsComponent
     // InputFileDragAndDrop
   },
   data() {
     return {
+      optionsShow: false,
       errors : {
-        name:'',
         scheduled:'',
-        message:'',
-        file:''
+        message:''
       },
       headers: [
         { text: 'Número', value: 'CELULAR' },
@@ -188,14 +161,6 @@ export default {
     exampleExelComputed: function () {
 
       return this.excelExample
-    },
-    isValidName: function () {
-
-      return this.errors.name === undefined ? '' : this.errors.name[0]
-    },
-    isValidFile: function () {
-
-      return this.errors.file === undefined ? '' : this.errors.file[0]
     }
   },
   methods: {
@@ -275,16 +240,20 @@ export default {
     async submit() {
 
       if (this.$refs.form.validate()) {
-        await this.availableCreditByUser()
-        this.$refs.dialogPreview.open()
+        this.optionsShow = true
       }
+    },
+    async openPreviewComponent() {
+      await this.availableCreditByUser()
+      this.optionsShow = false
+      this.$refs.dialogPreview.open()
     },
     PreviewSmsSubmit() {
       const payload = {
         service_id: 1,
         campaign_type_id: 3,
-        name: this.name,
-        destinations: this.fileId,
+        name: this.$store.state.sms.name,
+        destinations: this.$store.state.sms.file.id,
         message: this.message,
         url_id: this.url_id,
         options: this.options,

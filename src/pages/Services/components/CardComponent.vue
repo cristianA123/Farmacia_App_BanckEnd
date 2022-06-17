@@ -99,12 +99,12 @@ export default {
 </script>
 
 <style>
-.v-card__text{
+/* .v-card__text{
   padding-left: 0;
   padding-right: 0;
   padding-bottom: 16px;
   padding-top: 16px;
-}
+} */
 
 .v-card--reveal {
   align-items: center;

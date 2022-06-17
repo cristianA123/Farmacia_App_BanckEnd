@@ -42,6 +42,22 @@
         </v-col>
       </v-row>
     </v-card-text>
+
+    <v-card-actions>
+      <v-row
+        justify="center"
+      >
+        <v-btn
+          color="primary"
+          @click="onSubmit"
+        >
+          Siguiente
+          <v-icon>
+            mdi-chevron-right
+          </v-icon>
+        </v-btn>
+      </v-row>
+    </v-card-actions>
   </v-card>
 </template>
 
@@ -98,6 +114,9 @@ export default {
         scheduled:this.scheduled,
         is_push: this.is_push
       })
+    },
+    onSubmit() {
+      this.$emit('onSubmit')
     }
   }
 }

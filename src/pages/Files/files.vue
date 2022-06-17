@@ -118,7 +118,6 @@
           </v-card>
         </v-col>
       </v-row>
-
     </v-col>
     
     <DialogUploadComponent
@@ -166,6 +165,9 @@ export default {
     this.getBuckets()
   },
   methods: {
+    openView (url) {
+      window.open(url)
+    },
     openDialogUpload(item) {
       this.$refs.dialogUpload.open(item)
     },

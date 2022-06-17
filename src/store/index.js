@@ -9,7 +9,7 @@ import Authenticate from './authenticate/'
 import Users from './users/'
 import Credits from './credits/'
 import Campaings from './campaings/'
-
+import Sms from './sms'
 Vue.use(Vuex)
 
 /**
@@ -21,7 +21,8 @@ const store = new Vuex.Store({
     authenticate: Authenticate,
     users: Users,
     campaings: Campaings,
-    credits: Credits
+    credits: Credits,
+    sms: Sms
   }
 })
 

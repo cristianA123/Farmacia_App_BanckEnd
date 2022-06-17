@@ -1,11 +1,12 @@
 <template>
   <div>
-    <v-icon>mdi-cloud-download-outline</v-icon>
+    <v-icon color="red" class="mr-1 pb-0 mb-0">mdi-cloud-download-outline</v-icon>
     <v-btn  
-      text
+      outlined
+      color="red"
       @click="downloadFile(path)"
     >
-      Formato Xlsx
+      Descargar Formato
     </v-btn>
   </div>
 </template>
