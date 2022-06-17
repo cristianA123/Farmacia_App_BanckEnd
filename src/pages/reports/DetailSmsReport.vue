@@ -1,18 +1,18 @@
 <template>
-  <div class="d-flex flex-column flex-grow-1">
+  <div id="hola" class="d-flex flex-column flex-grow-1">
     <div class="d-flex align-center py-3">
       <div>
         <div class="display-1">Reporte de servicios</div>
       </div>
       <v-spacer></v-spacer>
     </div>
-
-    <!-- dash campaing detail -->
-    <DashDetailComponent/>
+    <div id="dashboarDetail">
+      <!-- dash campaing detail -->
+      <DashDetailComponent ref="pedro"/>
+    </div>
 
     <!-- componente url campaing detail -->
     <UrlDashDetailComponent v-if="has_url"/>
-
     <v-btn
       depressed
       class="mb-3"
@@ -38,6 +38,8 @@ import UrlDashDetailComponent from './components/UrlDashDetailComponent.vue'
 import DetailCampaignComponent from './components/DetailCampaignComponent.vue'
 
 import xlsx from 'json-as-xlsx'
+import jspdf from 'jspdf'
+import html2canvas from 'html2canvas'
 
 export default {
   name:'DetailSmsReport',
@@ -129,6 +131,29 @@ export default {
       }
 
       xlsx(data, settings)
+    },
+    async downloadPdf () {
+
+      const options = {
+        background: 'white',
+        scale: 3
+      }
+
+      html2canvas(document.getElementById('dashboarDetail'),options).then(
+        (canvas) => {
+          const imgData = canvas.toDataURL('image/png')
+          const doc = new jspdf('p', 'pt', 'a4')
+          const bufferX = 15
+          const bufferY = 15
+          const imgProps = doc.getImageProperties(imgData)
+          const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX
+          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
+
+          doc.addImage(imgData, 'JPEG',bufferX ,bufferY ,    pdfWidth,
+            pdfHeight, undefined, 'FAST')
+          doc.save('Reporte de campaña.pdf')
+        }
+      )
     }
   }
 

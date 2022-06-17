@@ -6,24 +6,32 @@
       </div>
       <v-spacer></v-spacer>
     </div>
-
-    <v-row class="flex-grow-0" dense>
+    <v-btn
+      depressed
+      class="mb-3"
+      color="primary"
+      :loading="loadingDownloadPdf"
+      @click="downloadPdf"
+    >
+      Descargar PDF
+    </v-btn>
+    <v-row id="dashBoard" class="flex-grow-0" dense>
 
       <InitialCreditComponent 
         :credit="credits.credit"
-        :isLoading="isLoading"
+        :is-loading="isLoading"
       /> 
 
       <AvailableCreditComponent
-        :availableCredit="credits.availableCredit"
+        :available-credit="credits.availableCredit"
         :credits="credits"
-        :isLoading="isLoading"
+        :is-loading="isLoading"
       />
 
       <ServiceCreditComponent
         
         :credits="credits"
-        :isLoading="isLoading"
+        :is-loading="isLoading"
       />
 
     </v-row>
@@ -35,6 +43,9 @@ import BackendApi from '@/services/backend.service'
 import InitialCreditComponent from './components/InitialCreditComponent.vue'
 import AvailableCreditComponent from './components/AvailableCreditComponent.vue'
 import ServiceCreditComponent from './components/ServiceCreditComponent.vue'
+
+import jspdf from 'jspdf'
+import html2canvas from 'html2canvas'
 
 export default {
   components: { 
@@ -48,7 +59,8 @@ export default {
       credits: {
         credit: 0,
         availableCredit:0
-      }
+      },
+      loadingDownloadPdf: false
     }
   },
   computed: {
@@ -81,6 +93,30 @@ export default {
           this.isLoading = false
         }
       })
+    },
+    downloadPdf () {
+      console.log(this.loadingDownloadPdf)
+      this.loadingDownloadPdf = true
+      const options = {
+        scale: 3
+      }
+
+      html2canvas(document.getElementById('dashBoard'),options).then(
+        (canvas) => {
+          const imgData = canvas.toDataURL('image/png')
+          const doc = new jspdf('p', 'pt', 'a4')
+          const bufferX = 15
+          const bufferY = 15
+          const imgProps = doc.getImageProperties(imgData)
+          const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX
+          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
+
+          doc.addImage(imgData, 'JPEG',bufferX ,bufferY ,    pdfWidth,
+            pdfHeight, undefined, 'FAST')
+          doc.save('Reporte de campaña.pdf')
+        }
+      )
+      this.loadingDownloadPdf = false
     }
   }
 }
