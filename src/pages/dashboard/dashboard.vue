@@ -1,20 +1,31 @@
 <template>
   <div class="d-flex flex-grow-1 flex-column">
-    <div class="d-flex align-center py-3">
-      <div>
-        <div class="display-1">Dashboard</div>
-      </div>
+    <!-- <div class="d-flex align-center py-3"> -->
+    <div class="d-flex justify-space-between align-content-center mb-1">
+      <div class="display-1">Dashboard</div>
       <v-spacer></v-spacer>
+      <v-btn
+        depressed
+        color="primary"
+        class="mx-2"
+        :loading="loadingDownloadPdf"
+        @click="downloadPdf"
+      >
+        Enviar al Correo
+      </v-btn>
+
+      <v-btn
+        depressed
+        color="primary"
+        :loading="loadingDownloadPdf"
+        @click="downloadPdf"
+      >
+        Descargar como PDF
+      </v-btn>
+    
+      <!-- </div> -->
     </div>
-    <v-btn
-      depressed
-      class="mb-3"
-      color="primary"
-      :loading="loadingDownloadPdf"
-      @click="downloadPdf"
-    >
-      Descargar PDF
-    </v-btn>
+   
     <v-row id="dashBoard" class="flex-grow-0" dense>
 
       <InitialCreditComponent 
@@ -46,6 +57,8 @@ import ServiceCreditComponent from './components/ServiceCreditComponent.vue'
 
 import jspdf from 'jspdf'
 import html2canvas from 'html2canvas'
+import moment from 'moment'
+moment.locale('es')
 
 export default {
   components: { 
@@ -94,25 +107,40 @@ export default {
         }
       })
     },
-    downloadPdf () {
-      console.log(this.loadingDownloadPdf)
+    async downloadPdf () {
       this.loadingDownloadPdf = true
+      console.log(this.loadingDownloadPdf)
+
       const options = {
         scale: 3
       }
 
-      html2canvas(document.getElementById('dashBoard'),options).then(
+      await html2canvas(document.getElementById('dashBoard'),options).then(
         (canvas) => {
           const imgData = canvas.toDataURL('image/png')
           const doc = new jspdf('p', 'pt', 'a4')
-          const bufferX = 15
-          const bufferY = 15
+          const bufferX = 25
+          const bufferY = 135
           const imgProps = doc.getImageProperties(imgData)
           const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX
           const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
+          const sizeHead = 16
 
-          doc.addImage(imgData, 'JPEG',bufferX ,bufferY ,    pdfWidth,
-            pdfHeight, undefined, 'FAST')
+          doc.setFontSize(sizeHead)
+          const optionsHeader = {
+            align: 'center',
+            font: 'helvetica'
+          }
+
+          doc.text('Dashboard', pdfWidth / 2, 40, optionsHeader)
+          doc.setFontSize(12)
+          doc.text('FECHA Y HORA:' + ' ' + moment().format('MMMM Do YYYY, h:mm:ss a') , 25, 65)
+          doc.text('DATOS DEL USUARIO:', 25, 80)
+          doc.text('NOMBRE: ' +  $cookies.get('user').name , 25, 95)
+          doc.text('CORREO: ' +  $cookies.get('user').email , 25, 110)
+          doc.text('CAMPAÑIA: ' +  $cookies.get('user').company , 25, 125)
+          doc.addImage(imgData, 'JPEG',bufferX ,bufferY , pdfWidth, pdfHeight, undefined, 'FAST')
+          
           doc.save('Reporte de campaña.pdf')
         }
       )
