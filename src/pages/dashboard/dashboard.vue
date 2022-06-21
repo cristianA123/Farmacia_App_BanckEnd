@@ -8,8 +8,8 @@
         depressed
         color="primary"
         class="mx-2"
-        :loading="loadingDownloadPdf"
-        @click="downloadPdf"
+        :loading="loadingSendPdfByEmail"
+        @click="sendPdfByEmail"
       >
         Enviar al Correo
       </v-btn>
@@ -73,7 +73,8 @@ export default {
         credit: 0,
         availableCredit:0
       },
-      loadingDownloadPdf: false
+      loadingDownloadPdf: false,
+      loadingSendPdfByEmail: false
     }
   },
   computed: {
@@ -109,7 +110,6 @@ export default {
     },
     async downloadPdf () {
       this.loadingDownloadPdf = true
-      console.log(this.loadingDownloadPdf)
 
       const options = {
         scale: 3
@@ -145,7 +145,72 @@ export default {
         }
       )
       this.loadingDownloadPdf = false
+    },
+
+    async sendPdfByEmail () {
+      this.loadingSendPdfByEmail = true
+      
+      const options = {
+        scale: 3
+      }
+
+      await html2canvas(document.getElementById('dashBoard'),options).then(
+        (canvas) => {
+          const imgData = canvas.toDataURL('image/png')
+          const doc = new jspdf('p', 'pt', 'a4')
+          const bufferX = 25
+          const bufferY = 135
+          const imgProps = doc.getImageProperties(imgData)
+          const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX
+          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
+          const sizeHead = 16
+
+          doc.setFontSize(sizeHead)
+          const optionsHeader = {
+            align: 'center',
+            font: 'helvetica'
+          }
+
+          doc.text('Dashboard', pdfWidth / 2, 40, optionsHeader)
+          doc.setFontSize(11)
+          doc.text('FECHA Y HORA:' + ' ' + moment().format('MMMM Do YYYY, h:mm:ss a') , 25, 65)
+          doc.setFontSize(12)
+          doc.text('DATOS DEL USUARIO:', 25, 80)
+          doc.setFontSize(11)
+          doc.text('NOMBRE: ' +  $cookies.get('user').name , 25, 95)
+          doc.text('CORREO: ' +  $cookies.get('user').email , 25, 110)
+          doc.text('EMPRESA: ' +  $cookies.get('user').company , 25, 125)
+          doc.addImage(imgData, 'JPEG',bufferX ,bufferY , pdfWidth, pdfHeight, undefined, 'FAST')
+          
+          const formData = new FormData()
+
+          formData.append('file', doc.output('blob'))
+
+          const response = fetch('http://localhost:8000/api/send_email', {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Authorization': 'Bearer ' + $cookies.get('token')
+            }
+          })
+            .then((response) => response.json())
+            .then((response) => {
+              if (response.success) {
+                this.$store.dispatch('app/showToast', 'Correo enviado')
+              } else {
+                this.$store.dispatch('app/showToast', 'Error al enviar correo')
+              }
+            })
+            .catch((error) => {
+              this.$store.dispatch('app/showToast', 'Error al enviar correo')
+            })
+        }
+      )
+      this.loadingSendPdfByEmail = false
     }
+
+    // doc.save('Reporte de campaña.pdf')
+
   }
 }
 </script>

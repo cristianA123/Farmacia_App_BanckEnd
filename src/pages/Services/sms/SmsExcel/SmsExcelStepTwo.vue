@@ -86,7 +86,7 @@
       ref="dialogPreview"
       :options="options" 
       :message="message"
-      :fileData="$store.state.sms.file"
+      :file-data="$store.state.sms.file"
       :is-excel="true"
       :example-contact="exampleExelComputed"
       :is-btn-loading="isBtnLoading"
@@ -265,7 +265,6 @@ export default {
           if (response.data.success) {
             this.$store.dispatch('app/showToast', response.data.message)
             this.$router.push({ name: 'reports' })
-
           }
         })
         .catch( (error) => {

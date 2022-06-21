@@ -11,6 +11,7 @@
       depressed
       class="mb-3"
       color="primary"
+      :loading="isLoadingDownload"
       @click="descargarExcel"
     >
       Descargar como excel
@@ -51,7 +52,8 @@ export default {
         { text: 'Creditos' , value: 'total_cost' },
         { text: 'Acciones', value: 'actions' }
       ],
-      isLoading: false
+      isLoading: false,
+      isLoadingDownload: false
     }
   },
   mounted() {
@@ -119,6 +121,7 @@ export default {
     },
     descargarExcel () {
 
+      this.isLoadingDownload = true
       const data = [
         {
           sheet: 'Campañas',
@@ -143,6 +146,7 @@ export default {
       }
 
       xlsx(data, settings)
+      this.isLoadingDownload = false
     }
   }
 }
