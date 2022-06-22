@@ -1,3 +1,5 @@
+import contactsRoutes from '@/pages/Agendas/routes'
+
 export default [{
   path: '/auth/signin',
   name: 'auth-signin',
@@ -27,7 +29,10 @@ export default [{
 {
   path: '/tools/agendas',
   name: 'agendas',
-  component: () => import('@/pages/Agendas/agenda.vue')
+  component: () => import('@/pages/Agendas/agenda.vue'),
+  children: [
+    ...contactsRoutes
+  ]
 },
 {
   path: '/tools/agendas/:agendaId/contacts',

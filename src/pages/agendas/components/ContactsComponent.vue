@@ -1,52 +1,5 @@
 <template>
   <div class="d-flex flex-column flex-grow-1">
-    <div class="d-flex align-center py-3">
-      <div>
-        <div class="display-1">Contactos</div>
-      </div>
-      <v-spacer></v-spacer>
-      
-      <v-menu offset-y left transition="slide-y-transition">
-        <template v-slot:activator="{ on }">
-          <v-btn 
-            color="primary"
-            v-on="on"
-          >
-            <v-icon
-              left
-              dark
-            >
-              mdi-plus
-            </v-icon>
-            Nuevos contactos
-          </v-btn>
-        </template>
-
-        <!-- user menu list -->
-        <v-list dense nav>
-          <v-list-item @click="openNewContact()">
-            <v-list-item-content>
-              <v-list-item-title>Individual</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item @click="openNewContactsFromExcel()">
-            <v-list-item-content>
-              <v-list-item-title>Desde Excel</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-      
-      <v-btn
-        class="ml-2"
-        @click="config=true"
-      >
-        <v-icon>mdi-cog-outline</v-icon>
-      </v-btn>
-      
-    </div>
-
     <v-navigation-drawer
       v-model="config"
       fixed
@@ -107,16 +60,14 @@
         :items-per-page="10"
         :search="searchTable"
         hide-default-footer
-        class="elevation-1"
       >
-
         <template v-slot:top>
           <v-text-field
             v-model="searchText"
-            v-debounce:250="getContacts"
+            v-debounce:10000="getContacts"
             class="pa-2"
             append-icon="mdi-magnify"
-            dense
+            solo
             clearable
             placeholder="Ej.: Filtrar por numero, nombre1, nombre2,  email, apellido1, apellido2 etc" 
             outlined
@@ -124,59 +75,78 @@
         </template>
 
         <template v-slot:top>
-          <v-text-field
-            v-model="searchText"
-            v-debounce:250="getContacts"
-            class="pa-2"
-            append-icon="mdi-magnify"
-            dense
-            clearable
-            placeholder="Ej.: Filtrar por numero, nombre1, nombre2,  email, apellido1, apellido2 etc" 
-            outlined
-          />
-        </template>
-
-        <template v-slot:top>
-          <v-row>
-            <v-col
-              class="py-0"
-            >
-              <div
-                class="pa-2"
+          <v-col
+            class="pb-1"
+          >
+            <v-row>
+              <v-menu 
+                offset-y 
+                left
               >
-                <v-menu 
-                  offset-y 
-                  left
-                >
-                  <template v-slot:activator="{ on }">
-                    <transition name="slide-fade" mode="out-in">
-                      <v-btn v-show="selectedUsers.length > 0" v-on="on">
-                        Acciones
-                        <v-icon right>mdi-menu-down</v-icon>
-                      </v-btn>
-                    </transition>
-                  </template>
-                  <v-list dense>
-                    <v-list-item @click="deleteItems">
-                      <v-list-item-title>Eliminar seleccionados</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item @click="moveItems">
-                      <v-list-item-title>Mover a otra agenda</v-list-item-title>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </div>
-            </v-col>
-            <v-col
-              class="pb-0 pr-6"
-            >
-              <v-text-field
-                v-model="searchTable"
-                label="Buscar contacto"
-                outlined
-              />
-            </v-col>
-          </v-row>
+                <template v-slot:activator="{ on }">
+                  <transition name="slide-fade" mode="out-in">
+                    <v-btn class="ml-3" v-show="selectedUsers.length > 0" v-on="on">
+                      Acciones
+                      <v-icon right>mdi-menu-down</v-icon>
+                    </v-btn>
+                  </transition>
+                </template>
+                <v-list dense>
+                  <v-list-item @click="deleteItems">
+                    <v-list-item-title>Eliminar seleccionados</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click="moveItems">
+                    <v-list-item-title>Mover a otra agenda</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+              <v-spacer></v-spacer>
+              <v-menu offset-y left transition="slide-y-transition">
+                <template v-slot:activator="{ on }">
+                  <v-btn 
+                    class="mr-3"
+                    color="primary"
+                    v-on="on"
+                  >
+                    <v-icon
+                      left
+                      dark
+                    >
+                      mdi-plus
+                    </v-icon>
+                    Nuevos contactos
+                  </v-btn>
+                </template>
+
+                <!-- user menu list -->
+                <v-list dense nav>
+                  <v-list-item @click="openNewContact()">
+                    <v-list-item-content>
+                      <v-list-item-title>Individual</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+
+                  <v-list-item @click="openNewContactsFromExcel()">
+                    <v-list-item-content>
+                      <v-list-item-title>Desde Excel</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-row>
+          </v-col>
+          <v-col
+            class="pt-1"
+          >
+            <v-text-field
+              v-model="searchTable"
+              v-debounce:10000="getContacts"
+              solo
+              label="Buscar contacto"
+              outlined
+            />
+          </v-col>
+
         </template>
 
         <template v-slot:[`item.id`]="{ item }">
@@ -325,10 +295,10 @@
 </template>
 
 <script>
-import newContact from './components/newContact'
-import newContactsFromExcel from './components/newContactsFromExcel'
+import newContact from '../components/newContact'
+import newContactsFromExcel from '../components/newContactsFromExcel'
 import BackendApi from '@/services/backend.service'
-import MoveAgenda from './components/MoveAgenda.vue'
+import MoveAgenda from '../components/MoveAgenda.vue'
 
 export default {
   components: {

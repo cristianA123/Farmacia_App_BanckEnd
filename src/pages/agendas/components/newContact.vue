@@ -1,5 +1,8 @@
 <template>
-  <v-dialog v-model="dialog" width="600">
+  <v-dialog 
+    v-model="dialog" 
+    width="600"
+  >
     <v-card>
       <v-form
         ref="formNewContact"
@@ -15,156 +18,146 @@
           </v-btn>
         </v-card-title>
 
-        <v-divider></v-divider>
+        <v-card-text>
+          <v-col>
+            <v-row>
+              <v-col
+                md="12"
+                class="py-0"
+              >
+                <v-text-field
+                  v-model="number"
+                  placeholder="Número telefónico"
+                  :error-messages="isNumberValid"
+                  :rules="[ 
+                    v => !!v || 'El número telefónico es obligatorio',
+                    v => (v.length === 9 && v.slice(0,1) === '9') || 'Uno o más números son incorrectos'
+                  ]"
+                  required
+                  outlined
+                ></v-text-field>
+              </v-col>
 
-        <div>
-          <v-text-field
-            v-model="number"
-            class="px-2"
-            solo
-            flat
-            placeholder="Número telefónico"
-            :error-messages="isNumberValid"
-            :rules="[ 
-              v => !!v || 'El número telefónico es obligatorio',
-              v => (v.length === 9 && v.slice(0,1) === '9') || 'Uno o más números son incorrectos'
-            ]"
-            required
-            outlined
-          ></v-text-field>
+              <v-col
+                md="6"
+                class="py-0"
+              >
+                <v-text-field
+                  v-model="name1"
+                  placeholder="Nombre 1"
+                  outlined
+                ></v-text-field>
+              </v-col>
 
-          <v-divider></v-divider>
-        </div>
+              <v-col
+                md="6"
+                class="py-0"
+              >
+                <v-text-field
+                  v-model="name2"
+                  placeholder="Nombre 2"
+                  hide-details
+                  outlined
+                ></v-text-field>
+              </v-col>
 
-        <div>
-          <v-text-field
-            v-model="name1"
-            class="px-2 py-1"
-            solo
-            flat
-            placeholder="Nombre 1"
-            hide-details
-            outlined
-          ></v-text-field>
+              <v-col
+                md="6"
+                class="py-0"
+              >
+                <v-text-field
+                  v-model="last_name1"
+                  placeholder="Apellido 1"
+                  hide-details
+                  outlined
+                ></v-text-field>
+              </v-col>
 
-          <v-divider></v-divider>
-        </div>
+              <v-col
+                md="6"
+                class="py-0"
+              >
+                <v-text-field
+                  v-model="last_name2"
+                  placeholder="Apellido 2"
+                  outlined
+                ></v-text-field>
+              </v-col>
 
-        <div>
-          <v-text-field
-            v-model="name2"
-            class="px-2 py-1"
-            solo
-            flat
-            placeholder="Nombre 2"
-            hide-details
-            outlined
-          ></v-text-field>
+              <v-col
+                md="6"
+                class="py-0"
+              >
+                <v-text-field
+                  v-model="email"
+                  solo
+                  flat
+                  placeholder="Email"
+                  outlined
+                ></v-text-field>
+              </v-col>
 
-          <v-divider></v-divider>
-        </div>
+              <v-col
+                md="6"
+                class="py-0"
+              >
+                <v-text-field
+                  v-model="var1"
+                  solo
+                  flat
+                  placeholder="VAR 1"
+                  outlined
+                ></v-text-field>
+              </v-col>
 
-        <div>
-          <v-text-field
-            v-model="last_name1"
-            class="px-2 py-1"
-            solo
-            flat
-            placeholder="Apellido 1"
-            hide-details
-            outlined
-          ></v-text-field>
+              <v-col
+                md="6"
+                class="py-0"
+              >
+                <v-text-field
+                  v-model="var2"
+                  placeholder="VAR 2"
+                  outlined
+                ></v-text-field>
+              </v-col>
 
-          <v-divider></v-divider>
-        </div>
+              <v-col
+                md="6"
+                class="py-0"
+              >
+                <v-text-field
+                  v-model="var2"
+                  placeholder="VAR 2"
+                  outlined
+                ></v-text-field>
+              </v-col>
 
-        <div>
-          <v-text-field
-            v-model="last_name2"
-            class="px-2 py-1"
-            solo
-            flat
-            placeholder="Apellido 2"
-            hide-details
-            outlined
-          ></v-text-field>
+              <v-col
+                md="6"
+                class="py-0"
+              >
+                <v-text-field
+                  v-model="var3"
+                  placeholder="VAR 3"
+                  outlined
+                ></v-text-field>
+              </v-col>
 
-          <v-divider></v-divider>
-        </div>
+              <v-col
+                md="6"
+                class="py-0"
+              >
+                <v-text-field
+                  v-model="var4"
+                  placeholder="VAR 4"
+                  outlined
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-card-text>
 
-        <div>
-          <v-text-field
-            v-model="email"
-            class="px-2 py-1"
-            solo
-            flat
-            placeholder="Email"
-            hide-details
-            outlined
-          ></v-text-field>
-
-          <v-divider></v-divider>
-        </div>
-
-        <div>
-          <v-text-field
-            v-model="var1"
-            class="px-2 py-1"
-            solo
-            flat
-            placeholder="VAR 1"
-            hide-details
-            outlined
-          ></v-text-field>
-
-          <v-divider></v-divider>
-        </div>
-
-        <div>
-          <v-text-field
-            v-model="var2"
-            class="px-2 py-1"
-            solo
-            flat
-            placeholder="VAR 2"
-            hide-details
-            outlined
-          ></v-text-field>
-
-          <v-divider></v-divider>
-        </div>
-
-        <div>
-          <v-text-field
-            v-model="var3"
-            class="px-2 py-1"
-            solo
-            flat
-            placeholder="VAR 3"
-            hide-details
-            outlined
-          ></v-text-field>
-
-          <v-divider></v-divider>
-        </div>
-
-        <div>
-          <v-text-field
-            v-model="var4"
-            class="px-2 py-1"
-            solo
-            flat
-            placeholder="VAR 4"
-            hide-details
-            outlined
-          ></v-text-field>
-
-          <v-divider></v-divider>
-        </div>
-
-        <v-divider></v-divider>
-
-        <v-card-actions class="pa-2">
+        <v-card-actions>
           <v-btn outlined @click="close">Cancelar</v-btn>
           <v-spacer></v-spacer>
           <v-btn color="primary" type="submit">Guardar</v-btn>

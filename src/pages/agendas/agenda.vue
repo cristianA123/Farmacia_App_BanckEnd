@@ -1,127 +1,62 @@
 <template>
-  <div class="d-flex flex-column flex-grow-1">
-    <div class="d-flex align-center py-3">
-      <div>
-        <div class="display-1">Agendas</div>
-      </div>
-      <v-spacer></v-spacer>
-      <v-btn color="primary" @click="openNewAgenda()">
-        Crear nueva agenda
-      </v-btn>
+  <div class="d-flex flex-row flex-grow-1 mt-2">
+    <v-navigation-drawer
+      v-model="drawer"
+      :app="$vuetify.breakpoint.mdAndDown"
+      :permanent="$vuetify.breakpoint.lgAndUp"
+      floating
+      :right="$vuetify.rtl"
+      class="elevation-1 rounded flex-shrink-0"
+      :class="[$vuetify.rtl ? 'ml-3' : 'mr-3']"
+      width="240"
+    >
+      <v-list dense nav class="mt-2 pa-0">
+        <div class="mx-2 mb-2">
+          <v-btn outlined block @click="showCreateDialog = true">
+            <v-icon small left>mdi-plus</v-icon>
+            Crear agenda
+          </v-btn>
+        </div>
+        <v-list-item
+          v-for="(agenda, index) in agendas"
+          :key="index"
+          v-model="agendaSelected"
+          :to="`/tools/agendas/${agenda.id}`"
+          active-class="primary--text"
+          link
+        >
+          <v-list-item-icon>
+            <v-icon small>mdi-book-open-blank-variant</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ agenda.name }}</v-list-item-title>
+          </v-list-item-content>
+
+          <v-list-item-action v-if="agenda.all_contacts > 0">
+            <v-badge
+              inline
+              color="primary"
+              class="font-weight-bold"
+              :content="agenda.all_contacts"
+            >
+            </v-badge>
+          </v-list-item-action>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <div class="d-flex flex-grow-1 flex-column">
+
+      <v-toolbar class="hidden-lg-and-up flex-grow-0 mb-2">
+        <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+        <div class="title font-weight-bold">Agendas</div>
+      </v-toolbar>
+        
+      <ContactsComponent :key="$route.params.agendaId" :agendaId="$route.params.agendaId"/>
+      
     </div>
-
-    <!--Empty items --->
-    <EmptyItems
-      v-if="itemsEmpty && !isLoading"
-      icon="mdi-contacts"
-      text="No tiene agendas creadas. Para crear agendas cortas clic en botón Crear Nueva Agenda"
-    />
-
-    <template v-else>
-      <v-data-table
-        :headers="headers"
-        :items="items"
-        :items-per-page="5"
-        class="elevation-1"
-      >
-        <template v-slot:item.deliverability="{ item }">
-          {{ item.deliverability * 100 }}%
-        </template>
-
-        <template v-slot:item.status="{ item }">
-          <v-chip
-            v-if="item.status === 0"
-            class="ma-2"
-            color="secondary"
-            text-color="white"
-            small
-          >
-            Sin contactos
-          </v-chip>
-          <v-chip
-            v-if="item.status === 1"
-            class="ma-2"
-            color="green"
-            text-color="white"
-            small
-          >
-            Disponible
-          </v-chip>
-          <v-chip
-            v-if="item.status === 2"
-            class="ma-2"
-            color="orange"
-            text-color="white"
-            small
-          >
-            Procesando
-          </v-chip>
-        </template>
-
-        <template v-slot:item.actions="{ item }">
-          <v-menu offset-y>
-            <template v-slot:activator="{ attrs, on }">
-              <v-btn text v-bind="attrs" v-on="on"> Acciones </v-btn>
-            </template>
-
-            <v-list>
-              <v-list-item link @click="openNewAgenda(item)">
-                Renombrar
-              </v-list-item>
-
-              <v-list-item link @click="manage(item)">
-                Gestionar
-              </v-list-item>
-              
-              <template>
-                <div class="text-center">
-                  <v-dialog
-                    v-model="dialogConfirm"
-                    persistent
-                    max-width="400"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-list-item link v-bind="attrs" v-on="on">
-                        Eliminar
-                      </v-list-item>
-                    </template>
-                    <v-card>
-                      <v-card-title class="text-h5">
-                        Seguro de eliminar esta agenda?
-                      </v-card-title>
-                      <v-card-text
-                        >Una vez eliminado esta agenda, no podrá
-                        recuperarla. Las campañas que se esten procesando y
-                        que hagan uso de esta agenda se enviarán con
-                        normalidad.</v-card-text
-                      >
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                          color="secondary"
-                          text
-                          @click="dialog = false"
-                        >
-                          Cancelar
-                        </v-btn>
-                        <v-btn
-                          color="success"
-                          text
-                          @click="confirmDelete(item)"
-                        >
-                          Confirmo
-                        </v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
-                </div>
-              </template>
-            </v-list>
-          </v-menu>
-        </template>
-      </v-data-table>
-    </template>
-
+    
     <new-agenda ref="newAgenda" @onCreated="onCreated" />
   </div>
 </template>
@@ -129,24 +64,18 @@
 <script>
 import newAgenda from './components/newAgenda'
 import BackendApi from '@/services/backend.service'
-import EmptyItems from '@/components/common/EmptyItems'
+import ContactsComponent from './components/ContactsComponent'
 
 export default {
   components: {
     newAgenda,
-    EmptyItems
+    ContactsComponent
   },
   data() {
     return {
-      headers: [
-        { text: 'Nombre', value: 'name' },
-        { text: 'Contactos', value: 'all_contacts' },
-        { text: 'Entregabilidad', value: 'deliverability' },
-        { text: 'Estado', value: 'status' },
-        { text: 'Última modificación', value: 'updated_at' },
-        { text: 'Acciones', value: 'actions' }
-      ],
-      items: [],
+      agendas: [],
+      agendaSelected: 1,
+      drawer: null,
       dialogConfirm: false,
       isLoading: false
     }
@@ -166,8 +95,7 @@ export default {
         .then((response) => {
           this.isLoading = false
           if (response.data.success) {
-            this.items = response.data.data
-            console.log(this.items)
+            this.agendas = response.data.data
           } else {
             this.$store.dispatch('app/showToast', response.data.message)
           }

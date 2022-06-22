@@ -37,8 +37,8 @@
             </v-col>
 
             <Message-Input-Component 
-              :agenda="false"
-              :excel="true"
+              :is-agenda="false"
+              :example-item="$store.state.sms.file.example"
               :errors="errors"
               @onChangeMessage="onChangeMessage"
             />
@@ -80,15 +80,14 @@
           </v-bottom-sheet>
         </div>
       </template>
-
     </v-form>
+
     <PreviewSmsComponent
       ref="dialogPreview"
       :options="options" 
-      :message="message"
+      :messageExample="messageExample"
       :fileData="$store.state.sms.file"
       :is-excel="true"
-      :example-contact="exampleExelComputed"
       :is-btn-loading="isBtnLoading"
       :credit-to-use="creditToUse"
       :available-credit="availableCredit"
@@ -104,7 +103,6 @@ import BackendApi from '@/services/backend.service'
 import MessageInputComponent from '../components/MessageInputComponent.vue'
 import BackPage from '@/components/common/BackPage.vue'
 import PreviewSmsComponent from '../components/PreviewSmsComponent'
-// import InputFileDragAndDrop  from '@/components/common/InputFileDragAndDrop.vue'
 
 export default {
   components: {
@@ -112,7 +110,6 @@ export default {
     MessageInputComponent,
     BackPage,
     PreviewSmsComponent
-    // InputFileDragAndDrop
   },
   data() {
     return {
@@ -137,6 +134,7 @@ export default {
       name: '',
       file: null,
       message: '',
+      messageExample: '',
       url_id: '',
       long_url: '',
       options: {
@@ -274,8 +272,9 @@ export default {
           this.errors = error.response.data.errors
         } )
     },
-    onChangeMessage(msg, url_id, long_url) {
+    onChangeMessage(msg, msgExample, url_id, long_url) {
       this.message = msg
+      this.messageExample = msgExample
       this.url_id = url_id
       this.long_url = long_url
     }

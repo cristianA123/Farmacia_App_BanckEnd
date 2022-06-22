@@ -7,6 +7,7 @@
     >
       mdi-cloud-upload-outline</v-icon>
     <v-card
+      width="93%"
       :class="{ 'grey lighten-2': dragover }"
       outlined
       @click="click()"
@@ -19,6 +20,7 @@
         <v-file-input
           id="file_input"
           v-model="uploadedFiles" 
+          :rules="[v=>!!v || 'Excel']"
           style="display:none"
           outlined
           @change="onDrop()"

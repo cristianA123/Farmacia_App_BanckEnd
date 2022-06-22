@@ -25,7 +25,7 @@
               height: 430px; 
               background-size: 100%;"
             >
-              <div style="padding: 5px 25px; 25px  25px;"><div><span id="span_sms_text" style="background-color: rgb(230, 230, 235);text-align: left;padding: 5px 7px;margin: 100px 25px 25px 20px;border-radius: 10px;float: left;white-space: pre-wrap;font-size: 12px;color: black;">{{ messageComputed }} </span></div></div>
+              <div style="padding: 5px 25px; 25px  25px;"><div><span id="span_sms_text" style="background-color: rgb(230, 230, 235);text-align: left;padding: 5px 7px;margin: 100px 25px 25px 20px;border-radius: 10px;float: left;white-space: pre-wrap;font-size: 12px;color: black;">{{ messageExample }} </span></div></div>
             </div>
           </v-col>
 
@@ -141,7 +141,7 @@ export default {
       type: Object,
       default: () => {}
     },
-    message: {
+    messageExample: {
       type: String,
       default: ''
     },
@@ -180,7 +180,6 @@ export default {
         { key:'[VAR2]', value:'var2' },
         { key:'[VAR3]', value:'var3' },
         { key:'[VAR4]', value:'var4' }
-        // { key9:'[NOMBRE 1]' }
       ],
       data_key_excel: [
         { key:'[VAR1]', value:'VAR1' },
@@ -191,34 +190,10 @@ export default {
         { key:'[VAR6]', value:'VAR6' },
         { key:'[VAR7]', value:'VAR7' },
         { key:'[VAR8]', value:'VAR8' }
-        // { key9:'[NOMBRE 1]' }
       ]
     }
   },
   computed: {
-    messageComputed: function () {
-      let messageTemporal = this.message
-
-      if ( this.exampleContact.length !== 0) {
-
-        if ( this.isExcel ) {
-  
-          this.data_key_excel.forEach( (element) => {
-            messageTemporal = messageTemporal.replace(element.key, this.exampleContact[0][element.value])
-          })
-
-        } else {
-
-          this.data_key_agenda.forEach( (element) => {
-            messageTemporal = messageTemporal.replace(element.key, this.exampleContact[0][element.value])
-          })
-          
-        }
-      }
-
-      return messageTemporal
-
-    },
     configFormat: function () {
       return {
         decimalDigits: 0,
