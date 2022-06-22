@@ -263,7 +263,6 @@ export default {
           if (response.data.success) {
             this.$store.dispatch('app/showToast', response.data.message)
             this.$router.push({ name: 'reports' })
-
           }
         })
         .catch( (error) => {

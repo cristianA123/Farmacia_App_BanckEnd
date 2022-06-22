@@ -4,7 +4,9 @@
     v-model="show"
     width="800px"
   >
-    <v-card>
+    <v-card
+      id="preview-sms-dialog"
+    >
       <v-card-title>
         Resumen de campaña:
         <v-spacer></v-spacer>
@@ -109,7 +111,7 @@
             <v-btn
               color="green"
               dark
-              :loading="isBtnLoading"
+              :loading="loadingSendPdf"
               @click="submit"
             >
               <v-icon
@@ -128,8 +130,12 @@
 </template>
 
 <script>
+import BackendApi from '@/services/backend.service'
+
+import jspdf from 'jspdf'
+import html2canvas from 'html2canvas'
 import moment from 'moment'
-import 'moment/locale/es'
+moment.locale('es')
 
 export default {
   props: {
@@ -190,7 +196,9 @@ export default {
         { key:'[VAR6]', value:'VAR6' },
         { key:'[VAR7]', value:'VAR7' },
         { key:'[VAR8]', value:'VAR8' }
-      ]
+        // { key9:'[NOMBRE 1]' }
+      ],
+      loadingSendPdf: false
     }
   },
   computed: {
@@ -218,9 +226,70 @@ export default {
     close() {
       this.show = false
     },
-    submit() {
-      this.close()
+    async submit() {
+      this.loadingSendPdf = true
+
+      const options = {
+        scale: 3
+      }
+
+      await html2canvas(document.getElementById('preview-sms-dialog'),options).then(
+        (canvas) => {
+          const imgData = canvas.toDataURL('image/png')
+          const doc = new jspdf('p', 'pt', 'a4')
+          const bufferX = 25
+          const bufferY = 235
+          const imgProps = doc.getImageProperties(imgData)
+          const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX
+          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
+          const sizeHead = 16
+
+          doc.setFontSize(sizeHead)
+          const optionsHeader = {
+            align: 'center',
+            font: 'helvetica'
+          }
+
+          doc.text('Campaña creada', pdfWidth / 2, 40, optionsHeader)
+          doc.setFontSize(11)
+          doc.text('FECHA Y HORA:' + ' ' + moment().format('MMMM Do YYYY, h:mm:ss a') , 25, 70)
+          doc.setFontSize(12)
+          doc.text('DATOS DEL USUARIO:', 25, 90)
+          doc.setFontSize(11)
+          doc.text('NOMBRE: ' +  $cookies.get('user').name , 25, 110)
+          doc.text('CORREO: ' +  $cookies.get('user').email , 25, 125)
+          doc.text('EMPRESA: ' +  $cookies.get('user').company , 25, 140)
+          doc.setFontSize(12)
+          doc.text('DATOS DE LA CAMPAÑA:', 25, 160)
+          doc.setFontSize(11)
+          doc.text('NOMBRE: ' +  this.options.name , 25, 180)
+          doc.text('FORMATO DE MENSAJE: ' + this.message, 25, 195)
+          doc.text('COSTO PROBABLE DE CREDITOS: ' + this.creditToUse, 25, 210)
+          doc.text('CREDITOS DISPONIBLES: ' + this.availableCredit, 25, 225)
+          // doc.text('CREDITOS DISPONIBLES PROBABLES DESPUES DE CREAR CAMPAÑA : ' + this.availableCredit -  this.creditToUse , 25, 80)
+          // creditToUse
+          // availableCredit
+          doc.addImage(imgData, 'JPEG',bufferX ,bufferY , pdfWidth, pdfHeight, undefined, 'FAST')
+
+          const formData = new FormData()
+
+          formData.append('file', doc.output('blob'))
+          
+          BackendApi.post('/send_email', formData)
+            .then((response) => {
+              if (response.data.success) {
+                //alert('Se ha enviado el correo')
+              }
+            })
+            .catch( (error) => {
+              this.$store.dispatch('app/showToast', 'No se pudo enviar la email, con datos de la campaña creada')
+            } )
+          // doc.save('Reporte de campaña.pdf')
+        }
+      )
+      this.loadingSendPdf = false
       this.$emit('onPreviewSmsSubmit')
+      this.close()
     }
   }
 }

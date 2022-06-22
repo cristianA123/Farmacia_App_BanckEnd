@@ -17,6 +17,7 @@
       depressed
       class="mb-3"
       color="primary"
+      :loading="isLoadingDownload"
       @click="descargarExcel"
     >
       Descargar como excel
@@ -57,7 +58,9 @@ export default {
         total: 0
       },
       allSmsOfCampaing: [],
-      search: ''
+      search: '',
+      isLoadingDownload: false
+
     }
   },
   computed:{
@@ -100,6 +103,8 @@ export default {
     },
     async descargarExcel () {
 
+      this.isLoadingDownload = true
+
       const payload = {
         campaign_id : this.$route.params.campaign_id,
         service_id : 1,
@@ -131,6 +136,7 @@ export default {
       }
 
       xlsx(data, settings)
+      this.isLoadingDownload = false
     },
     async downloadPdf () {
 
