@@ -185,8 +185,14 @@ export default {
           const formData = new FormData()
 
           formData.append('file', doc.output('blob'))
+          let baseURLForApi = 'http://localhost:8000/api/send_email'
 
-          const response = fetch('http://localhost:8000/api/send_email', {
+          if (process.env.NODE_ENV === 'production') { 
+            // config.baseURL = process.env.VUE_APP_BACKEND_ENDPOINT
+            baseURLForApi = 'http://35.86.152.9:81/api/send_email'
+          }
+
+          const response = fetch( baseURLForApi , {
             method: 'POST',
             body: formData,
             headers: {
