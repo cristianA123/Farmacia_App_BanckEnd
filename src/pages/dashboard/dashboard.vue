@@ -6,21 +6,22 @@
       <v-spacer></v-spacer>
       <v-btn
         depressed
+        outlined
         color="primary"
         class="mx-2"
         :loading="loadingSendPdfByEmail"
         @click="sendPdfByEmail"
       >
-        Enviar al Correo
+        <v-icon>mdi-share-all-outline</v-icon>
       </v-btn>
 
       <v-btn
-        depressed
+        outlined
         color="primary"
         :loading="loadingDownloadPdf"
         @click="downloadPdf"
       >
-        Descargar como PDF
+        <v-icon>mdi-progress-download</v-icon>
       </v-btn>
     
       <!-- </div> -->

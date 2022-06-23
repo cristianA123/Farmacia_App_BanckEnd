@@ -1,9 +1,11 @@
 <template>
   <div>
 
+    <!--Botones-->
     <div class="row ml-3">
+      <!--Agenda-->
       <div
-        v-if="agenda"
+        v-if="isAgenda"
       >
         <v-btn
           v-for="button in vars"
@@ -16,8 +18,10 @@
         <br>
         <br>
       </div>
+
+      <!---Excel-->
       <div
-        v-if="excel"
+        v-else
         class="ml-1"
       >
         <v-btn
@@ -32,7 +36,8 @@
         <br>
         <br>
       </div>
-      <v-menu v-if="excel != agenda" offset-y>
+
+      <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             color="primary"
@@ -54,11 +59,14 @@
           </v-list-item>
         </v-list>
       </v-menu>
+      
     </div>
 
+    <!---Mensaje-->
     <v-textarea
       v-model="message"
-      label="Escriba el mensaje a enviar"
+      label="Mensaje a enviar"
+      placeholder="Ej.: Celebra esta navidad con nuestras ofertas"
       :error-messages="isValidMessage"
       :rules="[v=>!!v || 'Escriba el mensaje a enviar, puede utilizar los botones para el uso de Variables']"
       :messages="computedCounterMessage"
@@ -84,17 +92,17 @@ export default {
     DialogUrl
   },
   props: {
-    agenda: {
-      type: Boolean,
-      default: false
-    },
-    excel: {
+    isAgenda: {
       type: Boolean,
       default: false
     },
     errors: {
       type: Object,
       default: () => ({ message:'' })
+    },
+    exampleItem: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -105,15 +113,38 @@ export default {
       ],
       vars: ['NOMBRE 1', 'NOMBRE 2','EMAIL', 'APELLIDO 1', 'APELLIDO 2', 'VAR1', 'VAR2', 'VAR3', 'VAR4'],
       vars_excel: ['VAR1', 'VAR2', 'VAR3', 'VAR4','VAR5', 'VAR6', 'VAR7', 'VAR8'],
+      data_key_agenda: [
+        { key:'[NOMBRE 1]', value:'name1' },
+        { key:'[NOMBRE 2]', value:'name2' },
+        { key:'[APELLIDO 1]', value:'last_name1' },
+        { key:'[APELLIDO 2]', value:'last_name2' },
+        { key:'[EMAIL]', value:'email' },
+        { key:'[VAR1]', value:'var1' },
+        { key:'[VAR2]', value:'var2' },
+        { key:'[VAR3]', value:'var3' },
+        { key:'[VAR4]', value:'var4' }
+      ],
+      data_key_excel: [
+        { key:'[VAR1]', value:'VAR1' },
+        { key:'[VAR2]', value:'VAR2' },
+        { key:'[VAR3]', value:'VAR3' },
+        { key:'[VAR4]', value:'VAR4' },
+        { key:'[VAR5]', value:'VAR5' },
+        { key:'[VAR6]', value:'VAR6' },
+        { key:'[VAR7]', value:'VAR7' },
+        { key:'[VAR8]', value:'VAR8' }
+      ],
       message: '',
+      messageExample: '',
       url_id: '',
       long_url: ''
     }
   },
   computed: {
     computedCounterMessage () {
-      const countCharacters = SmsCounter.count(this.message).remaining
-      const countCredits = SmsCounter.count(this.message).messages
+
+      const countCharacters = SmsCounter.count(this.messageExample).remaining
+      const countCredits = SmsCounter.count(this.messageExample).messages
 
       return  '[' + countCharacters + ' Restantes / ' + countCredits + ' Crédito]'
     },
@@ -127,21 +158,33 @@ export default {
       this.tranforMessageForSms()
     }
   },
-  mounted() {
-    console.log(this.buttons)
-  },
   methods: {
-    changetest() {
-      console.log('change')
-    },
     tranforMessageForSms () {
-      const string = this.message
+
+      if ( this.exampleItem.length !== 0) {
+        
+        this.messageExample = this.message
+
+        if ( this.isAgenda ) {
+
+          this.data_key_agenda.forEach( (element) => {
+            this.messageExample = this.messageExample.replace(element.key, this.exampleItem[0][element.value])
+          })
+        } else {
+
+          this.data_key_excel.forEach( (element) => {
+            console.log(element)
+            this.messageExample = this.messageExample.replace(element.key, this.exampleItem[0][element.value])
+          })          
+        }
+      }
+
       let estandarText = ''
       const filtro = '_@$ !#\'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZ¿abcdefghijklmnopqrstuvwxyz{}[]áéíóú\'ñ'
       
-      for (let i = 0; i < string.length; i++) {
-        if (filtro.indexOf(string.charAt(i)) !== -1) {
-          estandarText += string.charAt(i)
+      for (let i = 0; i < this.message.length; i++) {
+        if (filtro.indexOf(this.message.charAt(i)) !== -1) {
+          estandarText += this.message.charAt(i)
         }
       }
 
@@ -164,7 +207,7 @@ export default {
       estandarText = estandarText.replace('Ñ', 'N')
 
       this.message = estandarText
-      this.$emit('onChangeMessage', this.message, this.url_id, this.long_url)
+      this.$emit('onChangeMessage', this.message, this.messageExample, this.url_id, this.long_url)
     },
     addVarOnMessage (text) {
       this.message = this.message + ' [' + text + '] '
