@@ -188,7 +188,7 @@ export default {
           formData.append('file', doc.output('blob'))
 
           const baseURLForApi = ( window.location.hostname.includes('localhost') )
-            ? 'http://localhost:8000/api/send_email'
+            ? 'http://localhost:8000/api/send_email798978'
             : 'http://35.86.152.9:81/api/send_email'
 
           const response = fetch( baseURLForApi , {
