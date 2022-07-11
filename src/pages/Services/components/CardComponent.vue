@@ -112,7 +112,7 @@ export default {
   padding-left: 0;
   justify-content: center;
   position: absolute;
-  background: #e29056c5;
+  background:#e66a11c5;
   width: 100%;
   border-radius: 6px;
 }
