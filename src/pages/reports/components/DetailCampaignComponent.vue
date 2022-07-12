@@ -17,7 +17,6 @@
       :headers="headers" 
       :items="campaigns"
       hide-default-footer 
-      class="elevation-1"
     >
       <template v-slot:[`item.actions`]="{ item }">
         <v-menu
@@ -73,7 +72,7 @@ export default {
       headers: [
         { text: 'Telefono', value: 'phone' },
         { text: 'Mensaje', value: 'content' },
-        { text: 'Fecha programada', value: 'scheduled' },
+        { text: 'Fecha', value: 'scheduled' },
         { text: 'Estado', value: 'status' }
       ],
       campaign_id: null,

@@ -12,7 +12,7 @@
     >
       <v-list dense nav class="mt-2 pa-0">
         <div class="mx-2 mb-2">
-          <v-btn outlined block @click="showCreateDialog = true">
+          <v-btn outlined block @click="openNewAgenda()">
             <v-icon small left>mdi-plus</v-icon>
             Crear agenda
           </v-btn>
