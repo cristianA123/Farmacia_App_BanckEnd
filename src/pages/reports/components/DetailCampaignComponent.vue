@@ -72,7 +72,7 @@ export default {
       headers: [
         { text: 'Telefono', value: 'phone' },
         { text: 'Mensaje', value: 'content' },
-        { text: 'Fecha', value: 'scheduled' },
+        { text: 'Fecha', value: 'created_at' },
         { text: 'Estado', value: 'status' }
       ],
       campaign_id: null,
