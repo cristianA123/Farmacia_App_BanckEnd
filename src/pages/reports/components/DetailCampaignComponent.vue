@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import BackendApi from '@/services/backend.service'
 
 export default {
   name:'DetailCampaignComponent',

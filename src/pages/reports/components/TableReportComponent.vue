@@ -60,7 +60,7 @@
             text-color="white"
             small
           >
-            Finalizado
+            FINALIZADO
           </v-chip>
 
           <v-chip
@@ -68,18 +68,19 @@
             class="ma-2"
             text-color="white"
             small
+            dark
           >
-            Pendiente
+            PENDIENTE
           </v-chip>
 
           <v-chip
             v-if="item.status === 3"
             class="ma-2"
-            text-color="white"
             small
+            color="orange"
             dark
           >
-            Procesando
+            PROCESANDO
           </v-chip>
 
           <v-chip
@@ -89,7 +90,7 @@
             text-color="white"
             small
           >
-            Agendado
+            AGENDADO
           </v-chip>
 
         </template>
@@ -123,6 +124,14 @@
               >
                 Ver detalle
               </v-list-item>
+              <v-list-item
+                v-if="isAdmin"
+                @click="downloadFile(item)"
+                link
+              >
+                Archivo
+              </v-list-item>
+              
             </v-list>
           </v-menu>
         </template>
@@ -160,10 +169,18 @@ export default {
       searchQuery: ''
     }
   },
+  computed: {
+    isAdmin () {
+      return $cookies.get('user').isAdmin
+    }
+  },
   methods: {
     detalle(item) {
       
       this.$router.push({ path: '/reports/sms/detail/' + item.id })
+    },
+    downloadFile(item) { 
+      window.location.assign(process.env.VUE_APP_BACKEND_ENDPOINT)
     },
     onfilter(data) {
       this.$emit('onfilter', data)

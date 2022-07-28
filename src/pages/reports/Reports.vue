@@ -5,17 +5,16 @@
         <div class="display-1">Reporte de servicios</div>
       </div>
       <v-spacer></v-spacer>
+      <v-btn
+        outlined
+        color="primary"
+        :loading="loadingDownloadPdf"
+        @click="descargarExcel"
+      >
+        <v-icon>mdi-progress-download</v-icon>
+      </v-btn>
     </div>
 
-    <v-btn
-      depressed
-      class="mb-3"
-      color="primary"
-      :loading="isLoadingDownload"
-      @click="descargarExcel"
-    >
-      Descargar como excel
-    </v-btn>
     <TableReportComponent
       :headers="headers"
       :items="reports"

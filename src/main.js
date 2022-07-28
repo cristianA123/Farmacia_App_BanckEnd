@@ -3,6 +3,10 @@ import App from './App.vue'
 import DatetimePicker from 'vuetify-datetime-picker'
 import VueClipboard from 'vue-clipboard2'
 
+import JsonExcel from 'vue-json-excel'
+
+Vue.component('downloadExcel', JsonExcel)
+
 // VUEX - https://vuex.vuejs.org/
 import store from './store'
 

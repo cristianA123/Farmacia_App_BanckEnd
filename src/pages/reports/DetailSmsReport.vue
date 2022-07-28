@@ -1,10 +1,31 @@
 <template>
   <div id="hola" class="d-flex flex-column flex-grow-1">
+    
+    <v-file-input
+      v-model="excelprueba"
+      label="prueba file to json"
+      @change="file_to_json()"
+    />  
+
+    <v-btn @click="file_to_json()">prueba</v-btn>
+
     <div class="d-flex align-center py-3">
       <div>
         <div class="display-1">Reporte de servicios</div>
       </div>
       <v-spacer></v-spacer>
+      <v-btn
+        outlined
+        color="primary"
+        :loading="loadingDownloadPdf"
+        @click="descargarExcel"
+      >
+        <v-icon>mdi-progress-download</v-icon>
+      </v-btn>
+      <BackPage
+        class="ml-2"
+        to="reports"
+      />
     </div>
     <div id="dashboarDetail">
       <!-- dash campaing detail -->
@@ -13,15 +34,7 @@
 
     <!-- componente url campaing detail -->
     <UrlDashDetailComponent v-if="has_url"/>
-    <v-btn
-      depressed
-      class="mb-3"
-      color="primary"
-      :loading="isLoadingDownload"
-      @click="descargarExcel"
-    >
-      Descargar como excel
-    </v-btn>
+
     <!-- pagination -->
     <DetailCampaignComponent
       ref="detailCampaignComponent"
@@ -37,6 +50,7 @@ import BackendApi from '@/services/backend.service'
 import DashDetailComponent from './components/DashDetailComponent.vue'
 import UrlDashDetailComponent from './components/UrlDashDetailComponent.vue'
 import DetailCampaignComponent from './components/DetailCampaignComponent.vue'
+import BackPage from '@/components/common/BackPage.vue'
 
 import xlsx from 'json-as-xlsx'
 import jspdf from 'jspdf'
@@ -47,10 +61,13 @@ export default {
   components:{
     DashDetailComponent,
     UrlDashDetailComponent,
-    DetailCampaignComponent
+    DetailCampaignComponent,
+    BackPage
   },
   data () {
     return {
+      excelprueba: null,
+      loadingDownloadPdf: false,
       has_url: true,
       campaigns : [],
       pagination: {
@@ -72,7 +89,9 @@ export default {
     this.ongetSms()
   },
   methods: {
-
+    file_to_json () {
+      console.log('holis')
+    },
     ongetSms(searchText) {
       console.log(searchText)
       this.search = searchText
@@ -85,8 +104,7 @@ export default {
       if ( searchText !== '' ) {
         this.pagination.current = 1
       }
-
-      BackendApi.post('/smsCampaignDetail?page=' + this.pagination.current,payload)
+      /*BackendApi.post('/smsCampaignDetail?page=' + this.pagination.current,payload)
         .then((response) => {
           if (response.data.success) {
 
@@ -98,8 +116,7 @@ export default {
               this.has_url = false
             }
           }
-        })
-
+        }) */
     },
     async descargarExcel () {
 
@@ -162,7 +179,6 @@ export default {
       )
     }
   }
-
 }
 </script>
 
