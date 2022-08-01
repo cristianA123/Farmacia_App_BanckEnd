@@ -7,7 +7,7 @@ const config = {
 }
 
 if (process.env.NODE_ENV === 'production') { 
-  config.baseURL = process.env.VUE_APP_BACKEND_ENDPOINT
+  config.baseURL = process.env.VUE_APP_BACKEND_ENDPOINT + '/web-api'
 }
 
 const instance = axios.create(config)
