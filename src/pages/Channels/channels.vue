@@ -79,10 +79,6 @@
                     v-model="editedItem.provider_id"
                     :error-messages="isValidProvider_id"
                     label="Seleccione proveedor"
-                    solo
-                    dense
-                    hide-details
-                    hide-selected
                     :items="intervals"
                     item-text="name"
                     item-value="id"
@@ -94,9 +90,9 @@
                   lg="6"
                 >
                   <v-text-field
-                    v-model="editedItem.sender"
-                    :error-messages="isValidSender"
-                    label="Sender"
+                    v-model="editedItem.dial"
+                    :error-messages="isValidDial"
+                    label="Dial"
                     outlined
                   ></v-text-field>
                 </v-col>
@@ -108,6 +104,16 @@
                     v-model="editedItem.authorization"
                     :error-messages="isValidAuthorization"
                     label="Authorization"
+                    outlined
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  class="my-0 py-0"
+                  lg="6"
+                >
+                  <v-text-field
+                    v-model="editedItem.mask"
+                    label="Mask"
                     outlined
                   ></v-text-field>
                 </v-col>
@@ -190,7 +196,7 @@ export default {
       api_Key:'',
       authorization:'',
       provider_id:'',
-      sender:''
+      dial:''
     },
     selectedInterval: 0,
     intervals: [
@@ -211,7 +217,8 @@ export default {
       { text: 'Descripción', value: 'description' },
       { text: 'Precio', value: 'price' },
       { text: 'APIKEY', value: 'api_Key' },
-      { text: 'SENDER', value: 'sender' },
+      { text: 'DIAL', value: 'dial' },
+      { text: 'MASK', value: 'mask' },
       { text: 'AUTHORIZATION', value: 'authorization' },
       { text: 'VAR1', value: 'var1' },
       { text: 'VAR2', value: 'var2' },
@@ -224,7 +231,8 @@ export default {
       description: '',
       price:1,
       api_Key: '',
-      sender: '',
+      dial: '',
+      mask:'',
       authorization: '',
       var1: '',
       var2: '',
@@ -235,7 +243,8 @@ export default {
       description: '',
       price:1,
       api_Key: '',
-      sender: '',
+      dial: '',
+      mask: '',
       authorization: '',
       var1: '',
       var2: '',
@@ -259,8 +268,8 @@ export default {
     isValidAuthorization () {
       return this.backendErrors?.authorization === undefined ? '' : this.backendErrors.authorization[0]
     },
-    isValidSender () {
-      return this.backendErrors?.sender === undefined ? '' : this.backendErrors.sender[0]
+    isValidDial () {
+      return this.backendErrors?.dial === undefined ? '' : this.backendErrors.dial[0]
     },
     isValidProvider_id () {
       return this.backendErrors?.provider_id === undefined ? '' : this.backendErrors.provider_id[0]
@@ -350,7 +359,7 @@ export default {
           })
           .catch( (error) => {
             this.backendErrors = error.response.data.errors
-            console.log(error)
+            // console.log(error)
             this.btnLoading = false
             // this.close() 
           })
