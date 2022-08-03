@@ -154,7 +154,7 @@ export default {
       }
       
     },
-    async submit() {
+    submit() {
       if (this.$refs.form.validate()) {
         this.$store.dispatch('name', this.name)
         this.$router.push({ name: 'sms-excel-step-two' })

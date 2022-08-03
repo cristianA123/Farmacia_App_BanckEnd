@@ -40,6 +40,7 @@
               :is-agenda="false"
               :example-item="$store.state.sms.file.example"
               :errors="errors"
+              :vars="vars"
               @onChangeMessage="onChangeMessage"
             />
           </v-card-text>
@@ -86,7 +87,7 @@
       ref="dialogPreview"
       :options="options" 
       :messageExample="messageExample"
-      :fileData="$store.state.sms.file"
+      :registers="$store.state.sms.file.rows"
       :is-excel="true"
       :is-btn-loading="isBtnLoading"
       :credit-to-use="creditToUse"
@@ -113,6 +114,16 @@ export default {
   },
   data() {
     return {
+      vars: [
+        { text: 'VAR1', value: 'VAR1' }, 
+        { text: 'VAR2', value: 'VAR2' }, 
+        { text: 'VAR3', value: 'VAR3' }, 
+        { text: 'VAR4', value: 'VAR4' }, 
+        { text: 'VAR5', value: 'VAR5' }, 
+        { text: 'VAR6', value: 'VAR6' }, 
+        { text: 'VAR7', value: 'VAR7' }, 
+        { text: 'VAR8', value: 'VAR8' }
+      ],
       optionsShow: false,
       errors : {
         scheduled:'',
@@ -235,7 +246,7 @@ export default {
         }
       }
     },
-    async submit() {
+    submit() {
 
       if (this.$refs.form.validate()) {
         this.optionsShow = true

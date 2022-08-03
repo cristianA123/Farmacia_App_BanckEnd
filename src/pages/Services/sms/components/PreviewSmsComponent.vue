@@ -75,7 +75,7 @@
                     <td style="width:350px;">Cantidad de registros:</td>
                     <td>
                       
-                      <span>{{ fileData.rows | formatCurrency(configFormat) }}</span>
+                      <span>{{ registers | formatCurrency(configFormat) }}</span>
                     </td>
                   </tr>
                   <tr>
@@ -139,9 +139,9 @@ moment.locale('es')
 
 export default {
   props: {
-    fileData: {
-      type: Object,
-      default: () => {}
+    registers: {
+      type: Number,
+      default: 0
     },  
     options: {
       type: Object,

@@ -43,37 +43,12 @@
               v => !!v || 'Seleccione agenda'
             ]"
             required
-            @change="cambio"  
+            @change="onChangeAgenda"  
           />
-          <!-- aqui es donde van los ejemplos -->
-          <!-- <v-col
-            v-if="showExample"
-            class="pt-0"
-          >
-            <p>Ejemplos:</p>
-            <v-data-table
-              :headers="headers"
-              :items="exampleContact"
-              :items-per-page="5"
-              class="elevation-1"
-            ></v-data-table>
-          </v-col>
-
-          <Message-Input-Component
-            :agenda="true"
-            :excel="false"
-            :errors="errors"
-            @onChangeMessage="onChangeMessage"
-          /> -->
         </v-card-text>
       </v-card>
 
       <br>
-      
-      <!-- <Options-Component 
-        :errors="errors"
-        @onChange="onChangeOptions"
-      /> -->
 
       <v-card-actions>
         <v-row
@@ -94,83 +69,27 @@
       </v-card-actions>
     </v-form>
 
-    <!-- <PreviewSmsComponent
-      ref="dialogPreview"
-      :options="options" 
-      :message="message"
-      :example-contact="exampleContactComputed"
-      :is-btn-loading="isBtnLoading"
-      :credit-to-use="creditToUse"
-      :available-credit="availableCredit"
-      @onPreviewSmsSubmit="PreviewSmsSubmit"
-    /> -->
-
   </div>
 </template>
 
 <script>
-import OptionsComponent from './components/OptionsComponent.vue'
-// import OptionsComponent from './../components/OptionsComponent.vue'
 import BackendApi from '@/services/backend.service'
-import MessageInputComponent from './../components/MessageInputComponent.vue'
 import BackPage from '@/components/common/BackPage.vue'
-import PreviewSmsComponent from './../components/PreviewSmsComponent.vue'
-import moment from 'moment'
-import 'moment/locale/es'
 
 export default {
   components: {
-    // OptionsComponent,
-    // MessageInputComponent,
     BackPage
-    // PreviewSmsComponent
   },
   data() {
     return {
       errors : {
-        name:'',
-        scheduled:'',
-        message:''
+        name:''
       },
       name: '',
       options: {},
-      headers: [
-        { text: 'Número', value: 'number' },
-        { text: 'Primer nombre', value: 'name1' },
-        { text: 'Segundo nombre', value: 'name2' },
-        { text: 'Primer Apellido', value: 'last_name1' },
-        { text: 'Segundo Apellido', value: 'last_name2' },
-        { text: 'Email', value: 'email' },
-        { text: 'VAR 1', value: 'var1' },
-        { text: 'VAR 2', value: 'var2' },
-        { text: 'VAR 3', value: 'var3' },
-        { text: 'VAR 4', value: 'var4' }
-      ],
-      exampleContact : [],
       agendas: [],
       agendaSelected: null,
-      message: '',
-      url_id: '',
-      long_url: '',
-      breadcrumbs: [{
-        text: 'Servicios',
-        disabled: false,
-        to: '/services'
-      },
-      {
-        text: 'SMS',
-        disabled: false,
-        to: '/sms/create_campaing/'
-      },
-      {
-        text: 'Agenda',
-        disabled: true,
-        to: '/sms/create_campaing/sms_agenda'
-      }],
-      creditToUse : 0,
-      availableCredit : 0,
-      numberOfContacts:0,
-      isBtnLoading: true
+      isLoading: true
     }
   },
   computed: {
@@ -180,14 +99,6 @@ export default {
     exampleContactComputed: function () {
       return this.exampleContact
     },
-    horaIs: function () {
-
-      const horaNowMasTwoMinute = moment().add(2, 'm').format('HH:mm')
-      // const defaultDateMoreTwoMinute = moment().add(2, 'm').format('YYYY-MM-DD HH:mm:ss')
-      const defaultDateMoreTwoMinute = moment().format('ll')
-
-      return defaultDateMoreTwoMinute
-    },
     isValidName: function () {
       return this.errors.name === undefined ? '' : this.errors.name[0] 
     }
@@ -196,8 +107,14 @@ export default {
     this.getAgendas()
   },
   methods: {
+    getAgendas() {
+      BackendApi.get('/agenda').then((response) => {
+        if (response.data.success) {
+          this.agendas = response.data.data
+        }
+      })
+    },
     calculateCreditToUse() {
-
       this.agendas.map( (agenda) => {
         if (agenda.id === this.agendaSelected) {
           this.numberOfContacts = agenda.all_contacts
@@ -220,7 +137,6 @@ export default {
       })
     },
     async availableCreditByUser() {
-
       await this.calculateCreditToUse()
 
       BackendApi.get('/creditsUsedByUser').then((response) => {
@@ -230,68 +146,27 @@ export default {
         }
       })
     },
-    async submit() {
+    submit() {
       if (this.$refs.form.validate()) {
-        await this.availableCreditByUser()
-
-        this.$refs.dialogPreview.open()
+        this.$store.dispatch('name', this.name)
+        this.$router.push({ name: 'sms-agenda-step-two' })
       }
     },
-    getAgendas() {
-      BackendApi.get('/agenda').then((response) => {
-        if (response.data.success) {
-          this.agendas = response.data.data
-        }
-      })
-    },
-    onChangeOptions(options) {
-      this.options = options
-    },
-    PreviewSmsSubmit() {
-      const payload = {
-        service_id: 1,
-        campaign_type_id: 2,
-        name: this.name,
-        destinations: this.agendaSelected,
-        message: this.message,
-        url_id: this.url_id,
-        options: this.options,
-        long_url: this.long_url
-      }
-
-      BackendApi.post('/campaign', payload)
-        .then((response) => {
-          if (response.data.success) {
-            this.$store.dispatch('app/showToast', response.data.message)
-          }
-          this.$router.push({ name: 'reports' })
-        })
-        .catch ( (error) => {
-          this.errors = error.response.data.errors
-        } )
-      // this.$refs.form.reset()
-    },
-    onChangeMessage(msg, url_id, long_url) {
-      this.message = msg
-      this.url_id = url_id
-      this.long_url = long_url
-    },
-    cambio() {
-
+    onChangeAgenda() {
+      //Traer ejemplo y cantidad de contactos
       const payload = {
         agenda_id : this.agendaSelected
       }
 
-      BackendApi.post('/showContactExample',payload).then((response) => {
+      BackendApi.post('/showContactExample', payload).then((response) => {
         if (response.data.success) {
-          this.exampleContact = response.data.data
+          this.$store.dispatch('fileData', response.data.data )
         }
       }).catch((error) => {
         this.$store.dispatch('app/showToast', error.response.data.message)
       })
 
     }
-   
   }
 }
 </script>

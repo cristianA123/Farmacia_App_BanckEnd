@@ -12,69 +12,88 @@
 
     <v-form
       ref="form"
-      @submit.prevent="submit"
       lazy-validation
+      @submit.prevent="submit"
     >
       <v-card
         outlined
       >
         <v-card-text>
-          <v-row>
-            <v-col
-              lg="7"
-            >
-              <Input-Individual-Phones 
-                @onInputNewIndividualPhone="onInputNewIndividualPhone"
-              />
-              
-              <MessageInputComponent 
-                :agenda="false"
-                :excel="false"
-                :errors="errors"
-                @onChangeMessage="onChangeMessage"
-              />
-
-            </v-col>
-            <v-col
-              lg="5"
-            >
-              <Options-Component 
-                :errors="errors"
-                @onChange="onChangeOptions"
-              />
-            </v-col>
-          </v-row>
+          <Input-Individual-Phones 
+            @onInputNewIndividualPhone="onInputNewIndividualPhone"
+          />
+          
+          <MessageInputComponent 
+            :agenda="false"
+            :excel="false"
+            :errors="errors"
+            @onChangeMessage="onChangeMessage"
+          />
+          <template>
+            <div class="text-center">
+              <v-bottom-sheet 
+                v-model="optionsShow"
+                inset
+              >
+                <Options-Component
+                  class="ml-3"
+                  :errors="errors"
+                  @onChange="onChangeOptions"
+                  @onSubmit="openPreviewComponent"
+                />
+              </v-bottom-sheet>
+            </div>
+          </template>
         </v-card-text>
         <v-card-actions>
           <v-row
             justify="center"
           >
             <v-btn
-              type="submit"
-              class="my-2"
-              color="green"
+              color="primary"
               dark
+              type="submit"
             >
+              Siguiente
               <v-icon>
                 mdi-chevron-right
               </v-icon>
-              Siguiente paso
             </v-btn>
           </v-row>
         </v-card-actions>
+
       </v-card>
+
+      <template>
+        <div class="text-center">
+          <v-bottom-sheet 
+            v-model="optionsShow"
+            inset
+          >
+            
+            <Options-Component
+              class="ml-3"
+              :errors="errors"
+              @onChange="onChangeOptions"
+              @onSubmit="openPreviewComponent"
+            />
+            
+          </v-bottom-sheet>
+        </div>
+      </template>
     </v-form>
 
     <PreviewSmsComponent
       ref="dialogPreview"
       :options="options" 
-      :message="message"
-      :credit-to-use="creditToUse"
+      :messageExample="messageExample"
+      :registers="13"
+      :is-excel="true"
       :is-btn-loading="isBtnLoading"
+      :credit-to-use="creditToUse"
       :available-credit="availableCredit"
       @onPreviewSmsSubmit="PreviewSmsSubmit"
     />
-
   </div>
 </template>
 
@@ -89,14 +108,16 @@ import PreviewSmsComponent from './components/PreviewSmsComponent'
 
 export default {
   components: {
+    PreviewSmsComponent,
     OptionsComponent,
     InputIndividualPhones,
     MessageInputComponent,
-    BackPage,
-    PreviewSmsComponent
+    BackPage
   },
   data() {
     return {
+      messageExample: '',
+      optionsShow: false,
       errors : undefined,
       phones: [957314449],
       dialogPreview: false,
@@ -150,15 +171,7 @@ export default {
     },
     async submit() {
       if (this.$refs.form.validate()) {
-        const a = await this.calculateCreditToUse()
-
-        console.log(a)
-        console.log('aaaaa')
-        console.log(this.creditToUse)
-        console.log(typeof (this.creditToUse))
-          
-        await this.availableCreditByUser()
-        this.$refs.dialogPreview.open()
+        this.optionsShow = true
       }
     },
     onChangeOptions(options) {
@@ -201,6 +214,11 @@ export default {
           console.log('salio el error')
           console.log(error)
         })
+    },
+    async openPreviewComponent() {
+      await this.availableCreditByUser()
+      this.optionsShow = false
+      this.$refs.dialogPreview.open()
     }
   }
 }

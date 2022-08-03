@@ -3,40 +3,17 @@
 
     <!--Botones-->
     <div class="row ml-3">
-      <!--Agenda-->
-      <div
-        v-if="isAgenda"
-      >
-        <v-btn
-          v-for="button in vars"
-          :key="button.id"
-          class="primary mx-1"
-          @click="addVarOnMessage(button)"
-        >
-          {{ button }}
-        </v-btn>
-        <br>
-        <br>
-      </div>
 
-      <!---Excel-->
-      <div
-        v-else
-        class="ml-1"
+      <v-btn
+        v-for="button in vars"
+        :key="button.id"
+        class="primary mx-1"
+        @click="addVarOnMessage(button.text)"
       >
-        <v-btn
-          v-for="button in vars_excel"
-          :key="button.id"
-          class="mr-1"
-          outlined
-          @click="addVarOnMessage(button)"
-        >
-          {{ button }}
-        </v-btn>
-        <br>
-        <br>
-      </div>
-
+        {{ button.text }}
+      </v-btn>
+      <br>
+      <br>
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -96,6 +73,10 @@ export default {
       type: Boolean,
       default: false
     },
+    vars: {
+      type: Array,
+      default: () => ([])
+    },
     errors: {
       type: Object,
       default: () => ({ message:'' })
@@ -111,14 +92,12 @@ export default {
         { title: 'Elegir url' },
         { title: 'Url personalizado' }
       ],
-      vars: ['NOMBRE 1', 'NOMBRE 2','EMAIL', 'APELLIDO 1', 'APELLIDO 2', 'VAR1', 'VAR2', 'VAR3', 'VAR4'],
-      vars_excel: ['VAR1', 'VAR2', 'VAR3', 'VAR4','VAR5', 'VAR6', 'VAR7', 'VAR8'],
       data_key_agenda: [
         { key:'[NOMBRE 1]', value:'name1' },
         { key:'[NOMBRE 2]', value:'name2' },
         { key:'[APELLIDO 1]', value:'last_name1' },
         { key:'[APELLIDO 2]', value:'last_name2' },
-        { key:'[EMAIL]', value:'email' },
+        { key:'[EMAIL]', value:'Email' },
         { key:'[VAR1]', value:'var1' },
         { key:'[VAR2]', value:'var2' },
         { key:'[VAR3]', value:'var3' },
@@ -165,18 +144,9 @@ export default {
         
         this.messageExample = this.message
 
-        if ( this.isAgenda ) {
-
-          this.data_key_agenda.forEach( (element) => {
-            this.messageExample = this.messageExample.replace(element.key, this.exampleItem[0][element.value])
-          })
-        } else {
-
-          this.data_key_excel.forEach( (element) => {
-            console.log(element)
-            this.messageExample = this.messageExample.replace(element.key, this.exampleItem[0][element.value])
-          })          
-        }
+        this.vars.forEach( (element) => {
+          this.messageExample = this.messageExample.replace('[' + element.text + ']', this.exampleItem[0][element.value])
+        })
       }
 
       let estandarText = ''

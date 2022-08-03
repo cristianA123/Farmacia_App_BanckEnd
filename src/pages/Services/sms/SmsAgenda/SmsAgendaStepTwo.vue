@@ -2,7 +2,7 @@
   <div class="d-flex flex-column flex-grow-1">
     <div class="d-flex align-center pb-3">
       <div>
-        <div class="display-1">SMS Excel</div>
+        <div class="display-1">SMS Agenda</div>
       </div>
       <v-spacer></v-spacer>
 
@@ -17,51 +17,48 @@
       lazy-validation
       @submit.prevent="submit"
     >
-
-      <v-card-text>
-        <v-card
-          outlined
-        >
-          <v-card-text>
-            <v-col
-              class="pt-0"
+      <v-card
+        outlined
+      >
+        <v-card-text>
+          <v-col
+            class="pt-0"
+          >
+            <v-data-table
+              :headers="headers"
+              :items="$store.state.sms.file.example"
+              :items-per-page="5"
+              hide-default-footer
             >
-              <v-data-table
-                :headers="headers"
-                :items="$store.state.sms.file.example"
-                :items-per-page="5"
-                hide-default-footer
-              >
-                
-              </v-data-table>
-            </v-col>
+            </v-data-table>
+          </v-col>
 
-            <Message-Input-Component 
-              :is-agenda="false"
-              :example-item="$store.state.sms.file.example"
-              :errors="errors"
-              @onChangeMessage="onChangeMessage"
-            />
-          </v-card-text>
+          <Message-Input-Component 
+            :is-agenda="false"
+            :example-item="$store.state.sms.file.example"
+            :errors="errors"
+            :vars="vars"
+            @onChangeMessage="onChangeMessage"
+          />
+        </v-card-text>
 
-          <v-card-actions>
-            <v-row
-              justify="center"
+        <v-card-actions>
+          <v-row
+            justify="center"
+          >
+            <v-btn
+              color="primary"
+              dark
+              type="submit"
             >
-              <v-btn
-                color="primary"
-                dark
-                type="submit"
-              >
-                Siguiente
-                <v-icon>
-                  mdi-chevron-right
-                </v-icon>
-              </v-btn>
-            </v-row>
-          </v-card-actions>
-        </v-card>
-      </v-card-text>
+              Siguiente
+              <v-icon>
+                mdi-chevron-right
+              </v-icon>
+            </v-btn>
+          </v-row>
+        </v-card-actions>
+      </v-card>
 
       <template>
         <div class="text-center">
@@ -86,7 +83,7 @@
       ref="dialogPreview"
       :options="options" 
       :messageExample="messageExample"
-      :fileData="$store.state.sms.file"
+      :registers="$store.state.sms.file.rows"
       :is-excel="true"
       :is-btn-loading="isBtnLoading"
       :credit-to-use="creditToUse"
@@ -113,24 +110,34 @@ export default {
   },
   data() {
     return {
+      vars: [
+        { text: 'NOMBRE1', value: 'name1' }, 
+        { text: 'NOMBRE2', value: 'name2' }, 
+        { text: 'APELLIDO1', value: 'last_name1' }, 
+        { text: 'APELLIDO2', value: 'last_name2' }, 
+        { text: 'EMAIL', value: 'email' }, 
+        { text: 'VAR1', value: 'var1' }, 
+        { text: 'VAR2', value: 'var2' }, 
+        { text: 'VAR3', value: 'var3' }, 
+        { text: 'VAR4', value: 'var4' }
+      ],
       optionsShow: false,
       errors : {
         scheduled:'',
         message:''
       },
       headers: [
-        { text: 'Número', value: 'CELULAR' },
-        { text: 'VAR 1', value: 'VAR1' },
-        { text: 'VAR 2', value: 'VAR2' },
-        { text: 'VAR 3', value: 'VAR3' },
-        { text: 'VAR 4', value: 'VAR4' },
-        { text: 'VAR 5', value: 'VAR5' },
-        { text: 'VAR 6', value: 'VAR6' },
-        { text: 'VAR 7', value: 'VAR7' },
-        { text: 'VAR 8', value: 'VAR8' }
+        { text: 'Número', value: 'number' },
+        { text: 'Nombre 1', value: 'name1' },
+        { text: 'Nombre 2', value: 'name2' },
+        { text: 'Email+', value: 'email' },
+        { text: 'Apellido 1', value: 'last_name1' },
+        { text: 'Apellido 2', value: 'last_name2' },
+        { text: 'VAR1', value: 'var1' },
+        { text: 'VAR2', value: 'var2' },
+        { text: 'VAR3', value: 'var3' },
+        { text: 'VAR4', value: 'var4' }
       ],
-      excelExample: [],
-      rows: 0,
       name: '',
       file: null,
       message: '',
@@ -144,7 +151,6 @@ export default {
       },
       isFileLoading: false,
       errorMessageFile: null,
-      fileId: null,
       creditToUse : 0,
       availableCredit : 0,
       isBtnLoading: true
@@ -188,59 +194,6 @@ export default {
     onChangeOptions(options) {
       this.options = options
     },
-    errorFile (text) {
-      this.isFileLoading = false
-      this.errors.file = [text]
-    },
-    onChangeExcel(file) {
-      
-      if (file) {
-      
-        this.isFileLoading = true
-    
-        if (file.name.split('.').pop() === 'xlsx' || file.name.split('.').pop() === 'xls') {
-
-          const formData = new FormData()
-
-          formData.append('file', file)
-
-          BackendApi.post('/sms/upload/excelcampaing', formData)
-            .then((response) => {
-              if (response.data.success) {
-                this.fileId = response.data.data.id
-                this.excelExample = response.data.data.example
-                this.rows = response.data.data.rows
-                this.destinatarios = this.fileUploaded
-                this.errorFile(null)
-                this.errors = {
-                  name:'',
-                  scheduled:'',
-                  message:'',
-                  file:''
-                }
-              } else {
-
-                this.errorFile(response.data.message)
-              }
-              this.isFileLoading = false
-            })
-            .catch ( (error) => {
-              this.isFileLoading = false
-              this.fileId = null
-              this.errors = error.response.data.errors
-            })
-        } else {
-          console.log('error')
-          this.errorFile('No es un archivo Excel')
-        }
-      }
-    },
-    async submit() {
-
-      if (this.$refs.form.validate()) {
-        this.optionsShow = true
-      }
-    },
     async openPreviewComponent() {
       await this.availableCreditByUser()
       this.optionsShow = false
@@ -276,6 +229,12 @@ export default {
       this.messageExample = msgExample
       this.url_id = url_id
       this.long_url = long_url
+    },
+    async submit() {
+
+      if (this.$refs.form.validate()) {
+        this.optionsShow = true
+      }
     }
   }
 }

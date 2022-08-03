@@ -8,7 +8,7 @@
       <v-btn
         outlined
         color="primary"
-        :loading="loadingDownloadPdf"
+        :loading="isLoadingDownload"
         @click="descargarExcel"
       >
         <v-icon>mdi-progress-download</v-icon>

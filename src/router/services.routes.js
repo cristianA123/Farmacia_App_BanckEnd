@@ -21,6 +21,11 @@ export default [
     name: 'sms-agendas',
     component: () => import('@/pages/Services/sms/SmsAgenda/SmsAgendaStepOne.vue')
   },
+  {
+    path: '/services/sms/create_campaing/sms_agenda_step_two',
+    name: 'sms-agenda-step-two',
+    component: () => import('@/pages/Services/sms/SmsAgenda/SmsAgendaStepTwo.vue')
+  },
   // {
   //   path: '/services/sms/create_campaing/sms_agendas',
   //   name: 'sms-agendas',
@@ -32,7 +37,7 @@ export default [
     component: () => import('@/pages/Services/sms/SmsExcel/SmsExcelStepOne.vue')
   },
   {
-    path: '/services/sms/create_campaing/sms_excel',
+    path: '/services/sms/create_campaing/sms_excel_step_two',
     name: 'sms-excel-step-two',
     component: () => import('@/pages/Services/sms/SmsExcel/SmsExcelStepTwo.vue')
   },
