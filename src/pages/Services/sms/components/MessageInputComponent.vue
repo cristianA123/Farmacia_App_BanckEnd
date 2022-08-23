@@ -180,7 +180,7 @@ export default {
       this.$emit('onChangeMessage', this.message, this.messageExample, this.url_id, this.long_url)
     },
     addVarOnMessage (text) {
-      this.message = this.message + ' [' + text + '] '
+      this.message = this.message + '[' + text + ']'
     },
     chooseUrl(url) {
       this.$refs.DialogUrl.open(url)

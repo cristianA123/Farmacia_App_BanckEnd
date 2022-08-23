@@ -198,6 +198,7 @@ export default {
       return this.contact === undefined ? false : true
     },
     isNumberValid: function () {
+      
       return this.backendErrors.number === undefined ? '' : this.backendErrors.number[0]
     }
   },

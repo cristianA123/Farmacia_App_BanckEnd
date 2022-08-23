@@ -1,5 +1,7 @@
 <template>
+
   <div class="d-flex flex-row flex-grow-1 mt-2">
+    <!--Empty items --->
     <v-navigation-drawer
       v-model="drawer"
       :app="$vuetify.breakpoint.mdAndDown"
@@ -17,6 +19,7 @@
             Crear agenda
           </v-btn>
         </div>
+
         <v-list-item
           v-for="(agenda, index) in agendas"
           :key="index"
@@ -46,7 +49,9 @@
       </v-list>
     </v-navigation-drawer>
 
-    <div class="d-flex flex-grow-1 flex-column">
+    <div 
+      class="d-flex flex-grow-1 flex-column"
+    >
 
       <v-toolbar class="hidden-lg-and-up flex-grow-0 mb-2">
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
@@ -56,7 +61,7 @@
       <ContactsComponent :key="$route.params.agendaId" :agendaId="$route.params.agendaId"/>
       
     </div>
-    
+
     <new-agenda ref="newAgenda" @onCreated="onCreated" />
   </div>
 </template>
@@ -82,27 +87,24 @@ export default {
   },
   computed: {
     itemsEmpty: function () {
-      return this.items.length === 0 ? true : false
+
+      return this.agendas.length === 0 ? true : false
     }
   },
   mounted() {
     this.getAgendas()
   },
   methods: {
-    getAgendas() {
+    async getAgendas() {
       this.isLoading = false
-      BackendApi.get('/agenda')
-        .then((response) => {
-          this.isLoading = false
-          if (response.data.success) {
-            this.agendas = response.data.data
-          } else {
-            this.$store.dispatch('app/showToast', response.data.message)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      
+      const response = await BackendApi.get('/agenda')
+
+      if (response.data.success) {
+        this.agendas = response.data.data
+      } else {
+        this.$store.dispatch('app/showToast', response.data.message)
+      }
     },
     openNewAgenda(agenda) {
       this.$refs.newAgenda.open(agenda)

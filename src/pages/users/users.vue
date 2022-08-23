@@ -131,6 +131,7 @@
             </v-list>
           </v-menu>
         </template>
+
       </v-data-table>
     </v-card>
 
@@ -147,7 +148,7 @@
         </v-card-text>
 
         <v-card-actions>
-          <v-btn text>Cancelar</v-btn>
+          <v-btn text @click="dialogConfirmLoginUser = false">Cancelar</v-btn>
           <v-spacer></v-spacer>
           <v-btn text @click="loginUser()">Iniciar sesión</v-btn>
         </v-card-actions>

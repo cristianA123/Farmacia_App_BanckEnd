@@ -256,6 +256,7 @@ export default {
     if (this.isEdit) {
       this.getUserInfo()
     } else {
+      this.services =  [],
       this.$refs.form.reset()
       this.user = {
         name: '',

@@ -28,11 +28,13 @@ export default [{
 },
 {
   path: '/tools/agendas',
-  name: 'agendas',
-  component: () => import('@/pages/Agendas/agenda.vue'),
-  children: [
-    ...contactsRoutes
-  ]
+  name: 'empty-agenda',
+  component: () => import('@/pages/Agendas/agendaEmpty.vue')
+},
+{
+  path: '/tools/agendas/:agendaId?',
+  name: 'contactos-agenda',
+  component: () => import('@/pages/Agendas/agenda.vue')
 },
 {
   path: '/tools/agendas/:agendaId/contacts',
