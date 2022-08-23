@@ -232,6 +232,7 @@ export default {
       this.dialog = true
     },
     close() {
+      this.$refs.formNewContact.resetValidation()
       this.$refs.formNewContact.reset()
       this.dialog = false
     },
@@ -291,7 +292,6 @@ export default {
             }).catch((error) => {
               this.backendErrors = error.response.data.errors
               this.$store.dispatch('app/showToast', 'Revise los datos del contacto')
-              //const errors = error.response.data.errors
             })
         }
       }

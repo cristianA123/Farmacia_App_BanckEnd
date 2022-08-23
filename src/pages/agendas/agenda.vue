@@ -58,11 +58,15 @@
         <div class="title font-weight-bold">Agendas</div>
       </v-toolbar>
         
-      <ContactsComponent :key="$route.params.agendaId" :agendaId="$route.params.agendaId"/>
+      <ContactsComponent 
+        :key="$route.params.agendaId" 
+        :agendaId="$route.params.agendaId" 
+        @onCreatedContact="refreshData"
+      />
       
     </div>
 
-    <new-agenda ref="newAgenda" @onCreated="onCreated" />
+    <new-agenda ref="newAgenda" />
   </div>
 </template>
 
@@ -132,7 +136,7 @@ export default {
         params: { agenda: agenda }
       })
     },
-    onCreated() {
+    refreshData() {
       this.getAgendas()
     }
   }

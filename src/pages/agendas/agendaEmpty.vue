@@ -7,7 +7,7 @@
       <v-spacer></v-spacer>
       <v-btn
         color="primary"
-        @click="openDialogUpload()"
+        @click="openNewAgenda()"
       >
         Crear agenda
       </v-btn>
@@ -33,19 +33,22 @@
         icon="mdi-file-sync-outline"
         text="No tiene archivos cargados. Para cargar archivos clic en Subir archivo" 
       />
+      <new-agenda ref="newAgenda" @onCreatedAgenda="refresh" />
     </v-col>
   </div>
 
 </template>
 
 <script>
+import newAgenda from './components/newAgenda'
 import BackendApi from '@/services/backend.service'
 import EmptyItems from '@/components/common/EmptyItems'
 import router from '../../router'
 
 export default {
   components: {
-    EmptyItems
+    EmptyItems,
+    newAgenda
   },
   data() {
     return {
@@ -77,6 +80,12 @@ export default {
           router.push({ path: '/tools/agendas/' + this.items[0].id })
         }
       })
+    },
+    openNewAgenda(agenda) {
+      this.$refs.newAgenda.open(agenda)
+    },
+    refresh() {
+      this.getAgendas()
     }
   }
 }

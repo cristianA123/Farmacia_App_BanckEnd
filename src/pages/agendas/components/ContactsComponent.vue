@@ -375,12 +375,9 @@ export default {
     this.getContacts()
   },
   methods: {
-    //pagination
     onPageChange() {
       this.getContacts()
     },
-    
-    //otros
     getContacts () {
       this.isLoading = true
       this.selectedUsers = []
@@ -472,6 +469,7 @@ export default {
     },
     onCreated () {
       this.getContacts()
+      this.$emit('onCreatedContact')
     }
   }
 }

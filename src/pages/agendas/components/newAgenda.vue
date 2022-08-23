@@ -95,7 +95,6 @@ export default {
               this.$store.dispatch('app/showToast', 'Agenda actualizada exitosamente')
               this.$emit('onCreated')
               this.close()
-
             }
           }).catch((error) => {
             this.backendErrors = error.response.data.errors
@@ -110,13 +109,13 @@ export default {
             .then((response) => {
               if (response.data.success) {
                 this.$store.dispatch('app/showToast', 'Agenda creada exitosamente')
-                this.$emit('onCreated')
+                this.$emit('onCreatedAgenda')
                 this.close()
               }
             })
             .catch ( (error) => {
               this.backendErrors = error.response.data.errors
-            } )
+            })
         }
       }
     }
