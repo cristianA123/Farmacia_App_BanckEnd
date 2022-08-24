@@ -202,7 +202,7 @@ export default {
     PreviewSmsSubmit() {
       const payload = {
         service_id: 1,
-        campaign_type_id: 3,
+        campaign_type_id: 2,
         name: this.$store.state.sms.name,
         destinations: this.$store.state.sms.file.id,
         message: this.message,
