@@ -282,7 +282,7 @@ export default {
               }
             })
             .catch( (error) => {
-              this.$store.dispatch('app/showToast', 'No se pudo enviar la email, con datos de la campaña creada')
+              // this.$store.dispatch('app/showToast', 'No se pudo enviar el informe al email del usuario con datos de la campaña creada, verifique su correo')
             } )
           // doc.save('Reporte de campaña.pdf')
         }
