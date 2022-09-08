@@ -31,9 +31,9 @@
           <v-card-text>
             <div class="d-flex flex-column flex-sm-row">
               
-              <div v-if="user.name !== ''">
+              <!-- <div v-if="user.name !== ''">
                 <userAvatar :key="user.id" :user="user" :detail="false" />
-              </div>
+              </div> -->
 
               <div class="flex-grow-1 pt-2 pa-sm-2">  
                 <v-form
@@ -51,15 +51,96 @@
                     outlined
                     prepend-icon="mdi-account-outline"
                   />
-                  <v-text-field 
-                    v-model="user.company" 
-                    :error-messages="isValidCompany"
-                    label="Empresa" 
-                    placeholder="Mi empresa"
-                    :rules="[v => !!v || 'Empresa es obligatorio']"
+                  <!-- ********************************************************** -->
+
+                  <v-combobox
+                    v-model="model"
+                    :disabled="!isAdmin"
+                    :hide-no-data="!search"
+                    :search-input.sync="search"
+                    :filter="filter"
+                    :items="companies"
                     prepend-icon="mdi-briefcase-outline"
+                    label="Seleccione la empresa"
+                    :rules="[v => !!v || 'Empresa es obligatorio']"
                     outlined
-                  />
+                    small-chips
+                  >
+                    <template v-slot:no-data>
+                      <v-list-item>
+                        <span class="subheading">Crear</span>
+                        <v-chip
+                          :color="`${colors[nonce - 1]} lighten-3`"
+                          label
+                          small
+                          @click="createCompany"
+                        >
+                          {{ search }}
+                        </v-chip>
+                      </v-list-item>
+                    </template>
+                    <template v-slot:selection="{ attrs, item, parent, selected }">
+                      <v-chip
+                        v-if="item === Object(item)"
+                        v-bind="attrs"
+                        :color="`${item.color} lighten-3`"
+                        :input-value="selected"
+                        label
+                        small
+                      >
+                        <span class="pr-2">
+                          {{ item.text }}
+                        </span>
+                        <v-icon
+                          small
+                          @click="parent.selectItem(item)"
+                        >
+                          $delete
+                        </v-icon>
+                      </v-chip>
+                    </template>
+                    <template v-slot:item="{ index, item }">
+                      <v-text-field
+                        v-if="editing === item"
+                        v-model="editing.text"
+                        autofocus
+                        flat
+                        background-color="transparent"
+                        hide-details
+                        solo
+                        @keyup.enter="edit(index, item)"
+                      ></v-text-field>
+                      <v-chip
+                        v-else
+                        :color="`${item.color} lighten-3`"
+                        dark
+                        label
+                        small
+                      >
+                        {{ item.text }}
+                      </v-chip>
+                      <v-spacer></v-spacer>
+                      <!-- <v-list-item-action @click.stop>
+                        <v-btn
+                          icon
+                          @click.stop.prevent="edit(index, item)"
+                        >
+                          <v-icon>{{ editing !== item ? 'mdi-pencil' : 'mdi-check' }}</v-icon>
+                        </v-btn>
+                      </v-list-item-action> -->
+                    </template>
+                  </v-combobox>
+
+                  <!-- **************************************************************** -->
+                  <!-- <v-text-field
+                    v-else
+                    v-model="user.company"
+                    :disabled="!isAdmin"
+                    label="Empresa" 
+                    :rules="[v => !!v || 'Empresa es obligatorio']"
+                    outlined
+                    prepend-icon="mdi-briefcase-outline"
+                  /> -->
                   <v-text-field 
                     v-model="user.email" 
                     :error-messages="isValidEmail"
@@ -93,14 +174,14 @@
                           <ServicesCheckComponent
                             :services="services"
                             :user="user"
-                            :backendErrors="backendErrors"
+                            :backend-errors="backendErrors"
                             @onChange="onChangeServicesCheck"
                           />
                         </v-card-text>
                       </v-card>
                     </v-col>
 
-<!--                     <v-col>
+                    <!--                     <v-col>
                       <v-card
                         outlined
                       >
@@ -166,29 +247,52 @@
         @onOk="$router.push({ name: 'users' })"
       />
 
+      <Company
+        ref="newCompany"
+        @onCreatedCompany="onCreatedCompany"
+      />
+
     </div>
   
   </div>
 </template>
 
 <script>
-import ApiBackend from '@/services/backend.service'
 import BackPage from '@/components/common/BackPage'
 import headers from '@/configs/headers.js'
-import userAvatar from '@/components/reports/userAvatar'
+// import userAvatar from '@/components/reports/userAvatar'
 import DialogPasswordComponent from './components/DialogPasswordComponent'
 import ServicesCheckComponent from '@/pages/Users/components/ServicesCheckComponent.vue'
 import BackendApi from '@/services/backend.service'
+import Company from './components/NewCompanyComponent.vue'
 
 export default {
   components: {
     BackPage,
-    userAvatar,
+    // userAvatar,
     DialogPasswordComponent,
-    ServicesCheckComponent
+    ServicesCheckComponent,
+    Company
   },
   data() {
     return {
+      // variables de prueba
+      activator: null,
+      attach: null,
+      colors: ['red','blue','green', 'purple', 'indigo', 'cyan', 'teal', 'orange'],
+      editing: null,
+      editingIndex: -1,
+      companies: [
+        { header: 'Seleccione una empresa o cree una' }
+      ],
+      nonce: 1,
+      menu: false,
+      model: null,
+      x: 0,
+      search: null,
+      y: 0,
+      //*************** */
+      company_id: '',
       backendErrors:{
         name:'',
         email:'',
@@ -249,8 +353,31 @@ export default {
     isValidCredit () {
       
       return this.backendErrors.credit === undefined ? '' : this.backendErrors.credit
+    },
+    isAdmin () {
+      return $cookies.get('user').isAdmin
     }
 
+  },
+  watch: {
+    model (val, prev) {
+      if (val.length === prev.length) return
+
+      this.model = val.map((v) => {
+        // if (typeof v === 'string') {
+        //   v = {
+        //     text: v,
+        //     color: this.colors[this.nonce - 1]
+        //   }
+
+        //   this.companies.push(v)
+
+        //   this.nonce++
+        // }
+
+        return v
+      })
+    }
   },
   mounted() {
     if (this.isEdit) {
@@ -269,13 +396,80 @@ export default {
         credit: 0,
         provider_id: 1
       }
+      if (!this.isAdmin) {
+        console.log('SSSSSSSSSSSSSSSSSSSSSSSS')
+        console.log($cookies.get('user').company.id)
+        console.log($cookies.get('user').company.company)
+        this.company_id = $cookies.get('user').company.id
+        this.user.company = $cookies.get('user').company.company
+        const company = {
+          id: $cookies.get('user').company.id,
+          text: $cookies.get('user').company.company,
+          color: this.colors[this.nonce - 1]
+        }
+
+        this.model = company
+      }
+      console.log('aaa')
     }
   },
+  created() {
+    this.getCompanies()
+  },
   methods: {
+    //metodos para el combobox
+    edit (index, item) {
+      if (!this.editing) {
+        this.editing = item
+        this.editingIndex = index
+      } else {
+        this.editing = null
+        this.editingIndex = -1
+      }
+    },
+    filter (item, queryText, itemText) {
+      if (item.header) return false
+
+      const hasValue = (val) => val !== null ? val : ''
+
+      const text = hasValue(itemText)
+      const query = hasValue(queryText)
+
+      return text.toString()
+        .toLowerCase()
+        .indexOf(query.toString().toLowerCase()) > -1
+    },
+    // termino los metodos
+    //metodos para que funcione el combo como yo quiero
+    createCompany() {
+      this.$refs.newCompany.open()
+    },
+    onCreatedCompany(data)  {
+      this.getCompanies()
+      const newCompany = {
+        id: data.id,
+        text: data.company,
+        color: this.colors[this.nonce - 1]
+      }
+
+      this.nonce++
+      this.model = newCompany
+      console.log('2')
+    },
+    // terminaron los metodos
     getUserInfo () {
-      ApiBackend.get('/user/' + this.$route.params.userId).then((response) => {
+      BackendApi.get('/user/' + this.$route.params.userId).then((response) => {
         if (response.data.success) {
           this.user = response.data.data
+          const data = {
+            id: response.data.data.company.id,
+            text: response.data.data.company.company,
+            color: this.colors[this.nonce - 1]
+          }
+  
+          this.model = data
+          this.nonce++
+
           this.services = response.data.data.father_services
         }
       })
@@ -291,7 +485,8 @@ export default {
           services: this.services,
           credit: this.user.credit,
           channel_id: this.user.channel_id,
-          user_id: this.$route.params.userId
+          user_id: this.$route.params.userId,
+          company_id: this.model.id
         }
 
         if (this.isEdit) {
@@ -354,6 +549,24 @@ export default {
       BackendApi.get('/provider').then((response) => {
         if (response.data.success) {
           this.providers = response.data.data
+        }
+      })
+    },
+    getCompanies () {
+      BackendApi.get('/user/companies').then((response) => {
+        if (response.data.success) {
+          console.log(response.data)
+          response.data.data.forEach((company) => {
+            const data = {
+              id: company.id,
+              text: company.company,
+              color: this.colors[this.nonce - 1]
+            }
+  
+            this.companies.push(data)
+  
+            this.nonce++
+          })
         }
       })
     },
