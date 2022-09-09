@@ -7,6 +7,7 @@
         class="ml-0 pl-0"
       >
         <v-select
+          v-if="isAdmin"
           v-model="user.channel_id"
           item-text="name"
           item-value="id"
@@ -62,6 +63,9 @@ export default {
     },
     isValidChannel_id () {
       return this.backendErrors.channel_id === undefined ? '' : this.backendErrors.channel_id
+    },
+    isAdmin () {
+      return $cookies.get('user').isAdmin
     }
   },
   mounted() {

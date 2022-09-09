@@ -55,8 +55,9 @@ export default {
     }
   },
   methods: {
-    open () {
+    open (nameCompany) {
       this.dialog = true
+      this.nameCompany = nameCompany
     },
     close() {
       this.$refs.formNewCompany.reset()

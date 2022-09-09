@@ -361,28 +361,16 @@ export default {
   },
   watch: {
     model (val, prev) {
-      if (val.length === prev.length) return
+      if (val === prev) return
 
-      this.model = val.map((v) => {
-        // if (typeof v === 'string') {
-        //   v = {
-        //     text: v,
-        //     color: this.colors[this.nonce - 1]
-        //   }
-
-        //   this.companies.push(v)
-
-        //   this.nonce++
-        // }
-
-        return v
-      })
+      this.model = val
     }
   },
   mounted() {
     if (this.isEdit) {
       this.getUserInfo()
     } else {
+      this.getServicesAndCompanyUser()
       this.services =  [],
       this.$refs.form.reset()
       this.user = {
@@ -393,24 +381,10 @@ export default {
         ivr:false,
         whatsapp:false,
         mailling:false,
+        channel_id: null,
         credit: 0,
         provider_id: 1
       }
-      if (!this.isAdmin) {
-        console.log('SSSSSSSSSSSSSSSSSSSSSSSS')
-        console.log($cookies.get('user').company.id)
-        console.log($cookies.get('user').company.company)
-        this.company_id = $cookies.get('user').company.id
-        this.user.company = $cookies.get('user').company.company
-        const company = {
-          id: $cookies.get('user').company.id,
-          text: $cookies.get('user').company.company,
-          color: this.colors[this.nonce - 1]
-        }
-
-        this.model = company
-      }
-      console.log('aaa')
     }
   },
   created() {
@@ -439,10 +413,8 @@ export default {
         .toLowerCase()
         .indexOf(query.toString().toLowerCase()) > -1
     },
-    // termino los metodos
-    //metodos para que funcione el combo como yo quiero
     createCompany() {
-      this.$refs.newCompany.open()
+      this.$refs.newCompany.open(this.search)
     },
     onCreatedCompany(data)  {
       this.getCompanies()
@@ -454,9 +426,7 @@ export default {
 
       this.nonce++
       this.model = newCompany
-      console.log('2')
     },
-    // terminaron los metodos
     getUserInfo () {
       BackendApi.get('/user/' + this.$route.params.userId).then((response) => {
         if (response.data.success) {
@@ -471,6 +441,28 @@ export default {
           this.nonce++
 
           this.services = response.data.data.father_services
+        }
+      })
+    },
+    getServicesAndCompanyUser () {
+      BackendApi.get('/user/company/' + $cookies.get('user').id).then((response) => {
+        if (response.data.success) {
+          if (response.data.data.company?.id) {
+            const data = {
+              id: response.data.data.company.id,
+              text: response.data.data.company.company,
+              color: this.colors[this.nonce - 1]
+            }
+    
+            this.model = data
+            this.nonce++
+          }
+
+          if ( response.data.data?.channel_id) {
+            this.user.channel_id = response.data.data.channel_id
+          }
+
+          this.services = response.data.data?.father_services || []
         }
       })
     },
@@ -508,7 +500,6 @@ export default {
             .then((response) => {
               if (response.data.success) {
                 this.isLoading = false
-                console.log(response.data.data)
                 this.$refs.dialogPassword.open(response.data.data.email, response.data.data.userPassword)
               }
             })
