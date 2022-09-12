@@ -42,6 +42,18 @@
           
         </template>
 
+        <template v-slot:item.total_cost="{ item }">
+          {{item.total_cost | formatCurrency(configFormat) }}
+          <!-- <v-chip
+            class="ma-2"
+            outlined
+            x-small
+          >
+            {{ item.service }}
+          </v-chip> -->
+          
+        </template>
+
         <template v-slot:item.status="{ item }">
           <v-chip
             v-if="item.status === 0"
@@ -172,6 +184,16 @@ export default {
   computed: {
     isAdmin () {
       return $cookies.get('user').isAdmin
+    },
+    configFormat () {
+      return {
+        decimalDigits: 0,
+        decimalSeparator: '.',
+        thousandsSeparator: ',',
+        currencySymbol: '',
+        currencySymbolNumberOfSpaces: 0,
+        currencySymbolPosition: 'left'
+      }
     }
   },
   methods: {
