@@ -86,14 +86,16 @@
     <PreviewSmsComponent
       ref="dialogPreview"
       :options="options" 
+      :data-campaing="dataCampaing"
       :message-example="messageExample"
-      :registers="$store.state.sms.file.rows"
       :is-excel="true"
       :is-btn-loading="isBtnLoading"
-      :credit-to-use="creditToUse"
-      :available-credit="availableCredit"
       @onPreviewSmsSubmit="PreviewSmsSubmit"
     />
+    <!-- :registers="$store.state.sms.file.rows" -->
+    <!-- :necessary-credit="necessaryCredit" -->
+    <!-- :available-credit="availableCredit" -->
+    <!-- :valid-numbers="validNumbers" -->
 
   </div>
 </template>
@@ -156,8 +158,12 @@ export default {
       isFileLoading: false,
       errorMessageFile: null,
       fileId: null,
-      creditToUse : 0,
-      availableCredit : 0,
+      dataCampaing: {},
+      // necessaryCredit : 0,
+      // availableCredit : 0,
+      // registers: 0,
+      // validNumbers: 0,
+      // messages_160_letters: 0,
       isBtnLoading: true
 
     }
@@ -172,27 +178,35 @@ export default {
       return this.excelExample
     }
   },
+  mounted() {
+    this.fileExist()
+  },
   methods: {
-    calculateCreditToUse() {
-      const payload = {
-        message: this.message,
-        numberOfContacts: this.rows
+    fileExist() {
+      if (!this.$store.state.sms.file?.id) {
+        this.$router.push({ name: 'sms-excel' })
       }
-
-      BackendApi.post('/calculateMessageCredits', payload).then((response) => {
-        if (response.data.success) {
-          this.creditToUse = response.data.data.creditsToUse
-        }
-      })
     },
     async availableCreditByUser() {
 
-      await this.calculateCreditToUse()
+      console.log(this.$store.state.sms.file?.id)
 
-      BackendApi.get('/creditsUsedByUser').then((response) => {
+      const payload = {
+        message: this.message,
+        sms_excel_id: this.$store.state.sms.file?.id
+      }
+
+      console.log(payload)
+
+      BackendApi.post('/calculateMessageCredits', payload).then((response) => {
         if (response.data.success) {
-          this.availableCredit = response.data.data.availableCredit
-          this.isBtnLoading = false
+          console.log(response.data.data)
+          this.dataCampaing = response.data.data
+          // this.necessaryCredit = response.data.data.necessary_credit
+          // this.availableCredit = response.data.data.availableCredit
+          // this.registers = response.data.data.rows
+          // this.messages_160_letters = response.data.data.messages_160_letters
+          // this.validNumbers = response.data.data.valid_number
         }
       })
     },

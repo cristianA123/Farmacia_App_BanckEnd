@@ -75,23 +75,42 @@
                     <td style="width:350px;">Cantidad de registros:</td>
                     <td>
                       
-                      <span>{{ registers | formatCurrency(configFormat) }}</span>
+                      <span>{{ dataCampaing.rows | formatCurrency(configFormat) }}</span>
                     </td>
                   </tr>
                   <tr>
                     <td style="width:350px;">Números con formato inválido:</td>
                     <td>
                       
-                      <span>2</span>
+                      <span>{{ dataCampaing.rows - dataCampaing.valid_number | formatCurrency(configFormat) }}</span>
                     </td>
                   </tr>
-                </table>
-                <table>
+                  <tr>
+                    <td style="width:350px;">Números con formato válido:</td>
+                    <td>
+                      
+                      <span>{{ dataCampaing.valid_number | formatCurrency(configFormat) }}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width:350px;">Créditos a consumir:</td>
+                    <td>
+                      
+                      <span>{{ dataCampaing.necessary_credit | formatCurrency(configFormat) }}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width:350px;">Créditos disponibles:</td>
+                    <td>
+                        
+                      <span>{{ dataCampaing.availableCredit | formatCurrency(configFormat) }}</span>
+                    </td>
+                  </tr>
                   <tr>
                     <td style="width:350px;">Mensajes con más de 160 caracteres:</td>
                     <td>
                       
-                      <span>106</span>
+                      <span>{{ dataCampaing.messages_160_letters | formatCurrency(configFormat) }}</span>
                     </td>
                   </tr>
                 </table>
@@ -139,10 +158,14 @@ moment.locale('es')
 
 export default {
   props: {
-    registers: {
-      type: Number,
-      default: 0
-    },  
+    // registers: {
+    //   type: Number,
+    //   default: 0
+    // },
+    dataCampaing: {
+      type: Object,
+      default: () => {}
+    },    
     options: {
       type: Object,
       default: () => {}
@@ -151,14 +174,18 @@ export default {
       type: String,
       default: ''
     },
-    creditToUse: {
-      type: Number,
-      default: 0
-    },
-    availableCredit : {
-      type : Number,
-      default: 0
-    },
+    // necessaryCredit : {
+    //   type: Number,
+    //   default: 0
+    // },
+    // availableCredit : {
+    //   type : Number,
+    //   default: 0
+    // },
+    // validNumbers: {
+    //   type: Number,
+    //   default: 0
+    // },
     isBtnLoading : {
       type : Boolean,
       default: true
@@ -227,69 +254,79 @@ export default {
       this.show = false
     },
     async submit() {
-      this.loadingSendPdf = true
-
-      const options = {
-        scale: 3
-      }
-
-      await html2canvas(document.getElementById('preview-sms-dialog'),options).then(
-        (canvas) => {
-          const imgData = canvas.toDataURL('image/png')
-          const doc = new jspdf('p', 'pt', 'a4')
-          const bufferX = 25
-          const bufferY = 235
-          const imgProps = doc.getImageProperties(imgData)
-          const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX
-          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
-          const sizeHead = 16
-
-          doc.setFontSize(sizeHead)
-          const optionsHeader = {
-            align: 'center',
-            font: 'helvetica'
-          }
-
-          doc.text('Campaña creada', pdfWidth / 2, 40, optionsHeader)
-          doc.setFontSize(11)
-          doc.text('FECHA Y HORA:' + ' ' + moment().format('MMMM Do YYYY, h:mm:ss a') , 25, 70)
-          doc.setFontSize(12)
-          doc.text('DATOS DEL USUARIO:', 25, 90)
-          doc.setFontSize(11)
-          doc.text('NOMBRE: ' +  $cookies.get('user').name , 25, 110)
-          doc.text('CORREO: ' +  $cookies.get('user').email , 25, 125)
-          doc.text('EMPRESA: ' +  $cookies.get('user').company , 25, 140)
-          doc.setFontSize(12)
-          doc.text('DATOS DE LA CAMPAÑA:', 25, 160)
-          doc.setFontSize(11)
-          doc.text('NOMBRE: ' +  this.options.name , 25, 180)
-          doc.text('FORMATO DE MENSAJE: ' + this.message, 25, 195)
-          doc.text('COSTO PROBABLE DE CREDITOS: ' + this.creditToUse, 25, 210)
-          doc.text('CREDITOS DISPONIBLES: ' + this.availableCredit, 25, 225)
-          // doc.text('CREDITOS DISPONIBLES PROBABLES DESPUES DE CREAR CAMPAÑA : ' + this.availableCredit -  this.creditToUse , 25, 80)
-          // creditToUse
-          // availableCredit
-          doc.addImage(imgData, 'JPEG',bufferX ,bufferY , pdfWidth, pdfHeight, undefined, 'FAST')
-
-          const formData = new FormData()
-
-          formData.append('file', doc.output('blob'))
-          
-          BackendApi.post('/send_email', formData)
-            .then((response) => {
-              if (response.data.success) {
-                //alert('Se ha enviado el correo')
-              }
-            })
-            .catch( (error) => {
-              // this.$store.dispatch('app/showToast', 'No se pudo enviar el informe al email del usuario con datos de la campaña creada, verifique su correo')
-            } )
-          // doc.save('Reporte de campaña.pdf')
+      if (this.dataCampaing.availableCredit >= this.dataCampaing.necessary_credit) {
+        this.loadingSendPdf = true
+  
+        const options = {
+          scale: 3
         }
-      )
-      this.loadingSendPdf = false
-      this.$emit('onPreviewSmsSubmit')
-      this.close()
+  
+        await html2canvas(document.getElementById('preview-sms-dialog'),options).then(
+          (canvas) => {
+            const imgData = canvas.toDataURL('image/png')
+            const doc = new jspdf('p', 'pt', 'a4')
+            const bufferX = 25
+            const bufferY = 235
+            const imgProps = doc.getImageProperties(imgData)
+            const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
+            const sizeHead = 16
+  
+            doc.setFontSize(sizeHead)
+            const optionsHeader = {
+              align: 'center',
+              font: 'helvetica'
+            }
+  
+            doc.text('Campaña creada', pdfWidth / 2, 40, optionsHeader)
+            doc.setFontSize(11)
+            doc.text('FECHA Y HORA:' + ' ' + moment().format('MMMM Do YYYY, h:mm:ss a') , 25, 70)
+            doc.setFontSize(12)
+            doc.text('DATOS DEL USUARIO:', 25, 90)
+            doc.setFontSize(11)
+            doc.text('NOMBRE: ' +  $cookies.get('user').name , 25, 110)
+            doc.text('CORREO: ' +  $cookies.get('user').email , 25, 125)
+            doc.text('EMPRESA: ' +  $cookies.get('user').company , 25, 140)
+            doc.setFontSize(12)
+            doc.text('DATOS DE LA CAMPAÑA:', 25, 160)
+            doc.setFontSize(11)
+            doc.text('NOMBRE: ' +  this.options.name , 25, 180)
+            doc.text('FORMATO DE MENSAJE: ' + this.message, 25, 195)
+            doc.text('COSTO PROBABLE DE CREDITOS: ' + this.necessaryCredit , 25, 210)
+            doc.text('CREDITOS DISPONIBLES: ' + this.availableCredit, 25, 225)
+            // doc.text('CREDITOS DISPONIBLES PROBABLES DESPUES DE CREAR CAMPAÑA : ' + this.availableCredit -  this.necessaryCredit  , 25, 80)
+            // necessaryCredit 
+            // availableCredit
+            doc.addImage(imgData, 'JPEG',bufferX ,bufferY , pdfWidth, pdfHeight, undefined, 'FAST')
+  
+            const formData = new FormData()
+  
+            formData.append('file', doc.output('blob'))
+            
+            BackendApi.post('/send_email', formData)
+              .then((response) => {
+                if (response.data.success) {
+                  //alert('Se ha enviado el correo')
+                }
+              })
+              .catch( (error) => {
+                // this.$store.dispatch('app/showToast', 'No se pudo enviar el informe al email del usuario con datos de la campaña creada, verifique su correo')
+              } )
+            // doc.save('Reporte de campaña.pdf')
+          }
+        )
+        this.loadingSendPdf = false
+        this.$emit('onPreviewSmsSubmit')
+        this.close()
+      } else {
+        const badRequest = {
+          error :{
+            message:  'No dispone de credito disponible para crear campaña'
+          }
+        }
+          
+        this.$store.dispatch('app/showError', badRequest)
+      }
     }
   }
 }
