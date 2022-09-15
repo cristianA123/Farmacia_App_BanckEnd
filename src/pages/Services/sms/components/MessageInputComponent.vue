@@ -147,6 +147,9 @@ export default {
         this.vars.forEach( (element) => {
           this.messageExample = this.messageExample.replace('[' + element.text + ']', this.exampleItem[0][element.value])
         })
+
+        this.messageExample = this.messageExample.replace('[CUSTOM_URL]', process.env.VUE_APP_EXAMPLE_URL_CUT_PE)
+
       }
 
       let estandarText = ''

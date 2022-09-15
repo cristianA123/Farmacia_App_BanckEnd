@@ -198,10 +198,11 @@ export default {
 
       console.log(payload)
 
-      BackendApi.post('/calculateMessageCredits', payload).then((response) => {
+      BackendApi.post('/calculateMessageCreditsSmsExcel', payload).then((response) => {
         if (response.data.success) {
           console.log(response.data.data)
           this.dataCampaing = response.data.data
+          this.isBtnLoading = false
           // this.necessaryCredit = response.data.data.necessary_credit
           // this.availableCredit = response.data.data.availableCredit
           // this.registers = response.data.data.rows

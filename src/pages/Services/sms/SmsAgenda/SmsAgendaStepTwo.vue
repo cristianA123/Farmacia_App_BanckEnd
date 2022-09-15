@@ -83,13 +83,14 @@
       ref="dialogPreview"
       :options="options" 
       :message-example="messageExample"
-      :registers="$store.state.sms.file.rows"
+      :data-campaing="dataCampaing"
       :is-excel="true"
       :is-btn-loading="isBtnLoading"
-      :credit-to-use="creditToUse"
-      :available-credit="availableCredit"
       @onPreviewSmsSubmit="PreviewSmsSubmit"
     />
+    <!-- :available-credit="availableCredit" -->
+    <!-- :credit-to-use="creditToUse" -->
+    <!-- :registers="$store.state.sms.file.rows" -->
 
   </div>
 </template>
@@ -151,8 +152,9 @@ export default {
       },
       isFileLoading: false,
       errorMessageFile: null,
-      creditToUse : 0,
-      availableCredit : 0,
+      // creditToUse : 0,
+      // availableCredit : 0,
+      dataCampaing: {}, 
       isBtnLoading: true
 
     }
@@ -167,25 +169,37 @@ export default {
       return this.excelExample
     }
   },
+  mounted() {
+    this.agendaExist()
+  },
   methods: {
-    calculateCreditToUse() {
+    agendaExist() {
+      if (!this.$store.state.sms.file?.id) {
+        this.$router.push({ name: 'sms-agendas' })
+      }
+    },
+    // calculateCreditToUse() {
+    //   const payload = {
+    //     message: this.message,
+    //     numberOfContacts: this.rows
+    //   }
+
+    //   BackendApi.post('/calculateMessageCredits', payload).then((response) => {
+    //     if (response.data.success) {
+    //       this.creditToUse = response.data.data.creditsToUse
+    //     }
+    //   })
+    // },
+    async availableCreditByUser() {
+      // await this.calculateCreditToUse()
       const payload = {
         message: this.message,
-        numberOfContacts: this.rows
+        agenda_id: this.$store.state.sms.file?.id
       }
 
-      BackendApi.post('/calculateMessageCredits', payload).then((response) => {
+      BackendApi.post('/calculateMessageCreditsSmsAgenda', payload).then((response) => {
         if (response.data.success) {
-          this.creditToUse = response.data.data.creditsToUse
-        }
-      })
-    },
-    async availableCreditByUser() {
-      await this.calculateCreditToUse()
-
-      BackendApi.get('/creditsUsedByUser').then((response) => {
-        if (response.data.success) {
-          this.availableCredit = response.data.data.availableCredit
+          this.dataCampaing = response.data.data
           this.isBtnLoading = false
         }
       })
@@ -226,7 +240,7 @@ export default {
       } else {
         const badRequest = {
           error :{
-            message:  'No se puede crear campaña con este usuario comuniquese con el administrador.'
+            message:  'No se puede crear campaña con este usuario, comuniquese con el administrador.'
           }
         }
 
