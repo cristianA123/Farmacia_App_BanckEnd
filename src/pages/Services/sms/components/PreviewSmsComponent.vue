@@ -82,7 +82,7 @@
                     <td style="width:350px;">Números con formato inválido:</td>
                     <td>
                       
-                      <span>2</span>
+                      <span>aun no implementado</span>
                     </td>
                   </tr>
                 </table>
@@ -91,7 +91,7 @@
                     <td style="width:350px;">Mensajes con más de 160 caracteres:</td>
                     <td>
                       
-                      <span>106</span>
+                      <span>aun no implementado</span>
                     </td>
                   </tr>
                 </table>
