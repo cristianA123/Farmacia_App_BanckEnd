@@ -93,7 +93,7 @@ export default {
           BackendApi.put('/agenda/' + this.agenda.id, payload).then((response) => {
             if (response.data.success) {
               this.$store.dispatch('app/showToast', 'Agenda actualizada exitosamente')
-              this.$emit('onCreated')
+              this.$emit('onCreatedAgenda')
               this.close()
             }
           }).catch((error) => {

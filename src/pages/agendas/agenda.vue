@@ -60,13 +60,16 @@
         
       <ContactsComponent 
         :key="$route.params.agendaId" 
-        :agendaId="$route.params.agendaId" 
+        :agenda-id="$route.params.agendaId" 
         @onCreatedContact="refreshData"
       />
       
     </div>
 
-    <new-agenda ref="newAgenda" />
+    <new-agenda 
+      ref="newAgenda"
+      @onCreatedAgenda="onCreatedAgenda"
+    />
   </div>
 </template>
 
@@ -137,6 +140,9 @@ export default {
       })
     },
     refreshData() {
+      this.getAgendas()
+    },
+    onCreatedAgenda() {
       this.getAgendas()
     }
   }
