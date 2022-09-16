@@ -68,13 +68,13 @@
             class="pa-2"
             append-icon="mdi-magnify"
             solo
-            clearable
             placeholder="Ej.: Filtrar por numero, nombre1, nombre2,  email, apellido1, apellido2 etc" 
             outlined
           />
+          <!-- clearable -->
         </template>
 
-        <template v-slot:top>
+        <template v-slot:[`top`]>
           <v-col
             class="pb-1"
           >
@@ -85,7 +85,7 @@
               >
                 <template v-slot:activator="{ on }">
                   <transition name="slide-fade" mode="out-in">
-                    <v-btn class="ml-3" v-show="selectedUsers.length > 0" v-on="on">
+                    <v-btn v-show="selectedUsers.length > 0" class="ml-3" v-on="on">
                       Acciones
                       <v-icon right>mdi-menu-down</v-icon>
                     </v-btn>
@@ -139,10 +139,10 @@
             class="pt-1"
           >
             <v-text-field
-              v-model="searchTable"
-              v-debounce:10000="getContacts"
+              v-model="searchText"
+              v-debounce:1000="getContacts"
               solo
-              label="Buscar contacto"
+              placeholder="Ej.: Filtrar por numero, nombre1, nombre2,  email, apellido1, apellido2 etc" 
               outlined
             />
           </v-col>
