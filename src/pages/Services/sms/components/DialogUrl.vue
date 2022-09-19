@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" width="600">
     <v-card>
       <v-form
-        ref="formNewAgenda"
+        ref="formNewUrl"
         lazy-validation
         @submit.prevent="save()"
       >
@@ -40,6 +40,10 @@
             <v-text-field
               v-model="long_url"
               class="px-2 py-1"
+              :rules="[
+                v => !!v || 'La url es obligatorio',
+                v => isURL(v) || 'URL no es valido'
+              ]"
               solo
               flat
               placeholder="Ingrese URL"
@@ -115,29 +119,40 @@ export default {
     },
     save() {
 
-      if (this.url === 0) {
-        this.urls.map( ( url ) => {
-          if ( url.id === this.urlSelected) {
-            this.url_id = url.url_id
-            this.url = url.short_url
-          }
+      if (this.$refs.formNewUrl.validate()) {
+        if (this.url === 0) {
+          this.urls.map( ( url ) => {
+            if ( url.id === this.urlSelected) {
+              this.url_id = url.url_id
+              this.url = url.short_url
+            }
   
-        } )
+          } )
   
-        // if (this.$refs.formNewAgenda.validate()) {
-        console.log(this.url_id)
-        console.log(this.url)
-        console.log(this.urlSelected)
-        this.$emit('onChooseUrl', this.url,this.url_id)
-      } else {
-        this.$emit('onMakeUrl', this.url,this.url_id,this.long_url)
+          console.log(this.url_id)
+          console.log(this.url)
+          console.log(this.urlSelected)
+          this.$emit('onChooseUrl', this.url,this.url_id)
+        } else {
+          this.$emit('onMakeUrl', this.url,this.url_id,this.long_url)
 
-        console.log( this.long_url)
+          console.log( this.long_url)
+        }
+
+        this.close()
+
+      }
+    },
+    isURL(str) {
+      let url
+
+      try {
+        url = new URL(str)
+      } catch (_) {
+        return false
       }
 
-      this.close()
-
-      // }
+      return url.protocol === 'http:' || url.protocol === 'https:'
     }
   }
 }
