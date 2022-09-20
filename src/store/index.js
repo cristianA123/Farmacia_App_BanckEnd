@@ -10,6 +10,7 @@ import Users from './users/'
 import Credits from './credits/'
 import Campaings from './campaings/'
 import Sms from './sms'
+import sockets from './sockets'
 Vue.use(Vuex)
 
 /**
@@ -22,7 +23,8 @@ const store = new Vuex.Store({
     users: Users,
     campaings: Campaings,
     credits: Credits,
-    sms: Sms
+    sms: Sms,
+    sockets
   }
 })
 

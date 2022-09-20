@@ -299,6 +299,7 @@ import newContact from '../components/newContact'
 import newContactsFromExcel from '../components/newContactsFromExcel'
 import BackendApi from '@/services/backend.service'
 import MoveAgenda from '../components/MoveAgenda.vue'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -352,7 +353,8 @@ export default {
         { text: 'Estado', value: 'is_valid' },
         { text: 'Ult. Modif.', value: 'updated' },
         { text: 'Acciones', value: 'actions' }
-      ]
+      ],
+      cont_socket: 0
     }
   },
   computed: {
@@ -363,7 +365,10 @@ export default {
     computedSelectedUsers: function () {
 
       return [1, 2]
-    }
+    },
+    ...mapState('sockets',{
+      pusher: 'pusher'
+    })
   },
   watch: {
     selectedUsers(val) {
@@ -373,6 +378,8 @@ export default {
   mounted() {
     this.agenda = this.$route.params.agenda
     this.getContacts()
+    this.listenEventPusher()
+
   },
   methods: {
     onPageChange() {
@@ -470,6 +477,22 @@ export default {
     onCreated () {
       this.getContacts()
       this.$emit('onCreatedContact')
+    },
+    listenEventPusher() {
+      const channel = this.pusher.subscribe('NumberOfContacts' + $cookies.get('user').id)
+
+      channel.bind( 'NumberOfContactsInAgenda' + $cookies.get('user').id,  ( data ) => {
+        if (this.$route.params.agendaId) {
+          if ( parseInt(this.$route.params.agendaId) === data.data.agenda_id) {
+            this.cont_socket++
+            if (this.cont_socket === 10 ) {
+              this.pagination.total++
+              this.cont_socket = 0
+            }
+            this.contacts.unshift(data.data)
+          }
+        }
+      })
     }
   }
 }

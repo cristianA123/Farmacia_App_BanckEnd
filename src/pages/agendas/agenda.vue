@@ -77,6 +77,7 @@
 import newAgenda from './components/newAgenda'
 import BackendApi from '@/services/backend.service'
 import ContactsComponent from './components/ContactsComponent'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -96,12 +97,23 @@ export default {
     itemsEmpty: function () {
 
       return this.agendas.length === 0 ? true : false
-    }
+    },
+    ...mapState(('sockets'),{
+      pusher: 'pusher'
+    })
   },
-  mounted() {
+  created() {
+    this.onConnect()
+  },
+  async mounted() {
     this.getAgendas()
+
+    this.listenEventPusher()
   },
   methods: {
+    ...mapActions({
+      onConnect: 'sockets/onConnect'
+    }),
     async getAgendas() {
       this.isLoading = false
       
@@ -144,6 +156,20 @@ export default {
     },
     onCreatedAgenda() {
       this.getAgendas()
+    },
+    listenEventPusher() {
+      
+      const channel = this.pusher.subscribe('NumberOfContacts' + $cookies.get('user').id)
+
+      channel.bind( 'NumberOfContactsInAgenda' + $cookies.get('user').id,  ( data ) => {
+        this.agendas.forEach((contact) => {
+          // console.log(data.data)
+          // console.log(data)
+          if (contact.id === data.data.agenda_id) {
+            contact.all_contacts++
+          }
+        })
+      })
     }
   }
 }
