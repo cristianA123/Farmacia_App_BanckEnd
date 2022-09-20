@@ -103,7 +103,7 @@ export default {
     })
   },
   created() {
-    this.onConnect()
+    // this.onConnect()
   },
   async mounted() {
     this.getAgendas()
@@ -111,9 +111,9 @@ export default {
     this.listenEventPusher()
   },
   methods: {
-    ...mapActions({
-      onConnect: 'sockets/onConnect'
-    }),
+    // ...mapActions({
+    //   onConnect: 'sockets/onConnect'
+    // }),
     async getAgendas() {
       this.isLoading = false
       
