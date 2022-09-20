@@ -71,7 +71,7 @@ export default {
       headers: [
         { text: 'Telefono', value: 'phone' },
         { text: 'Mensaje', value: 'content' },
-        { text: 'Fecha', value: 'created_at' },
+        { text: 'Fecha', value: 'created' },
         { text: 'Estado', value: 'status' }
       ],
       campaign_id: null,
