@@ -1,14 +1,6 @@
 <template>
   <div id="hola" class="d-flex flex-column flex-grow-1">
     
-    <v-file-input
-      v-model="excelprueba"
-      label="prueba file to json"
-      @change="file_to_json()"
-    />  
-
-    <v-btn @click="file_to_json()">prueba</v-btn>
-
     <div class="d-flex align-center py-3">
       <div>
         <div class="display-1">Reporte de servicios</div>
@@ -27,9 +19,13 @@
         to="reports"
       />
     </div>
+
     <div id="dashboarDetail">
       <!-- dash campaing detail -->
-      <DashDetailComponent ref="pedro"/>
+      <DashDetailComponent 
+        ref="pedro"
+        :campaing="campaing"
+      />
     </div>
 
     <!-- componente url campaing detail -->
@@ -39,6 +35,7 @@
     <DetailCampaignComponent
       ref="detailCampaignComponent"
       :campaigns="campaigns"
+      :registers="registers"
       :pagination="pagination"
       @ongetSms="ongetSms"
     />
@@ -66,6 +63,8 @@ export default {
   },
   data () {
     return {
+      campaing: null,
+      registers: 0,
       excelprueba: null,
       loadingDownloadPdf: false,
       has_url: true,
@@ -87,10 +86,19 @@ export default {
   },
   mounted() {
     this.ongetSms()
+    this.getCampaing()
   },
   methods: {
     file_to_json () {
       console.log('holis')
+    },
+    getCampaing() {
+      BackendApi.get('/campaign/' + this.$route.params.campaign_id).then((response) => {
+        if (response.data.success) {
+          this.campaing = response.data.data.campaing
+          this.registers = response.data.data.registers
+        }
+      })
     },
     ongetSms(searchText) {
       console.log(searchText)
@@ -104,7 +112,7 @@ export default {
       if ( searchText !== '' ) {
         this.pagination.current = 1
       }
-      /*BackendApi.post('/smsCampaignDetail?page=' + this.pagination.current,payload)
+      BackendApi.post('/smsCampaignDetail?page=' + this.pagination.current,payload)
         .then((response) => {
           if (response.data.success) {
 
@@ -116,7 +124,7 @@ export default {
               this.has_url = false
             }
           }
-        }) */
+        })
     },
     async descargarExcel () {
 
@@ -181,7 +189,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

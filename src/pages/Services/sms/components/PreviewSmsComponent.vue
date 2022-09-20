@@ -74,7 +74,6 @@
                   <tr>
                     <td style="width:350px;">Cantidad de registros:</td>
                     <td>
-                      
                       <span>{{ dataCampaing.rows | formatCurrency(configFormat) }}</span>
                     </td>
                   </tr>
@@ -86,12 +85,17 @@
                     </td>
                   </tr>
                   <tr>
-                    <td style="width:350px;">Números con formato válido:</td>
+                    <td style="width:350px;">Mensajes con más de 160 caracteres:</td>
                     <td>
                       
-                      <span>{{ dataCampaing.valid_number | formatCurrency(configFormat) }}</span>
+                      <span>{{ dataCampaing.messages_160_letters | formatCurrency(configFormat) }}</span>
                     </td>
                   </tr>
+                </table>
+                <br>
+                <span><strong>Créditos</strong></span>
+                <v-divider></v-divider>
+                <table>
                   <tr>
                     <td style="width:350px;">Créditos a consumir:</td>
                     <td>
@@ -106,19 +110,11 @@
                       <span>{{ dataCampaing.availableCredit | formatCurrency(configFormat) }}</span>
                     </td>
                   </tr>
-                  <tr>
-                    <td style="width:350px;">Mensajes con más de 160 caracteres:</td>
-                    <td>
-                      
-                      <span>{{ dataCampaing.messages_160_letters | formatCurrency(configFormat) }}</span>
-                    </td>
-                  </tr>
                 </table>
               </v-card-text>
             </v-card>
           </v-col>
         </v-row>
-
       </v-card-text>
       <v-card-actions>
         <v-col

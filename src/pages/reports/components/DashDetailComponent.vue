@@ -17,14 +17,14 @@
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>Nombre:</v-list-item-title>
-                <v-list-item-subtitle>Campaña de prueba</v-list-item-subtitle>
+                <v-list-item-subtitle>{{ campaing.name }}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
 
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>Fecha:</v-list-item-title>
-                <v-list-item-subtitle>Campaña de prueba</v-list-item-subtitle>
+                <v-list-item-subtitle>{{ campaing.updated_at }}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-card-text>
@@ -80,6 +80,16 @@
 <script>
 
 export default {
+  props: {
+    campaing: {
+      type: Object,
+      default: () => {}
+    },
+    registers: {
+      type: Number,
+      default: 0
+    }
+  },
   data() {
     return {
       // variables para entregabilidad
@@ -124,6 +134,13 @@ export default {
           }
         }]
       }
+    }
+  },
+  computed: {
+    delivered: function () {
+      const delivered = this.registers - 1
+
+      return delivered
     }
   },
   mounted() {
