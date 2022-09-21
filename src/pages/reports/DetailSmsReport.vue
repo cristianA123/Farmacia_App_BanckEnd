@@ -23,7 +23,6 @@
     <div id="dashboarDetail">
       <!-- dash campaing detail -->
       <DashDetailComponent 
-        ref="pedro"
         :campaing="campaing"
       />
     </div>
@@ -95,6 +94,9 @@ export default {
     getCampaing() {
       BackendApi.get('/campaign/' + this.$route.params.campaign_id).then((response) => {
         if (response.data.success) {
+          console.log('eeeeeeeeeeeee')
+          console.log(response.data.data)
+          console.log('eeeeeeeeeeeee')
           this.campaing = response.data.data.campaing
           this.registers = response.data.data.registers
         }

@@ -17,14 +17,14 @@
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>Nombre:</v-list-item-title>
-                <v-list-item-subtitle>{{ campaing.name }}</v-list-item-subtitle>
+                <v-list-item-subtitle>{{ getName }}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
 
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>Fecha:</v-list-item-title>
-                <v-list-item-subtitle>{{ campaing.updated_at }}</v-list-item-subtitle>
+                <v-list-item-subtitle>{{ getDate }}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-card-text>
@@ -61,12 +61,12 @@
         <v-card >
           <v-card-title>Entregabilidad</v-card-title>
           <v-card-text>
-            <div v-if="showChartProgress">
+            <div v-if="showChartDeliverability">
               <apexchart
                 type="donut"
                 width="300"
-                :options="chartOptionsProgress"
-                :series="seriesProgress"
+                :options="chartOptionsDeliverability"
+                :series="seriesDeliverability"
               ></apexchart>
             </div>
           </v-card-text>
@@ -79,43 +79,24 @@
 
 <script>
 
+import BackendApi from '@/services/backend.service'
+
 export default {
   props: {
     campaing: {
       type: Object,
-      default: () => {}
-    },
-    registers: {
-      type: Number,
-      default: 0
+      default: () => ({
+        name: '',
+        updated_at: ''
+      })
     }
   },
   data() {
     return {
-      // variables para entregabilidad
-      showChart: true,
-      series: [90, 10],
-      chartOptions: {
-        colors: ['#4caf50', '#e57373'],
-        labels: ['DELIVERED', 'REJECTED'],
-        chart: {
-          type: 'pie'
-        },
-        responsive: [{
-          breakpoint: 337,
-          options: {
-            chart: {
-              width: 100
-            },
-            legend: {
-              position: 'bottom'
-            }
-          }
-        }]
-      },
+      allSmsOfCampaing: [],
       // variables para Progreso
       showChartProgress: false,
-      seriesProgress: [40, 60],
+      seriesProgress: [],
       chartOptionsProgress: {
         colors: ['#00b0ff', '#9e9e9e'],
         labels: ['ENVIADOS', 'PROCESANDO'],
@@ -133,22 +114,87 @@ export default {
             }
           }
         }]
+      },
+
+      // variables para entregabilidad
+      showChartDeliverability: true,
+      seriesDeliverability: [90, 10],
+      chartOptionsDeliverability: {
+        colors: ['#00b0ff', '#9e9e9e'],
+        labels: ['DELIVERED', 'REJECTED'],
+        chart: {
+          type: 'pie'
+        },
+        responsive: [{
+          breakpoint: 337,
+          options: {
+            chart: {
+              width: 100
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
       }
     }
   },
   computed: {
-    delivered: function () {
-      const delivered = this.registers - 1
-
-      return delivered
+    getName() {
+      return this.campaing?.name || ''
+    },
+    getDate() {
+      return this.campaing?.updated_at || ''
     }
   },
   mounted() {
     // para entregabilidad
-    this.showChart = true
+    this.showChartDeliverability = true
     // // para Progreso ******
     this.showChartProgress = true
-    
+
+    this.getAllSmsByCampaing()
+  },
+  methods: {
+    async getAllSmsByCampaing() {
+      const payload = {
+        campaign_id : this.$route.params.campaign_id,
+        service_id : 1,
+        searchtext : ''
+      }
+
+      await BackendApi.post('/smsCampaignDetailAll', payload)
+        .then((response) => {
+          if (response.data.success) {
+            this.allSmsOfCampaing = response.data.data
+            let cont_sms_enviados = 0
+            let cont_sms_fallados = 0
+
+            this.allSmsOfCampaing.map( (sms) => {
+
+              if (sms.status === 'DELIVERED') {
+                cont_sms_enviados++
+              }
+              if (sms.status === 'REJECTED') {
+                cont_sms_fallados++
+              }
+
+            })
+            this.seriesProgress.push(cont_sms_enviados)
+            this.seriesProgress.push(this.allSmsOfCampaing.length - cont_sms_enviados)
+
+            this.seriesDeliverability.push(cont_sms_enviados)
+            this.seriesDeliverability.push(cont_sms_fallados)
+
+          }
+
+          return ''
+
+        })
+    },
+    progress () {
+
+    }
   }
 }
 </script>
