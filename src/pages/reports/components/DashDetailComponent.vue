@@ -178,7 +178,8 @@ export default {
               if (sms.status === 'REJECTED') {
                 cont_sms_fallados++
               }
-
+              
+              return ''
             })
             this.seriesProgress.push(cont_sms_enviados)
             this.seriesProgress.push(this.allSmsOfCampaing.length - cont_sms_enviados)
