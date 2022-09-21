@@ -108,12 +108,27 @@ export default {
   async mounted() {
     this.getAgendas()
 
+    const pusher2 = new window.Pusher('d2f021e9b72d55a8c77f', {
+      cluster: 'us2'
+    })
+
+    const channel2 = pusher2.subscribe('micha')
+
+    channel2.bind( 'mive',  ( data ) => {
+      console.log('222222222222222222222')
+      console.log(data)
+      console.log('222222222222222222222')
+      // alert(JSON.stringify(data.message))
+      // console.log('hola mundo' + data)
+    })
+
     this.listenEventPusher()
   },
   methods: {
     // ...mapActions({
     //   onConnect: 'sockets/onConnect'
     // }),
+
     async getAgendas() {
       this.isLoading = false
       
