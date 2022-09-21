@@ -36,14 +36,25 @@
             <v-list-item-title>{{ agenda.name }}</v-list-item-title>
           </v-list-item-content>
 
-          <v-list-item-action v-if="agenda.all_contacts > 0">
-            <v-badge
-              inline
-              color="primary"
-              class="font-weight-bold"
-              :content="agenda.all_contacts"
-            >
-            </v-badge>
+          <v-list-item-action v-if="agenda.all_contacts !== 0">
+            <template>
+              <v-badge
+                v-if="!agenda.upload"
+                inline
+                color="primary"
+                class="font-weight-bold"
+                :content="agenda.all_contacts"
+              >
+              </v-badge>
+              <v-badge
+                v-else
+                inline
+                color="orange"
+                class="font-weight-bold"
+                :content="agenda.all_contacts"
+              >
+              </v-badge>
+            </template>
           </v-list-item-action>
         </v-list-item>
       </v-list>
@@ -90,7 +101,9 @@ export default {
       agendaSelected: 1,
       drawer: null,
       dialogConfirm: false,
-      isLoading: false
+      isLoading: false,
+      aux_all_contacts: 0,
+      aux_cont_contacts: 0
     }
   },
   computed: {
@@ -102,32 +115,12 @@ export default {
       pusher: 'pusher'
     })
   },
-  created() {
-    // this.onConnect()
-  },
   async mounted() {
     this.getAgendas()
-
-    const pusher2 = new window.Pusher('d2f021e9b72d55a8c77f', {
-      cluster: 'us2'
-    })
-
-    const channel2 = pusher2.subscribe('micha')
-
-    channel2.bind( 'mive',  ( data ) => {
-      console.log('222222222222222222222')
-      console.log(data)
-      console.log('222222222222222222222')
-      // alert(JSON.stringify(data.message))
-      // console.log('hola mundo' + data)
-    })
 
     this.listenEventPusher()
   },
   methods: {
-    // ...mapActions({
-    //   onConnect: 'sockets/onConnect'
-    // }),
 
     async getAgendas() {
       this.isLoading = false
@@ -178,10 +171,19 @@ export default {
 
       channel.bind( 'NumberOfContactsInAgenda' + $cookies.get('user').id,  ( data ) => {
         this.agendas.forEach((contact) => {
-          // console.log(data.data)
-          // console.log(data)
           if (contact.id === data.data.agenda_id) {
-            contact.all_contacts++
+            if (this.aux_cont_contacts === 0) {
+              this.aux_all_contacts = contact.all_contacts
+              this.aux_cont_contacts ++ 
+            }
+            contact.all_contacts = Math.round(data.progresss) + '%'
+            contact.upload = 1
+            if (data.progresss === 100) {
+              contact.all_contacts = this.aux_all_contacts + data.totalRows - 1 
+              contact.upload = undefined
+              this.aux_all_contacts = 0
+              this.aux_cont_contacts = 0
+            }
           }
         })
       })
