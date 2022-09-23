@@ -46,27 +46,27 @@
             @change="onChangeAgenda"  
           />
         </v-card-text>
+        <br>
+
+        <v-card-actions>
+          <v-row
+            justify="center"
+          >
+            <v-btn
+              class="my-2"
+              color="primary"
+              dark
+              @click="submit"
+            >
+              <v-icon>
+                mdi-chevron-right
+              </v-icon>
+              Siguiente paso
+            </v-btn>
+          </v-row>
+        </v-card-actions>
       </v-card>
 
-      <br>
-
-      <v-card-actions>
-        <v-row
-          justify="center"
-        >
-          <v-btn
-            class="my-2"
-            color="green"
-            dark
-            @click="submit"
-          >
-            <v-icon>
-              mdi-chevron-right
-            </v-icon>
-            Siguiente paso
-          </v-btn>
-        </v-row>
-      </v-card-actions>
     </v-form>
 
   </div>
