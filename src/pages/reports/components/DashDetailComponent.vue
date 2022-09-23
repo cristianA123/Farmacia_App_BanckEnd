@@ -118,10 +118,10 @@ export default {
 
       // variables para entregabilidad
       showChartDeliverability: true,
-      seriesDeliverability: [90, 10],
+      seriesDeliverability: [],
       chartOptionsDeliverability: {
-        colors: ['#00b0ff', '#9e9e9e'],
-        labels: ['DELIVERED', 'REJECTED'],
+        colors: ['#59CE8F', '#FF1E00'],
+        labels: [' Enviados', 'Rechazados'],
         chart: {
           type: 'pie'
         },
