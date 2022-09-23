@@ -210,7 +210,7 @@ export default {
         this.name1 = contact.name1
         this.name2 = contact.name2
         this.last_name1 = contact.last_name1
-        this.latname2 = contact.latname2
+        this.last_name2 = contact.last_name2
         this.email = contact.email
         this.var1 = contact.var1
         this.var2 = contact.var2
@@ -221,7 +221,7 @@ export default {
         this.name1 = ''
         this.name2 = ''
         this.last_name1 = ''
-        this.latname2 = ''
+        this.last_name2 = ''
         this.email = '',
         this.var1 = ''
         this.var2 = ''

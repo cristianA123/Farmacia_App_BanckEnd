@@ -103,8 +103,17 @@
               <v-spacer></v-spacer>
               <v-menu offset-y left transition="slide-y-transition">
                 <template v-slot:activator="{ on }">
-                  <v-btn 
+                  <v-btn
                     class="mr-3"
+                    outlined
+                    color="primary"
+                    :loading="loadingDownloadExcel"
+                    @click="downloadExcel"
+                  >
+                    <v-icon>mdi-progress-download</v-icon>
+                  </v-btn>
+                  <v-btn 
+                    class="mr-1"
                     color="primary"
                     v-on="on"
                   >
@@ -301,6 +310,8 @@ import BackendApi from '@/services/backend.service'
 import MoveAgenda from '../components/MoveAgenda.vue'
 import { mapState } from 'vuex'
 
+import xlsx from 'json-as-xlsx'
+
 export default {
   components: {
     MoveAgenda,
@@ -354,7 +365,8 @@ export default {
         { text: 'Ult. Modif.', value: 'updated' },
         { text: 'Acciones', value: 'actions' }
       ],
-      cont_socket: 0
+      cont_socket: 0,
+      loadingDownloadExcel: false
     }
   },
   computed: {
@@ -401,6 +413,7 @@ export default {
           this.contacts = response.data.data.data
           this.pagination.current = response.data.data.current_page
           this.pagination.total = response.data.data.last_page
+          console.log(this.contacts)
         } else {
           this.$store.dispatch('app/showToast', response.data.message)
         }
@@ -493,6 +506,35 @@ export default {
           }
         }
       })
+    },
+    downloadExcel() {
+      this.loadingDownloadExcel = true
+      const data = [
+        {
+          sheet: 'contactos',
+          columns: [
+            { label: 'CELULAR', value: 'number' },
+            { label: 'PRIMER NOMBRE', value: 'name1' },
+            { label: 'SEGUNDO NOMBRE', value: 'name2' },
+            { label: 'CORREO', value: 'email' },
+            { label: 'APELLIDO PATERNO', value: 'last_name1' },
+            { label: 'APELLIDO MATERNO', value: 'last_name2' },
+            { label: 'VAR1', value: 'var1' },
+            { label: 'VAR2', value: 'var2' },
+            { label: 'VAR3', value: 'var3' },
+            { label: 'VAR4', value: 'var4' }
+          ],
+          content: [
+            ...this.contacts
+          ]
+        }]
+      const settings = {
+        sheetName: 'contactos',
+        fileName: 'contactos'
+      }
+
+      xlsx(data, settings)
+      this.loadingDownloadExcel = false
     }
   }
 }
