@@ -164,18 +164,7 @@ export default {
 
         formData.append('name', this.name)
 
-        if (this.isEdit) {
-          BackendApi.post('/bucket/' + this.item.id, formData)
-            .then((response) => {
-              if (response.data.success) {
-                this.close()
-              }
-            })
-            .catch( (error) => {
-              this.errors = error.response.data.errors
-              this.isLoading = false
-            })
-        } else {
+        if (!this.isEdit) {
           BackendApi.post('/uploadFile', formData)
             .then((response) => {
 
@@ -194,6 +183,17 @@ export default {
                 this.errors = error.response.data.errors
               }
               
+              this.isLoading = false
+            })
+        } else {
+          BackendApi.post('/bucket/' + this.item.bucket_id, formData)
+            .then((response) => {
+              if (response.data.success) {
+                this.close()
+              }
+            })
+            .catch( (error) => {
+              this.errors = error.response.data.errors
               this.isLoading = false
             })
         }

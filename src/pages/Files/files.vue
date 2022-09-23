@@ -176,7 +176,9 @@ export default {
       BackendApi.get('/buckets').then((response) => {
         this.isLoading = false
         if (response.data.success) {
+          
           this.items = response.data.data
+          console.log( this.items)
         }
       })
     },
