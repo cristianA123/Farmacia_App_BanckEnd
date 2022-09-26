@@ -40,6 +40,11 @@ export default {
       this.password = password
       this.email = email
     },
+    close() {
+      this.dialog =  false,
+      this.email =  '',
+      this.password =  ''
+    },
     onOk() {
       this.$emit('onOk')
     },

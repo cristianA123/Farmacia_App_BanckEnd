@@ -180,22 +180,30 @@
                         </v-card-text>
                       </v-card>
                     </v-col>
+                  </v-row>
 
-                    <!--                     <v-col>
+                  <v-row v-if="isEdit">
+                    <v-col>
                       <v-card
                         outlined
                       >
                         <v-card-title>
-                          Password
+                          Restablecer contraseña
                         </v-card-title>
 
-                        <v-card-text>
-                          <v-btn>
-                            Reiniciar contraseña
+                        <v-card-text 
+                          class="d-flex justify-center"
+                        >
+                          <v-btn
+                            class="primary"
+                            :loading="isLoadingResetPassword"
+                            @click="resetPassword"
+                          >
+                            Generar nueva contraseña
                           </v-btn>
                         </v-card-text>
                       </v-card>
-                    </v-col> -->
+                    </v-col>
                   </v-row>
 
                   <div class="d-flex">
@@ -246,6 +254,12 @@
         ref="dialogPassword" 
         @onOk="$router.push({ name: 'users' })"
       />
+
+      <Dialog-Password-Component 
+        ref="dialogResetPassworh"
+        @onOk="onResetPassword" 
+      />
+      <!-- @onOk="$router.push({ name: 'users' })" -->
 
       <Company
         ref="newCompany"
@@ -330,7 +344,8 @@ export default {
       startCredit: 0,
       creditRules: [
         (v) => (v > this.min || v < this.max) || 'No se puede asignar este crédito'
-      ]
+      ],
+      isLoadingResetPassword: false
     }
   },
   computed: {
@@ -533,7 +548,6 @@ export default {
         })
         .catch((error) => {
           this.isLoading = false
-          console.log(error)
         })
     },
     getProviders () {
@@ -546,7 +560,6 @@ export default {
     getCompanies () {
       BackendApi.get('/user/companies').then((response) => {
         if (response.data.success) {
-          console.log(response.data)
           response.data.data.forEach((company) => {
             const data = {
               id: company.id,
@@ -564,6 +577,29 @@ export default {
     onChangeServicesCheck(services) {
       
       this.services = services
+    },
+    resetPassword () {
+
+      this.isLoadingResetPassword = true
+
+      const payload = {
+        user_id: this.user.id
+      }
+
+      BackendApi.post('/resetPassword', payload)
+        .then((response) => {
+          if (response.data.success) {
+            this.$refs.dialogResetPassworh.open(this.user.email, response.data.data.userPassword)
+            this.isLoadingResetPassword = false
+          }
+        })
+        .catch((error) => {
+          this.isLoadingResetPassword = false
+        })
+
+    },
+    onResetPassword() {
+      this.$refs.dialogResetPassworh.close()
     }
   }
   
