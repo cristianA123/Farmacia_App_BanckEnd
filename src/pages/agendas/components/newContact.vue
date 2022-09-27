@@ -160,7 +160,11 @@
         <v-card-actions>
           <v-btn outlined @click="close">Cancelar</v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="primary" type="submit">Guardar</v-btn>
+          <v-btn 
+            color="primary" 
+            type="submit"
+            :loading="isLoadingNewContact"
+          >Guardar</v-btn>
         </v-card-actions>
         
       </v-form>
@@ -190,7 +194,8 @@ export default {
       var3: '',
       var4: '',
       dialog: false,
-      agenda: null
+      agenda: null,
+      isLoadingNewContact: false
     }
   },
   computed: {
@@ -235,9 +240,11 @@ export default {
       this.$refs.formNewContact.resetValidation()
       this.$refs.formNewContact.reset()
       this.dialog = false
+      this.isLoadingNewContact = false
     },
     save() {
       if (this.$refs.formNewContact.validate()) {
+        this.isLoadingNewContact = true
         if (this.isEdit) {
 
           const payload = {
@@ -265,6 +272,7 @@ export default {
             .catch ((error) => {
               this.backendErrors = error.response.data.errors
               this.$store.dispatch('app/showToast', 'Revise los datos del contacto')
+              this.isLoadingNewContact = false
             })
         } else {
 
@@ -292,6 +300,7 @@ export default {
             }).catch((error) => {
               this.backendErrors = error.response.data.errors
               this.$store.dispatch('app/showToast', 'Revise los datos del contacto')
+              this.isLoadingNewContact = false
             })
         }
       }

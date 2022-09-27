@@ -38,7 +38,11 @@
         <v-card-actions class="pa-2">
           <v-btn outlined @click="close">Cancelar</v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="primary" type="submit">Guardar</v-btn>
+          <v-btn 
+            color="primary" 
+            type="submit"
+            :loading="isLoadingAgenda"
+          >Guardar</v-btn>
         </v-card-actions>
 
       </v-form>
@@ -57,7 +61,8 @@ export default {
       },
       dialog: false,
       name: '',
-      agenda: null
+      agenda: null,
+      isLoadingAgenda: false
     }
   },
   computed: {
@@ -82,9 +87,11 @@ export default {
     },
     close() {
       this.dialog = false
+      this.isLoadingAgenda = false
     },
     save() {
       if (this.$refs.formNewAgenda.validate()) {
+        this.isLoadingAgenda = true
         if (this.isEdit) {
           const payload = {
             name: this.name
@@ -98,7 +105,7 @@ export default {
             }
           }).catch((error) => {
             this.backendErrors = error.response.data.errors
-
+            this.isLoadingAgenda = false
           })
         } else {
           const payload = {
@@ -114,6 +121,7 @@ export default {
               }
             })
             .catch ( (error) => {
+              this.isLoadingAgenda = false
               this.backendErrors = error.response.data.errors
             })
         }

@@ -153,10 +153,10 @@
             <v-btn
               color="blue darken-1"
               text
-              :loading="isLoading"
+              :loading="btnLoading"
               @click="save"
             >
-              Save
+              Crear
             </v-btn>
           </v-card-actions>
         </v-card>

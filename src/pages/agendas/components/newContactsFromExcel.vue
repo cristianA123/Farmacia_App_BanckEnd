@@ -29,7 +29,11 @@
         <v-card-actions class="pa-2">
           <v-btn outlined @click="close">Cancelar</v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="primary" type="submit">Importar</v-btn>
+          <v-btn 
+            color="primary" 
+            type="submit"
+            :loading="isLoading"
+          >Importar</v-btn>
         </v-card-actions>
         
       </v-form>
@@ -51,7 +55,8 @@ export default {
         file:''
       },
       file: null,
-      dialog: false
+      dialog: false,
+      isLoading: false
     }
   },
   computed : {
@@ -65,9 +70,11 @@ export default {
     },
     close() {
       this.dialog = false
+      this.isLoading = false
     },
     submit() {
       if (this.$refs.formNewContact.validate()) {
+        this.isLoading = true
         const payload = new FormData()
 
         payload.append('file', this.file)
@@ -77,11 +84,11 @@ export default {
 
             if (response.data.success) {
               this.$store.dispatch('app/showToast', response.data.message)
-              this.close()  
-
+              this.close()
             }
           })
           .catch ( (error) => {
+            this.isLoading = false
             this.backendErrors = error.response.data.errors
             this.$store.dispatch('app/showToast', error.response.data.message)
           })
