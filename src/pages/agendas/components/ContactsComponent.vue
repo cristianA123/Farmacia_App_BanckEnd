@@ -311,12 +311,19 @@ import MoveAgenda from '../components/MoveAgenda.vue'
 import { mapState } from 'vuex'
 
 import xlsx from 'json-as-xlsx'
+import moment from 'moment'
 
 export default {
   components: {
     MoveAgenda,
     newContact,
     newContactsFromExcel
+  },
+  props: {
+    agendas: {
+      type: Array,
+      default: () => []
+    }
   },
   data() {
     return {
@@ -509,32 +516,49 @@ export default {
     },
     downloadExcel() {
       this.loadingDownloadExcel = true
-      const data = [
-        {
-          sheet: 'contactos',
-          columns: [
-            { label: 'CELULAR', value: 'number' },
-            { label: 'PRIMER NOMBRE', value: 'name1' },
-            { label: 'SEGUNDO NOMBRE', value: 'name2' },
-            { label: 'CORREO', value: 'email' },
-            { label: 'APELLIDO PATERNO', value: 'last_name1' },
-            { label: 'APELLIDO MATERNO', value: 'last_name2' },
-            { label: 'VAR1', value: 'var1' },
-            { label: 'VAR2', value: 'var2' },
-            { label: 'VAR3', value: 'var3' },
-            { label: 'VAR4', value: 'var4' }
-          ],
-          content: [
-            ...this.contacts
-          ]
-        }]
-      const settings = {
-        sheetName: 'contactos',
-        fileName: 'contactos'
-      }
 
-      xlsx(data, settings)
-      this.loadingDownloadExcel = false
+      let nameAgenda = ''
+
+      console.log(this.$route.params.agendaId)
+      console.log(this.agendas)
+
+      this.agendas.forEach((agenda) => {
+        if (agenda.id === parseInt(this.$route.params.agendaId)) {
+          nameAgenda = agenda.name
+        }
+      })
+
+      BackendApi.post('/downloadsContacts', { agenda_id: this.$route.params.agendaId }).then((response) => {
+        if (response.data.success) {
+          const data = [
+            {
+              sheet: 'contactos',
+              columns: [
+                { label: 'CELULAR', value: 'number' },
+                { label: 'PRIMER NOMBRE', value: 'name1' },
+                { label: 'SEGUNDO NOMBRE', value: 'name2' },
+                { label: 'CORREO', value: 'email' },
+                { label: 'APELLIDO PATERNO', value: 'last_name1' },
+                { label: 'APELLIDO MATERNO', value: 'last_name2' },
+                { label: 'VAR1', value: 'var1' },
+                { label: 'VAR2', value: 'var2' },
+                { label: 'VAR3', value: 'var3' },
+                { label: 'VAR4', value: 'var4' }
+              ],
+              content: [
+                ...response.data.data
+              ]
+            }]
+          const settings = {
+            sheetName: 'contactos',
+            fileName: nameAgenda + '_' + moment(new Date()).format('L')
+          }
+
+          xlsx(data, settings)
+          this.loadingDownloadExcel = false
+        }
+      })
+      
     }
   }
 }

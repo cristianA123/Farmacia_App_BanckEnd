@@ -28,6 +28,7 @@
           active-class="primary--text"
           link
         >
+          <!-- :to="{name: 'contactos-agenda', params: {agendaId: agenda.id, agenda: agenda}}" -->
           <v-list-item-icon>
             <v-icon small>mdi-book-open-blank-variant</v-icon>
           </v-list-item-icon>
@@ -71,7 +72,8 @@
         
       <ContactsComponent 
         :key="$route.params.agendaId" 
-        :agenda-id="$route.params.agendaId" 
+        :agenda-id="$route.params.agendaId"
+        :agendas="agendas" 
         @onCreatedContact="refreshData"
       />
       
