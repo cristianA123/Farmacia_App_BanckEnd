@@ -126,7 +126,7 @@
             <v-btn
               color="green"
               dark
-              :loading="loadingSendPdf"
+              :loading="isBtnLoading"
               @click="submit"
             >
               <v-icon
@@ -154,10 +154,6 @@ moment.locale('es')
 
 export default {
   props: {
-    // registers: {
-    //   type: Number,
-    //   default: 0
-    // },
     dataCampaing: {
       type: Object,
       default: () => {}
@@ -170,18 +166,6 @@ export default {
       type: String,
       default: ''
     },
-    // necessaryCredit : {
-    //   type: Number,
-    //   default: 0
-    // },
-    // availableCredit : {
-    //   type : Number,
-    //   default: 0
-    // },
-    // validNumbers: {
-    //   type: Number,
-    //   default: 0
-    // },
     isBtnLoading : {
       type : Boolean,
       default: true
@@ -251,7 +235,7 @@ export default {
     },
     async submit() {
       if (this.dataCampaing.availableCredit >= this.dataCampaing.necessary_credit) {
-        this.loadingSendPdf = true
+        this.isBtnLoading = true
   
         const options = {
           scale: 3
@@ -311,7 +295,7 @@ export default {
             // doc.save('Reporte de campaña.pdf')
           }
         )
-        this.loadingSendPdf = false
+        this.isBtnLoading = false
         this.$emit('onPreviewSmsSubmit')
         this.close()
       } else {
