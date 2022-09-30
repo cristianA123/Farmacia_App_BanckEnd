@@ -147,13 +147,14 @@ export default {
       return this.campaing?.updated_at || ''
     }
   },
+  created() {
+    this.getAllSmsByCampaing()
+  },
   mounted() {
     // para entregabilidad
     this.showChartDeliverability = true
     // // para Progreso ******
     this.showChartProgress = true
-
-    this.getAllSmsByCampaing()
   },
   methods: {
     async getAllSmsByCampaing() {
@@ -163,34 +164,17 @@ export default {
         searchtext : ''
       }
 
-      await BackendApi.post('/smsCampaignDetailAll', payload)
+      await BackendApi.post('/dashBoardProgress', payload)
         .then((response) => {
           if (response.data.success) {
-            this.allSmsOfCampaing = response.data.data
-            let cont_sms_enviados = 0
-            let cont_sms_fallados = 0
 
-            this.allSmsOfCampaing.map( (sms) => {
+            this.seriesProgress.push(response.data.data.progress_sms)
+            this.seriesProgress.push(response.data.data.progress_resto)
 
-              if (sms.status === 'DELIVERED') {
-                cont_sms_enviados++
-              }
-              if (sms.status === 'REJECTED') {
-                cont_sms_fallados++
-              }
-              
-              return ''
-            })
-            this.seriesProgress.push(cont_sms_enviados)
-            this.seriesProgress.push(this.allSmsOfCampaing.length - cont_sms_enviados)
-
-            this.seriesDeliverability.push(cont_sms_enviados)
-            this.seriesDeliverability.push(cont_sms_fallados)
+            this.seriesDeliverability.push(response.data.data.count_status_delivered)
+            this.seriesDeliverability.push(response.data.data.count_status_rejected)
 
           }
-
-          return ''
-
         })
     },
     progress () {
