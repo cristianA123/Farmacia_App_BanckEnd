@@ -182,30 +182,6 @@
                     </v-col>
                   </v-row>
 
-                  <v-row v-if="isEdit">
-                    <v-col>
-                      <v-card
-                        outlined
-                      >
-                        <v-card-title>
-                          Restablecer contraseña
-                        </v-card-title>
-
-                        <v-card-text 
-                          class="d-flex justify-center"
-                        >
-                          <v-btn
-                            class="primary"
-                            :loading="isLoadingResetPassword"
-                            @click="resetPassword"
-                          >
-                            Generar nueva contraseña
-                          </v-btn>
-                        </v-card-text>
-                      </v-card>
-                    </v-col>
-                  </v-row>
-
                   <div class="d-flex">
                     <v-spacer></v-spacer>
                     <v-btn 
@@ -218,6 +194,29 @@
                   </div>
 
                 </v-form>
+                <v-row v-if="isEdit">
+                  <v-col>
+                    <v-card
+                      outlined
+                    >
+                      <v-card-title>
+                        Restablecer contraseña
+                      </v-card-title>
+
+                      <v-card-text 
+                        class="d-flex justify-center"
+                      >
+                        <v-btn
+                          class="primary"
+                          :loading="isLoadingResetPassword"
+                          @click="sureResetPassword"
+                        >
+                          Generar nueva contraseña
+                        </v-btn>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                </v-row>
               </div>
             </div>
           </v-card-text>
@@ -246,6 +245,26 @@
             <v-spacer></v-spacer>
             <v-btn @click="deleteDialog = false">Cancel</v-btn>
             <v-btn color="error" @click="deleteDialog = false">Delete</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <!-- preguntar si esta seguro de reset password -->
+      <v-dialog
+        v-model="dialogConfirmResetPassword"
+        width="600px"
+      >
+        <v-card>
+          <v-card-title> <v-icon>mdi-login-variant</v-icon>Generar contraseña</v-card-title>
+
+          <v-card-text>
+            <p style="font-size: 18px">Está seguro que desea generar una nueva contraseña para este usuario?</p>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-btn text @click="dialogConfirmResetPassword = false">Cancelar</v-btn>
+            <v-spacer></v-spacer>
+            <v-btn text @click="resetPassword">Crear</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -345,7 +364,8 @@ export default {
       creditRules: [
         (v) => (v > this.min || v < this.max) || 'No se puede asignar este crédito'
       ],
-      isLoadingResetPassword: false
+      isLoadingResetPassword: false,
+      dialogConfirmResetPassword: false
     }
   },
   computed: {
@@ -578,8 +598,11 @@ export default {
       
       this.services = services
     },
+    sureResetPassword() {
+      this.dialogConfirmResetPassword = true
+    },
     resetPassword () {
-
+      this.dialogConfirmResetPassword = false
       this.isLoadingResetPassword = true
 
       const payload = {
