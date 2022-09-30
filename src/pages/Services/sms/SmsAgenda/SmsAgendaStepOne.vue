@@ -44,7 +44,20 @@
             ]"
             required
             @change="onChangeAgenda"  
-          />
+          >
+            <template v-slot:item="data">
+              <template>
+                <span v-html="data.item.name" ></span>
+                <v-chip
+                  color="primary"
+                  class="ma-2"
+                  small
+                >
+                  {{ data.item.all_contacts }}
+                </v-chip>
+              </template>
+            </template>
+          </v-select>
         </v-card-text>
         <br>
 
@@ -110,6 +123,7 @@ export default {
     getAgendas() {
       BackendApi.get('/agenda').then((response) => {
         if (response.data.success) {
+          console.log(response.data.data)
           this.agendas = response.data.data
         }
       })
