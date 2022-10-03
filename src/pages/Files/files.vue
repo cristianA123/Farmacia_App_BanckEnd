@@ -61,8 +61,11 @@
             <v-card-text>
               <table>
                 <tr>
+                  <!-- Math.round(num / 100) * 100 -->
                   <td>Tamaño:</td>
-                  <td>{{ item.size > 0 ? item.size*1000 + 'Bytes' : item.size + 'Kb' }} </td>
+                  <!-- <td>{{ item.size }} </td> -->
+                  <!-- <td>{{ item.size > 0 ? Math.round(item.size*1000/100)*100 + 'Bytes' : Math.round(item.size*100)/100 + 'Kb' }} </td> -->
+                  <td>{{ Math.round(item.size) + ' Kb' }} </td>
                 </tr>
                 <tr>
                   <td>Clics:</td>
@@ -70,7 +73,7 @@
                 </tr>
                 <tr>
                   <td>Link:</td>
-                  <td>{{ item.long_url.length > 25 ? item.long_url.substring(0,25) + '...' : item.long_url }} </td>
+                  <td>{{ item.short_url.length > 25 ? item.short_url.substring(0,25) + '...' : item.short_url }} </td>
                   <!-- <td>{{ item.short_url }} </td> -->
                 </tr>
               </table>
@@ -189,7 +192,7 @@ export default {
       document.getElementById(item.id).click()
     },
     copyLink (item) {
-      navigator.clipboard.writeText(item.long_url)
+      navigator.clipboard.writeText(item.short_url)
     }
   }
 }
