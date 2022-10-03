@@ -77,7 +77,7 @@ export default {
       isUpdate : false,
       headers: [
         { text: 'Nombre', value: 'name' },
-        { text: 'Links', value: 'number_of_links' },
+        { text: 'Links', value: 'short_url' },
         { text: 'Clicks', value: 'number_of_clicks' },
         { text: 'campaña', value: 'campaign_id' },
         { text: 'Última modificacion', value: 'updated' },
