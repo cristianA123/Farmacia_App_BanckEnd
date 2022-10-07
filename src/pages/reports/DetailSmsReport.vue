@@ -34,6 +34,7 @@
     <DetailCampaignComponent
       ref="detailCampaignComponent"
       :campaigns="campaigns"
+      :headers="headersForTable"
       :registers="registers"
       :pagination="pagination"
       @ongetSms="ongetSms"
@@ -81,6 +82,24 @@ export default {
   computed:{
     changedSearch () {
       return this.search
+    },
+    headersForTable () {
+      if (this.has_url) {
+        return [
+          { text: 'Telefono', value: 'phone' },
+          { text: 'Mensaje', value: 'content' },
+          { text: 'Fecha', value: 'created' },
+          { text: 'Link', value: 'times_open' },
+          { text: 'Estado', value: 'status' }
+        ]
+      } else {
+        return  [
+          { text: 'Telefono', value: 'phone' },
+          { text: 'Mensaje', value: 'content' },
+          { text: 'Fecha', value: 'created' },
+          { text: 'Estado', value: 'status' }
+        ]
+      }
     }
   },
   mounted() {
@@ -91,6 +110,7 @@ export default {
     file_to_json () {
       console.log('holis')
     },
+   
     getCampaing() {
       BackendApi.get('/campaign/' + this.$route.params.campaign_id).then((response) => {
         if (response.data.success) {

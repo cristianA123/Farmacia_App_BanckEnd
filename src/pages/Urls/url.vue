@@ -40,8 +40,8 @@
           </template>
           <v-list>
             <v-list-item
-              @click="openDialogCreate(item)"
               link
+              @click="openDialogCreate(item)"
             >
               Modificar
             </v-list-item>
@@ -79,7 +79,8 @@ export default {
         { text: 'Nombre', value: 'name' },
         { text: 'Links', value: 'short_url' },
         { text: 'Clicks', value: 'number_of_clicks' },
-        { text: 'campaña', value: 'campaign_id' },
+        { text: 'Urls', value: 'number_of_links' },
+        { text: 'Origen', value: 'origen' },
         { text: 'Última modificacion', value: 'updated' },
         { text: 'Acciones', value: 'actions' }
       ],
@@ -92,15 +93,15 @@ export default {
       return this.items.length === 0 ? true : false
     }
   },
-  mounted() {
-    this.getFiles()
-  },
   watch: {
     options: {
       handler () {
         this.getFiles()
       }
     }
+  },
+  mounted() {
+    this.getFiles()
   },
   methods: {
 
@@ -116,6 +117,7 @@ export default {
       this.isLoading = true
       BackendApi.get('/groupurl').then((response) => {
         if (response.data.success) {
+          console.log(response.data.data)
           this.items = response.data.data
           this.isLoading = false
         }

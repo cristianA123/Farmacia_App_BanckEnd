@@ -19,6 +19,10 @@
         :items="campaigns"
         hide-default-footer 
       >
+        <template v-slot:[`item.times_open`]="{ item }">
+          {{ item.times_open ? 'APERTURADO' : 'NO APERTURADO' }}
+        </template>
+
         <template v-slot:[`item.actions`]="{ item }">
           <v-menu
             offset-y
@@ -65,24 +69,20 @@ export default {
     campaigns: {
       type: Array,
       default: () => ({})
-
+    },
+    hasUrl: {
+      type: Boolean,
+      default: true
+    },
+    headers: {
+      type: Array,
+      default: null
     }
   },
   data () {
     return {
-      // campaigns : [],
-      headers: [
-        { text: 'Telefono', value: 'phone' },
-        { text: 'Mensaje', value: 'content' },
-        { text: 'Fecha', value: 'created' },
-        { text: 'Estado', value: 'status' }
-      ],
       campaign_id: null,
       searchText: '',
-      // pagination: {
-      //   current: 1,
-      //   total: 0
-      // },
       service_id: null
     }
   },
@@ -96,24 +96,6 @@ export default {
 
       this.$emit('ongetSms', this.searchText)
 
-      // console.log(this.searchText)
-      // const payload = {
-      //   campaign_id : this.$route.params.campaign_id,
-      //   service_id : 1,
-      //   searchtext : this.searchText
-      // }
-
-      // BackendApi.post('/smsCampaignDetail?page=' + this.pagination.current,payload)
-      //   .then((response) => {
-      //     if (response.data.success) {
-
-      //       this.campaigns = response.data.data.data
-      //       console.log(this.campaigns)
-      //       this.pagination.current = response.data.data.current_page
-      //       this.pagination.total = response.data.data.last_page
-      //     }
-
-      //   })
     }
   }
 }
