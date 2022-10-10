@@ -28,7 +28,9 @@
     </div>
 
     <!-- componente url campaing detail -->
-    <UrlDashDetailComponent v-if="has_url"/>
+    <UrlDashDetailComponent 
+      v-if="has_url"
+    />
 
     <!-- pagination -->
     <DetailCampaignComponent
@@ -90,6 +92,7 @@ export default {
           { text: 'Mensaje', value: 'content' },
           { text: 'Fecha', value: 'created' },
           { text: 'Link', value: 'times_open' },
+          { text: 'Credito', value: 'credit' },
           { text: 'Estado', value: 'status' }
         ]
       } else {
@@ -97,6 +100,7 @@ export default {
           { text: 'Telefono', value: 'phone' },
           { text: 'Mensaje', value: 'content' },
           { text: 'Fecha', value: 'created' },
+          { text: 'Credito', value: 'credit' },
           { text: 'Estado', value: 'status' }
         ]
       }

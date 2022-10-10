@@ -17,7 +17,7 @@
                   type="donut"
                   width="400"
                   :options="chartOptions"
-                  :series="series"
+                  :series="series_apertura_link"
                 ></apexchart>
               </div>
             </v-card-text>
@@ -32,7 +32,7 @@
         sm="6"
         lg="6"
       >
-        <div >
+        <div v-if="false">
           <v-card >
             <v-card-title >Comportamiento</v-card-title>
             <v-card-text>
@@ -57,6 +57,8 @@
 
 <script>
 import TrackCard from './TrackCard.vue'
+import BackendApi from '@/services/backend.service'
+
 export default {
   components:{
     TrackCard
@@ -65,10 +67,10 @@ export default {
     return {
       // variables para apertura
       showChart: false,
-      series: [50,50],
+      series_apertura_link: [],
       chartOptions: {
-        colors: ['#6BCB77', '#FF6B6B'],
-        labels: ['ABIERTO', 'NO ABIERTO'],
+        colors: ['#FF6B6B', '#6BCB77'],
+        labels: ['NO ABIERTO', 'ABIERTO'],
         chart: {
           type: 'donut'
         },
@@ -101,8 +103,43 @@ export default {
     // para entregabilidad
     this.showChart = true
     // // para click y comportamiento ******
-    this.showChart2 = true
+    this.showChart2 = false
   
+  },
+  created() {
+    this.getAllSmsByCampaing()
+
+  },
+  
+  methods: {
+    async getAllSmsByCampaing() {
+      const payload = {
+        campaign_id : this.$route.params.campaign_id,
+        service_id : 1,
+        searchtext : ''
+      }
+
+      await BackendApi.post('/smsCampaignDetailAll', payload)
+        .then((response) => {
+          let cont = 0
+
+          if (response.data.success) {
+
+            response.data.data.forEach((sms) => {
+              
+              if (sms.times_open > 0) {
+                cont++
+              }
+
+            })
+            this.series_apertura_link.push(response.data.data.length - cont)
+            this.series_apertura_link.push(cont)
+          }
+        })
+    },
+    progress () {
+
+    }
   }
 }
 </script>
