@@ -68,8 +68,8 @@
                   <td>{{ Math.round(item.size) + ' Kb' }} </td>
                 </tr>
                 <tr>
-                  <td>Clics:</td>
-                  <td>{{ item.number_of_links }}</td>
+                  <td>Clis:</td>
+                  <td>{{ n_clics(item) }}</td>
                 </tr>
                 <tr>
                   <td>Link:</td>
@@ -193,6 +193,9 @@ export default {
     },
     copyLink (item) {
       navigator.clipboard.writeText(item.short_url)
+    },
+    n_clics(item) {
+      return item.number_of_clicks || 0
     }
   }
 }
