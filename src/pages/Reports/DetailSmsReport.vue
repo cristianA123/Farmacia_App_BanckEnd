@@ -45,15 +45,15 @@
 </template>
 
 <script>
+import xlsx from 'json-as-xlsx'
+import jspdf from 'jspdf'
+import html2canvas from 'html2canvas'
+
 import BackendApi from '@/services/backend.service'
 import DashDetailComponent from './components/DashDetailComponent.vue'
 import UrlDashDetailComponent from './components/UrlDashDetailComponent.vue'
 import DetailCampaignComponent from './components/DetailCampaignComponent.vue'
 import BackPage from '@/components/common/BackPage.vue'
-
-import xlsx from 'json-as-xlsx'
-import jspdf from 'jspdf'
-import html2canvas from 'html2canvas'
 
 export default {
   name:'DetailSmsReport',

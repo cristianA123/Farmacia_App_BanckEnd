@@ -80,7 +80,8 @@
 <script>
 
 import BackendApi from '@/services/backend.service'
-
+import moment from 'moment'
+moment.locale('es')
 export default {
   props: {
     campaing: {
@@ -144,7 +145,8 @@ export default {
       return this.campaing?.name || ''
     },
     getDate() {
-      return this.campaing?.updated_at || ''
+      
+      return moment(this.campaing?.updated_at).format('Y-M-D H:M:S') || ''
     }
   },
   created() {
