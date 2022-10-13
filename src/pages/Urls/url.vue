@@ -78,9 +78,7 @@ export default {
       headers: [
         { text: 'Nombre', value: 'name' },
         { text: 'Links', value: 'short_url' },
-        { text: 'Clicks', value: 'number_of_clicks' },
-        { text: 'Urls', value: 'number_of_links' },
-        { text: 'Origen', value: 'origen' },
+        { text: 'Clicks', value: 'times_open' },
         { text: 'Última modificacion', value: 'updated' },
         { text: 'Acciones', value: 'actions' }
       ],
@@ -115,7 +113,7 @@ export default {
     getFiles () {
       this.items = []
       this.isLoading = true
-      BackendApi.get('/groupurl').then((response) => {
+      BackendApi.get('/urls').then((response) => {
         if (response.data.success) {
           console.log(response.data.data)
           this.items = response.data.data

@@ -81,10 +81,12 @@
             <v-card-actions>
               <v-btn
                 icon
-                color="deep-purple accent-4"
+                color="accent-4"
                 @click="openDialogUpload(item)"
               >
-                <v-icon>mdi-pencil</v-icon>
+                <v-icon>
+                  mdi-pencil
+                </v-icon>
               </v-btn>
               <v-spacer></v-spacer>
               <v-tooltip bottom>
