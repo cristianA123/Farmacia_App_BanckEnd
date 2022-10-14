@@ -59,8 +59,8 @@
         :items="contacts"
         :items-per-page="10"
         :search="searchTable"
-        hide-default-footer
       >
+        <!-- hide-default-footer -->
         <template v-slot:top>
           <v-text-field
             v-model="searchText"
@@ -270,7 +270,7 @@
 
       </v-data-table>
 
-      <v-card-actions>
+      <!-- <v-card-actions>
         <v-row justify="center">
           <v-col 
             class="my-0 py-0"
@@ -280,12 +280,13 @@
               <v-pagination
                 v-model="pagination.current"
                 :length="pagination.total"
+                :page-start="2"
                 @input="onPageChange"
               />
             </v-container>
           </v-col>
         </v-row>
-      </v-card-actions>
+      </v-card-actions> -->
 
     </v-card>
 
@@ -373,7 +374,8 @@ export default {
         { text: 'Acciones', value: 'actions' }
       ],
       cont_socket: 0,
-      loadingDownloadExcel: false
+      loadingDownloadExcel: false,
+      pagiITtems: 10
     }
   },
   computed: {
@@ -390,8 +392,8 @@ export default {
     })
   },
   watch: {
-    selectedUsers(val) {
-
+    pagiITtems (val, olv_val) {
+      console.log(val + ' ' + olv_val)
     }
   },
   mounted() {
@@ -413,13 +415,12 @@ export default {
         page:  (this.searchText === '') ? this.pagination.current : 1
       }
 
-      BackendApi.get('/contactByAgenda/' + this.$route.params.agendaId, {
-        params: params
-      }).then((response) => {
+      BackendApi.get('/contactByAgenda/' + this.$route.params.agendaId).then((response) => {
         if (response.data.success) {
-          this.contacts = response.data.data.data
-          this.pagination.current = response.data.data.current_page
-          this.pagination.total = response.data.data.last_page
+          console.log(response.data)
+          this.contacts = response.data.data
+          // this.pagination.current = response.data.data.current_page
+          // this.pagination.total = response.data.data.last_page
           console.log(this.contacts)
         } else {
           this.$store.dispatch('app/showToast', response.data.message)
