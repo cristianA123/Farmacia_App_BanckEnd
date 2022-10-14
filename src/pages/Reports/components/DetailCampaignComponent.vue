@@ -20,7 +20,8 @@
         hide-default-footer 
       >
         <template v-slot:[`item.times_open`]="{ item }">
-          {{ item.times_open ? 'APERTURADO' : 'NO APERTURADO' }}
+          <v-icon v-if="item.times_open">mdi-eye-check-outline</v-icon>
+          <v-icon v-else>mdi-eye-off-outline</v-icon>
         </template>
 
         <template v-slot:[`item.actions`]="{ item }">
@@ -45,6 +46,12 @@
             </v-list>
           </v-menu>
         </template>
+
+        <template v-slot:[`item.status`]="{ item }">
+          <v-icon v-if="item.status === 'DELIVERED'">mdi-email-check-outline</v-icon>
+          <v-icon v-else>mdi-email-remove-outline</v-icon>
+        </template>
+        
         <p>{{ campaigns }}</p>
       </v-data-table>
       <v-pagination

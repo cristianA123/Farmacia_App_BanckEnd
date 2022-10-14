@@ -44,8 +44,9 @@
             :loading="$store.state.authenticate.loadingAuth"
             block
             x-large
-            color="primary"
+            color="#235696"
             @click="submit"
+            dark
           >Iniciar Sesión</v-btn>
 
           <div v-if="errorProvider" class="error--text">{{ errorProviderMessages }}</div>
