@@ -20,17 +20,37 @@
       />
     </div>
 
+    <!-- dash campaing detail
     <div id="dashboarDetail">
-      <!-- dash campaing detail -->
       <DashDetailComponent 
         :campaing="campaing"
       />
-    </div>
+    </div> -->
+    <v-row>
+      <v-col
+        cols="12"
+        xs="12"
+        sm="6"
+        lg="4"
+      >
+        <CampaignDetailCardComponent 
+          :data-campaign="dataCampaign"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        xs="12"
+        sm="6"
+        lg="4"
+      >
+        <CampaignMetricsdCardComponent/>
+      </v-col>
+    </v-row>
 
-    <!-- componente url campaing detail -->
+    <!-- componente url campaing detail
     <UrlDashDetailComponent 
       v-if="has_url"
-    />
+    /> -->
 
     <!-- pagination -->
     <DetailCampaignComponent
@@ -50,22 +70,27 @@ import jspdf from 'jspdf'
 import html2canvas from 'html2canvas'
 
 import BackendApi from '@/services/backend.service'
-import DashDetailComponent from './components/DashDetailComponent.vue'
-import UrlDashDetailComponent from './components/UrlDashDetailComponent.vue'
+// import DashDetailComponent from './components/DashDetailComponent.vue'
+// import UrlDashDetailComponent from './components/UrlDashDetailComponent.vue'
 import DetailCampaignComponent from './components/DetailCampaignComponent.vue'
 import BackPage from '@/components/common/BackPage.vue'
+
+import CampaignDetailCardComponent from './components/CampaignDetailCardComponent.vue'
+import CampaignMetricsdCardComponent from './components/CampaignMetricsdCardComponent.vue'
 
 export default {
   name:'DetailSmsReport',
   components:{
-    DashDetailComponent,
-    UrlDashDetailComponent,
+    // DashDetailComponent,
+    // UrlDashDetailComponent,
+    CampaignDetailCardComponent,
+    CampaignMetricsdCardComponent,
     DetailCampaignComponent,
     BackPage
   },
   data () {
     return {
-      campaing: null,
+      dataCampaign: null,
       registers: 0,
       excelprueba: null,
       loadingDownloadPdf: false,
@@ -106,22 +131,24 @@ export default {
       }
     }
   },
+  created() {
+    this.getCampaing()
+  },
   mounted() {
     this.ongetSms()
-    this.getCampaing()
   },
   methods: {
     file_to_json () {
       console.log('holis')
     },
    
-    getCampaing() {
-      BackendApi.get('/campaign/' + this.$route.params.campaign_id).then((response) => {
+    async getCampaing() {
+      await BackendApi.get('/campaign/' + this.$route.params.campaign_id).then((response) => {
         if (response.data.success) {
           console.log('eeeeeeeeeeeee')
           console.log(response.data.data)
           console.log('eeeeeeeeeeeee')
-          this.campaing = response.data.data.campaing
+          this.dataCampaign = response.data.data
           this.registers = response.data.data.registers
         }
       })
