@@ -68,31 +68,33 @@
                   </tr>
                 </table>
                 <br>
-                <span><strong>Pre-filtro excel</strong></span>
-                <v-divider></v-divider>
-                <table>
-                  <tr>
-                    <td style="width:350px;">Cantidad de registros:</td>
-                    <td>
-                      <span>{{ dataCampaing.rows | formatCurrency(configFormat) }}</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="width:350px;">Números con formato inválido:</td>
-                    <td>
-                      
-                      <span>{{ dataCampaing.rows - dataCampaing.valid_number | formatCurrency(configFormat) }}</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="width:350px;">Mensajes con más de 160 caracteres:</td>
-                    <td>
-                      
-                      <span>{{ dataCampaing.messages_160_letters | formatCurrency(configFormat) }}</span>
-                    </td>
-                  </tr>
-                </table>
-                <br>
+                <div v-if="isExcel">
+                  <span><strong>Pre-filtro</strong></span>
+                  <v-divider></v-divider>
+                  <table>
+                    <tr>
+                      <td style="width:350px;">Cantidad de registros:</td>
+                      <td>
+                        <span>{{ dataCampaing.rows | formatCurrency(configFormat) }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="width:350px;">Números con formato inválido:</td>
+                      <td>
+                        
+                        <span>{{ dataCampaing.rows - dataCampaing.valid_number | formatCurrency(configFormat) }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="width:350px;">Mensajes con más de 160 caracteres:</td>
+                      <td>
+                        
+                        <span>{{ dataCampaing.messages_160_letters | formatCurrency(configFormat) }}</span>
+                      </td>
+                    </tr>
+                  </table>
+                  <br>
+                </div>
                 <span><strong>Créditos</strong></span>
                 <v-divider></v-divider>
                 <table>
