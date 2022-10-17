@@ -45,6 +45,14 @@
       >
         <CampaignMetricsdCardComponent/>
       </v-col>
+      <v-col
+        cols="12"
+        xs="12"
+        sm="6"
+        lg="4"
+      >
+        <CampaignProgressComponent/>
+      </v-col>
     </v-row>
 
     <!-- componente url campaing detail
@@ -77,6 +85,7 @@ import BackPage from '@/components/common/BackPage.vue'
 
 import CampaignDetailCardComponent from './components/CampaignDetailCardComponent.vue'
 import CampaignMetricsdCardComponent from './components/CampaignMetricsdCardComponent.vue'
+import CampaignProgressComponent from './components/CampaignProgressComponent.vue'
 
 export default {
   name:'DetailSmsReport',
@@ -86,6 +95,7 @@ export default {
     CampaignDetailCardComponent,
     CampaignMetricsdCardComponent,
     DetailCampaignComponent,
+    CampaignProgressComponent,
     BackPage
   },
   data () {
@@ -139,22 +149,17 @@ export default {
   },
   methods: {
     file_to_json () {
-      console.log('holis')
     },
    
     async getCampaing() {
       await BackendApi.get('/campaign/' + this.$route.params.campaign_id).then((response) => {
         if (response.data.success) {
-          console.log('eeeeeeeeeeeee')
-          console.log(response.data.data)
-          console.log('eeeeeeeeeeeee')
           this.dataCampaign = response.data.data
           this.registers = response.data.data.registers
         }
       })
     },
     ongetSms(searchText) {
-      console.log(searchText)
       this.search = searchText
       const payload = {
         campaign_id : this.$route.params.campaign_id,
@@ -170,7 +175,6 @@ export default {
           if (response.data.success) {
 
             this.campaigns = response.data.data.data
-            console.log(this.campaigns)
             this.pagination.current = response.data.data.current_page
             this.pagination.total = response.data.data.last_page
             if ( response.data.data.data[0].url_id === null && response.data.data.data[0].long_url === null) {

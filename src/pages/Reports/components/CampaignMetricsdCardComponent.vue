@@ -55,15 +55,7 @@ export default {
                 show: true,
                 label: 'Destinatarios',
                 formatter: () => {
-                  // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
-                  console.log('tttttttttttttttt')
-                  console.log(this.total)
-                  console.log('tttttttttttttttt')
-                  let pro = 0
-
-                  pro = 2
-
-                  return this.total
+                  return  new Intl.NumberFormat().format(this.total)
                 }
               }
             }
@@ -74,7 +66,16 @@ export default {
     }
   },
   computed: {
-   
+    configFormat () {
+      return {
+        decimalDigits: 0,
+        decimalSeparator: '.',
+        thousandsSeparator: ',',
+        currencySymbol: '',
+        currencySymbolNumberOfSpaces: 0,
+        currencySymbolPosition: 'left'
+      }
+    }
   },
   created() {
     this.getAllSmsByCampaing()
@@ -90,7 +91,7 @@ export default {
         searchtext : ''
       }
   
-      await BackendApi.post('/dashBoardProgress', payload)
+      await BackendApi.post('/dashBoardMetrics', payload)
         .then(({ data }) => {
           if (data.success) {
             

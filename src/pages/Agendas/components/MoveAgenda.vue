@@ -64,7 +64,6 @@ export default {
           this.$store.dispatch('app/showToast', response.data.message)
         }
       }).catch((error) => {
-        console.log(error)
       })
     },
     moveAgenda() {

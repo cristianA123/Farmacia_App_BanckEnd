@@ -218,7 +218,6 @@ export default {
       this.maxDateStart = new Date(this.dateEnd).toISOString()
     },
     submit () {
-      console.log('asd')
       if (this.$refs.form.validate()) {
         
         const filters = {

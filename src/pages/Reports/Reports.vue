@@ -67,7 +67,6 @@ export default {
         if (response.data.success) {
           this.reports = response.data.data
         }
-        console.log(this.reports)
         this.isLoading = false
       })
     },
@@ -113,7 +112,6 @@ export default {
           if (response.data.success) {
             this.reports = response.data.data
           }
-          console.log(this.reports)
           this.isLoading = false
         })
       }

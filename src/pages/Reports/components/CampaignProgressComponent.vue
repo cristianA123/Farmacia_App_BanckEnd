@@ -1,116 +1,77 @@
 <template>
   <div>
-    <v-row>
-      <!-- apertura --> 
-      <v-col
-        cols="12"
-        xs="12"
-        sm="6"
-        lg="6"
-      >
-        <div>
-          <v-card >
-            <v-card-title >Apertura Link</v-card-title>
-            <v-card-text>
-              <div v-if="showChart">
-                <apexchart
-                  type="donut"
-                  width="400"
-                  :options="chartOptions"
-                  :series="series_apertura_link"
-                ></apexchart>
-              </div>
-            </v-card-text>
-          </v-card>
+    <v-card >
+      <v-card-title>Progreso</v-card-title>
+      <v-card-text>
+        <div v-if="showChart">
+          <apexchart
+            :key="dd"
+            type="area"
+            height="228"
+            :options="chartOptionsSpark3"
+            :series="series"
+          ></apexchart>
         </div>
-      </v-col>
-  
-      <!-- click y comportamiento -->
-      <v-col
-        cols="12"
-        xs="12"
-        sm="6"
-        lg="6"
-      >
-        <div v-if="false">
-          <v-card >
-            <v-card-title >Comportamiento</v-card-title>
-            <v-card-text>
-              <TrackCard
-                label="assasasa"
-                class="h-full"
-                color="#8c9eff"
-                :value="432"
-                :percentage="4.333"
-                percentage-label="10000"
-                :loading="false"
-                :series="ordersSeries"
-              ></TrackCard>
-            </v-card-text>
-          </v-card>
-        </div>
-  
-      </v-col>
-    </v-row>
+      </v-card-text>
+    </v-card>
   </div>
 </template>
-  
+
 <script>
-import TrackCard from './TrackCard.vue'
 import BackendApi from '@/services/backend.service'
-  
+
 export default {
-  components:{
-    TrackCard
-  },
   data() {
     return {
-      // variables para apertura
+      series: [],
+      data: [],
       showChart: false,
-      series_apertura_link: [],
-      chartOptions: {
-        colors: ['#FF6B6B', '#6BCB77'],
-        labels: ['NO ABIERTO', 'ABIERTO'],
+      chartOptionsSpark3: {
         chart: {
-          type: 'donut'
-        },
-        responsive: [{
-          breakpoint: 337,
-          options: {
-            chart: {
-              width: 200
-            },
-            legend: {
-              position: 'right'
-            }
+          type: 'area',
+          height: 0,
+          sparkline: {
+            enabled: true
           }
-        }]
-      },
-      // variables para click y comportamiento
-      lastweek:[1,2,3,4],
-      ordersSeries: [{
-        name: 'Orders',
-        data: [
-          ['2020-02-02', 4],
-          ['2020-02-03', 5],
-          ['2020-02-04', 6],
-          ['2020-02-05', 4]
-        ]
-      }]
+        },
+        stroke: {
+          curve: 'smooth'
+        },
+        fill: {
+          opacity: 0.3
+        },
+        xaxis: {
+          crosshairs: {
+            width: 0
+          }
+        },
+        yaxis: {
+          min: 0
+        },
+        title: {
+          text: '',
+          offsetX: 0,
+          style: {
+            fontSize: '24px'
+          }
+        },
+        subtitle: {
+          text: '',
+          offsetX: 0,
+          style: {
+            fontSize: '14px'
+          }
+        }
+      }
     }
   },
   mounted() {
-    // para entregabilidad
     this.showChart = true
-    // // para click y comportamiento ******
-    this.showChart2 = false
-    
   },
   created() {
     this.getAllSmsByCampaing()
-  
   },
-    
+
   methods: {
     async getAllSmsByCampaing() {
       const payload = {
@@ -119,22 +80,15 @@ export default {
         searchtext : ''
       }
   
-      await BackendApi.post('/smsCampaignDetailAll', payload)
-        .then((response) => {
-          let cont = 0
-  
-          if (response.data.success) {
-  
-            response.data.data.forEach((sms) => {
-                
-              if (sms.times_open > 0) {
-                cont++
-              }
-  
+      await BackendApi.post('/dashBoardProgress', payload)
+        .then(({ data }) => {
+          if (data.success) {
+            data.data.forEach( (sms) => {
+              this.data.push(sms.sms_by_minute)
             })
-            this.series_apertura_link.push(response.data.data.length - cont)
-            this.series_apertura_link.push(cont)
+            this.series.push({ data : this.data })
           }
+          
         })
     },
     progress () {
@@ -143,7 +97,3 @@ export default {
   }
 }
 </script>
-  
-  <style>
-  
-  </style>

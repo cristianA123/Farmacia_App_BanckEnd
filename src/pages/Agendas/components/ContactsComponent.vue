@@ -393,7 +393,6 @@ export default {
   },
   watch: {
     pagiITtems (val, olv_val) {
-      console.log(val + ' ' + olv_val)
     }
   },
   mounted() {
@@ -417,17 +416,14 @@ export default {
 
       BackendApi.get('/contactByAgenda/' + this.$route.params.agendaId).then((response) => {
         if (response.data.success) {
-          console.log(response.data)
           this.contacts = response.data.data
           // this.pagination.current = response.data.data.current_page
           // this.pagination.total = response.data.data.last_page
-          console.log(this.contacts)
         } else {
           this.$store.dispatch('app/showToast', response.data.message)
         }
         this.isLoading = false
       }).catch((error) => {
-        console.log(error)
       })
     },
     selectContact (contact) {
@@ -519,9 +515,6 @@ export default {
       this.loadingDownloadExcel = true
 
       let nameAgenda = ''
-
-      console.log(this.$route.params.agendaId)
-      console.log(this.agendas)
 
       this.agendas.forEach((agenda) => {
         if (agenda.id === parseInt(this.$route.params.agendaId)) {

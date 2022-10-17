@@ -76,7 +76,6 @@ export default {
         }
 
         if (this.items.length > 0) {
-          console.log(this.items[0].id)
           router.push({ path: '/tools/agendas/' + this.items[0].id })
         }
       })

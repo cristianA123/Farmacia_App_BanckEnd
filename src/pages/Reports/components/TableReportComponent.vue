@@ -43,7 +43,7 @@
         </template>
 
         <template v-slot:item.total_cost="{ item }">
-          {{item.total_cost | formatCurrency(configFormat) }}
+          {{ item.total_cost | formatCurrency(configFormat) }}
           <!-- <v-chip
             class="ma-2"
             outlined

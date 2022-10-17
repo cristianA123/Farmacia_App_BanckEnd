@@ -72,8 +72,6 @@ export default {
         this.uploadedFiles = e.dataTransfer.files[0]
       }
       
-      console.log(this.uploadedFiles.name)
-
       this.dragover = false
 
       if (this.uploadedFiles.length > 0) this.uploadedFiles = []

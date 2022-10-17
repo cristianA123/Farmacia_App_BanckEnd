@@ -78,7 +78,6 @@ function formatDate(date) {
 */
 export default {
   mounted() {
-    console.log(this.credits[0])
   },
   data() {
     return {
