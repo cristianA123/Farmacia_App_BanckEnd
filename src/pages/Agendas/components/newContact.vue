@@ -168,7 +168,7 @@
         </v-card-actions>
         
       </v-form>
-    </v-card>¡
+    </v-card>
   </v-dialog>
 </template>
 

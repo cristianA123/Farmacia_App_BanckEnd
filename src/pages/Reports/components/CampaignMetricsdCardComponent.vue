@@ -7,7 +7,7 @@
           
         <div v-if="showChart">
           <apexchart
-            :key="dd"
+            :key="total"
             type="radialBar"
             height="250"
             :options="chartOptions"
@@ -54,17 +54,16 @@ export default {
               total: {
                 show: true,
                 label: 'Destinatarios',
-                formatter: function (w) {
+                formatter: () => {
                   // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
                   console.log('tttttttttttttttt')
-                  console.log(w.config.series)
-                  console.log(w)
+                  console.log(this.total)
                   console.log('tttttttttttttttt')
                   let pro = 0
 
                   pro = 2
 
-                  return 10
+                  return this.total
                 }
               }
             }
@@ -100,8 +99,8 @@ export default {
             if (data.data.opened >= 0) {
               this.series.push(data.data.opened)
             }
+
             this.total = data.data.total
-            this.dd = this.total
            
           }
         })
