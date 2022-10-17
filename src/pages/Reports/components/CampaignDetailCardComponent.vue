@@ -10,7 +10,7 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title>USUARIO:</v-list-item-title>
-            <v-list-item-subtitle>{{ getNameUser }} ({{ getNameCompany }})</v-list-item-subtitle>
+            <v-list-item-subtitle>{{ getNameUser }} {{ getNameCompany }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
@@ -104,7 +104,7 @@ export default {
       return this.dataCampaign?.user?.name || ''
     },
     getNameCompany() {
-      return this.dataCampaign?.company?.company || ''
+      return this.dataCampaign?.company?.company ? '(' + this.dataCampaign?.company?.company + ')' : ''
     },
     getNameCampaign() {
       return this.dataCampaign?.campaing?.name || ''

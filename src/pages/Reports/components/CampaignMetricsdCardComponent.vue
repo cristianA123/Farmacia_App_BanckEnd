@@ -6,7 +6,13 @@
       <v-card-text>
           
         <div v-if="showChart">
-          <apexchart type="radialBar" height="250" :options="chartOptions" :series="series"></apexchart>
+          <apexchart
+            :key="dd"
+            type="radialBar"
+            height="250"
+            :options="chartOptions"
+            :series="series"
+          ></apexchart>
         </div>
       </v-card-text>
     </v-card>
@@ -26,7 +32,8 @@ export default {
   },
   data() {
     return {
-      allSmsOfCampaing: [],
+      dd: 1,
+      total:10,
       // variables para metrica
       showChart: false,
       series: [],
@@ -49,7 +56,15 @@ export default {
                 label: 'Destinatarios',
                 formatter: function (w) {
                   // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
-                  return 250
+                  console.log('tttttttttttttttt')
+                  console.log(w.config.series)
+                  console.log(w)
+                  console.log('tttttttttttttttt')
+                  let pro = 0
+
+                  pro = 2
+
+                  return 10
                 }
               }
             }
@@ -79,12 +94,15 @@ export default {
       await BackendApi.post('/dashBoardProgress', payload)
         .then(({ data }) => {
           if (data.success) {
-  
+            
             this.series.push(data.data.processing)
             this.series.push(data.data.delivered)
-            if (data.data.opened) {
+            if (data.data.opened >= 0) {
               this.series.push(data.data.opened)
             }
+            this.total = data.data.total
+            this.dd = this.total
+           
           }
         })
     },
