@@ -26,6 +26,9 @@
       :headers="headers"
       :items="items"
     >
+      <template v-slot:[`item.times_open`]="{ item }">
+        {{ item.times_open || 0 }}
+      </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-menu
           offset-y
