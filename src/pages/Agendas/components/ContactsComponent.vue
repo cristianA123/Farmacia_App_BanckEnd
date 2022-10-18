@@ -58,7 +58,7 @@
         :loading="isLoading"
         :items="contacts"
         :items-per-page="10"
-        :search="searchTable"
+        :search="searchText"
       >
         <!-- hide-default-footer -->
         <template v-slot:top>
@@ -269,24 +269,6 @@
         </template>
 
       </v-data-table>
-
-      <!-- <v-card-actions>
-        <v-row justify="center">
-          <v-col 
-            class="my-0 py-0"
-            cols="10"
-          >
-            <v-container class="max-width">
-              <v-pagination
-                v-model="pagination.current"
-                :length="pagination.total"
-                :page-start="2"
-                @input="onPageChange"
-              />
-            </v-container>
-          </v-col>
-        </v-row>
-      </v-card-actions> -->
 
     </v-card>
 

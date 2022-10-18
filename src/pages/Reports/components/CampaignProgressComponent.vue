@@ -68,11 +68,11 @@ export default {
     this.showChart = true
   },
   created() {
-    this.getAllSmsByCampaing()
+    this.progress()
   },
 
   methods: {
-    async getAllSmsByCampaing() {
+    async progress () {
       const payload = {
         campaign_id : this.$route.params.campaign_id,
         service_id : 1,
@@ -89,9 +89,6 @@ export default {
           }
           
         })
-    },
-    progress () {
-  
     }
   }
 }
