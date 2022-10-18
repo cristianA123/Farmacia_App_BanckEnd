@@ -30,19 +30,26 @@
         class="flex-grow-1"
       >
       
-        <template v-slot:item.name="{ item }">
+        <template v-slot:[`item.name`]="{ item }">
           {{ item.name }}
           <v-chip
-            class="ma-2"
+            class="ma-1"
             outlined
             x-small
           >
             {{ item.service }}
           </v-chip>
+          <v-chip
+            v-if="item.is_bidireccional"
+            outlined
+            x-small
+          >
+            <v-icon>mdi-swap-horizontal</v-icon>
+          </v-chip>
           
         </template>
 
-        <template v-slot:item.total_cost="{ item }">
+        <template v-slot:[`item.total_cost`]="{ item }">
           {{ item.total_cost | formatCurrency(configFormat) }}
           <!-- <v-chip
             class="ma-2"
@@ -54,7 +61,7 @@
           
         </template>
 
-        <template v-slot:item.status="{ item }">
+        <template v-slot:[`item.status`]="{ item }">
           <v-chip
             v-if="item.status === 0"
             class="ma-2"
@@ -107,23 +114,23 @@
 
         </template>
 
-        <template v-slot:item.sms_credit_send="{ item }">
+        <template v-slot:[`item.sms_credit_send`]="{ item }">
           {{ new Intl.NumberFormat().format(item.sms_credit_send) }}
         </template>
 
-        <template v-slot:item.user_name="{ item }">
+        <template v-slot:[`item.user_name`]="{ item }">
           <userAvatar :user="{ name: item.user, company: item.company, email:item.email }" />
         </template>
 
-        <template v-slot:item.actions="{ item }">
+        <template v-slot:[`item.actions`]="{ item }">
           <v-menu
             offset-y
           >
             <template v-slot:activator="{ attrs, on }">
               <v-btn
                 v-bind="attrs"
-                v-on="on"
                 text
+                v-on="on"
               >
                 Acciones
               </v-btn>
@@ -131,15 +138,15 @@
 
             <v-list>
               <v-list-item
-                @click="detalle(item)"
                 link
+                @click="detalle(item)"
               >
                 Ver detalle
               </v-list-item>
               <v-list-item
                 v-if="isAdmin"
-                @click="downloadFile(item)"
                 link
+                @click="downloadFile(item)"
               >
                 Archivo
               </v-list-item>
@@ -212,6 +219,9 @@ export default {
     },
     onreadyusers(data) {
       this.$emit('onreadyusers',data)
+    },
+    prueba() {
+      console.log(this.items)
     }
   }
 }

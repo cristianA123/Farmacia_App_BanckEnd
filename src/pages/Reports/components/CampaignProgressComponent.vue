@@ -5,7 +5,6 @@
       <v-card-text>
         <div v-if="showChart">
           <apexchart
-            :key="dd"
             type="area"
             height="228"
             :options="chartOptionsSpark3"
