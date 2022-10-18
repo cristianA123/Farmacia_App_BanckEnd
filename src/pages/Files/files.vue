@@ -11,6 +11,8 @@
       >
         Subir archivo
       </v-btn>
+      <BtnToReload />
+
     </div>
 
     <v-col>
@@ -138,11 +140,14 @@
 import DialogUploadComponent from './components/dialogUploadComponent.vue'
 import BackendApi from '@/services/backend.service'
 import EmptyItems from '@/components/common/EmptyItems'
+import BtnToReload from '@/components/common/BtnToReload.vue'
 
 export default {
   components: {
     DialogUploadComponent,
-    EmptyItems
+    EmptyItems,
+    BtnToReload
+
   },
   data() {
     return {

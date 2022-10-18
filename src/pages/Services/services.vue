@@ -1,10 +1,10 @@
 <template>
   <div class="d-flex flex-column flex-grow-1">
-    <div class="d-flex align-center py-3 pb-0">
-      <div>
-        <div class="display-1">Selecciona el servicio a utilizar</div>
-      </div>
+    <div class="d-flex align-center py-3">
+      <div class="display-1">Selecciona el servicio a utilizar</div>
       <v-spacer></v-spacer>
+
+      <BtnToReload />
     </div>
 
     <v-col
@@ -31,10 +31,13 @@
 <script>
 import BackendApi from '@/services/backend.service'
 import CardComponent from './components/CardComponent.vue'
+import BtnToReload from '@/components/common/BtnToReload.vue'
 
 export default {
   components: {
-    CardComponent
+    CardComponent,
+    BtnToReload
+
   },
   data() {
     return {

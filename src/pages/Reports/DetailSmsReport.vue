@@ -14,6 +14,7 @@
       >
         <v-icon>mdi-progress-download</v-icon>
       </v-btn>
+      <BtnToReload />
       <BackPage
         class="ml-2"
         to="reports"
@@ -82,6 +83,7 @@ import BackendApi from '@/services/backend.service'
 // import UrlDashDetailComponent from './components/UrlDashDetailComponent.vue'
 import DetailCampaignComponent from './components/DetailCampaignComponent.vue'
 import BackPage from '@/components/common/BackPage.vue'
+import BtnToReload from '@/components/common/BtnToReload.vue'
 
 import CampaignDetailCardComponent from './components/CampaignDetailCardComponent.vue'
 import CampaignMetricsdCardComponent from './components/CampaignMetricsdCardComponent.vue'
@@ -96,7 +98,8 @@ export default {
     CampaignMetricsdCardComponent,
     DetailCampaignComponent,
     CampaignProgressComponent,
-    BackPage
+    BackPage,
+    BtnToReload
   },
   data () {
     return {

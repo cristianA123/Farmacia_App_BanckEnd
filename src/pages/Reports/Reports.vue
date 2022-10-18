@@ -13,6 +13,8 @@
       >
         <v-icon>mdi-progress-download</v-icon>
       </v-btn>
+      <BtnToReload />
+
     </div>
 
     <TableReportComponent
@@ -31,12 +33,16 @@
 <script>
 import TableReportComponent from './components/TableReportComponent.vue'
 import BackendApi from '@/services/backend.service'
+import BtnToReload from '@/components/common/BtnToReload.vue'
+
 import moment from 'moment'
 import xlsx from 'json-as-xlsx'
 
 export default {
   components: {
-    TableReportComponent
+    TableReportComponent,
+    BtnToReload
+
   },
   data() {
     return {

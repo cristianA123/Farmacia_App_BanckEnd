@@ -10,10 +10,10 @@
         max-width="500px"
       >
         <template v-slot:activator="{ on, attrs }">
+          <BtnToReload />
           <v-btn
             color="primary"
             dark
-            class="mb-2"
             v-bind="attrs"
             v-on="on"
           >
@@ -187,8 +187,12 @@
 
 <script>
 import BackendApi from '@/services/backend.service'
+import BtnToReload from '@/components/common/BtnToReload.vue'
 
 export default {
+  components: {
+    BtnToReload
+  },
   data: () => ({
     backendErrors:{
       name:'',

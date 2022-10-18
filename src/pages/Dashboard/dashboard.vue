@@ -23,6 +23,8 @@
       >
         <v-icon>mdi-progress-download</v-icon>
       </v-btn>
+
+      <BtnToReload />
     
       <!-- </div> -->
     </div>
@@ -55,6 +57,7 @@ import BackendApi from '@/services/backend.service'
 import InitialCreditComponent from './components/InitialCreditComponent.vue'
 import AvailableCreditComponent from './components/AvailableCreditComponent.vue'
 import ServiceCreditComponent from './components/ServiceCreditComponent.vue'
+import BtnToReload from '@/components/common/BtnToReload.vue'
 
 import jspdf from 'jspdf'
 import html2canvas from 'html2canvas'
@@ -65,7 +68,8 @@ export default {
   components: { 
     InitialCreditComponent,
     AvailableCreditComponent,
-    ServiceCreditComponent
+    ServiceCreditComponent,
+    BtnToReload
   },
   data() {
     return {

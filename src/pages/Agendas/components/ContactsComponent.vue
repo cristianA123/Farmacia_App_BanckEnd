@@ -103,8 +103,8 @@
               <v-spacer></v-spacer>
               <v-menu offset-y left transition="slide-y-transition">
                 <template v-slot:activator="{ on }">
+                  <BtnToReload class="mr-3" />  
                   <v-btn
-                    class="mr-3"
                     outlined
                     color="primary"
                     :loading="loadingDownloadExcel"
@@ -113,7 +113,7 @@
                     <v-icon>mdi-progress-download</v-icon>
                   </v-btn>
                   <v-btn 
-                    class="mr-1"
+                    class="mr-2"
                     color="primary"
                     v-on="on"
                   >
@@ -291,6 +291,8 @@ import newContact from '../components/newContact'
 import newContactsFromExcel from '../components/newContactsFromExcel'
 import BackendApi from '@/services/backend.service'
 import MoveAgenda from '../components/MoveAgenda.vue'
+import BtnToReload from '@/components/common/BtnToReload.vue'
+
 import { mapState } from 'vuex'
 
 import xlsx from 'json-as-xlsx'
@@ -300,7 +302,9 @@ export default {
   components: {
     MoveAgenda,
     newContact,
-    newContactsFromExcel
+    newContactsFromExcel,
+    BtnToReload
+
   },
   props: {
     agendas: {

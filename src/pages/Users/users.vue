@@ -11,6 +11,8 @@
       >
         Creación de usuario
       </v-btn>
+      <BtnToReload />
+
     </div>
 
     <!--Empty items --->
@@ -202,11 +204,14 @@
 import BackendApi from '@/services/backend.service'
 import userAvatar from '@/components/reports/userAvatar'
 import EmptyItems from '@/components/common/EmptyItems'
+import BtnToReload from '@/components/common/BtnToReload.vue'
 
 export default {
   components: {
     userAvatar,
-    EmptyItems
+    EmptyItems,
+    BtnToReload
+
   },
   data() {
     return {

@@ -12,6 +12,8 @@
       >
         Crear url corta
       </v-btn>
+      <BtnToReload />
+
     </div>
 
     <!--Empty items --->
@@ -67,11 +69,13 @@ import _ from 'lodash'
 import DialogCreateComponent from './createUrl/dialogCreateComponent.vue'
 import BackendApi from '@/services/backend.service'
 import EmptyItems from '@/components/common/EmptyItems'
+import BtnToReload from '@/components/common/BtnToReload.vue'
 
 export default {
   components: {
     DialogCreateComponent,
-    EmptyItems
+    EmptyItems,
+    BtnToReload
   },
   data() {
     return {
