@@ -94,7 +94,11 @@
                   flat
                   placeholder="Email"
                   outlined
+                  :rules="[ 
+                    v => !v || /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Email debe ser valido'
+                  ]"
                 ></v-text-field>
+                <!-- :error-messages="isEmailValid" -->
               </v-col>
 
               <v-col
@@ -106,17 +110,6 @@
                   solo
                   flat
                   placeholder="VAR 1"
-                  outlined
-                ></v-text-field>
-              </v-col>
-
-              <v-col
-                md="6"
-                class="py-0"
-              >
-                <v-text-field
-                  v-model="var2"
-                  placeholder="VAR 2"
                   outlined
                 ></v-text-field>
               </v-col>
@@ -205,6 +198,10 @@ export default {
     isNumberValid: function () {
       
       return this.backendErrors.number === undefined ? '' : this.backendErrors.number[0]
+    },
+    isEmailValid: function () {
+      
+      return this.backendErrors.email === undefined ? '' : this.backendErrors.email[0]
     }
   },
   methods: {
@@ -253,6 +250,7 @@ export default {
             name2: this.name2,
             last_name1: this.last_name1,
             last_name2: this.last_name2,
+            email: this.email,
             var1: this.var1,
             var2: this.var2,
             var3: this.var3,

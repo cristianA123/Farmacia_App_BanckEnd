@@ -198,7 +198,12 @@ export default {
       document.getElementById(item.id).click()
     },
     copyLink (item) {
-      navigator.clipboard.writeText(item.short_url)
+      try {
+        
+        navigator.clipboard.writeText(item.short_url)
+      } catch (error) {
+        console.log(error)
+      }
     },
     n_clics(item) {
       return item.number_of_clicks || 0
