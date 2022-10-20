@@ -61,7 +61,7 @@ export default {
             }
           }
         },
-        labels: ['Procesando', 'Entregados', 'Aperturados','Recibidos']
+        labels: ['Procesando', 'Entregados']
       }
     }
   },
@@ -99,6 +99,12 @@ export default {
             this.series.push(data.data.delivered)
             if (data.data.opened >= 0) {
               this.series.push(data.data.opened)
+              this.chartOptions.labels.push('Aperturados')
+            }
+            if (data.data.is_bidireccional >= 0) {
+              this.series.push(data.data.sending)
+              console.log('aaaaaaaaaa')
+              this.chartOptions.labels.push('Recibidos')
             }
 
             this.total = data.data.total

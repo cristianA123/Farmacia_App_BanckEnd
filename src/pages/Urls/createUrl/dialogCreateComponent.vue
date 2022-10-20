@@ -26,6 +26,7 @@
                   ></v-text-field>
                   <v-text-field
                     v-model="url"
+                    :rules="[ v => v.length <=500 || 'El link es muy largo, asegúrese de tener como máximo 500 caracteres']"
                     type="url"
                     label="Url"
                     :error-messages="isValidUrl"

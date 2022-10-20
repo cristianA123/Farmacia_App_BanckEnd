@@ -51,6 +51,7 @@
     </v-row>
 
     <DetailSmsReceivedCampaignComponent
+      v-if="!!is_bidireccional"
       ref="detailCampaignComponent"
       class="mb-4"
       :campaigns="smsReceiveds"
@@ -58,7 +59,6 @@
       :pagination="paginationSmsReceived"
       @ongetSms="ongetSmsReceived"
     />
-    <!-- :headers="headersForTable" -->
 
     <!-- pagination -->
     <DetailCampaignComponent
@@ -145,6 +145,9 @@ export default {
           { text: 'Estado', value: 'status' }
         ]
       }
+    },
+    is_bidireccional () {
+      return this.dataCampaign.sms_campaing.is_bidireccional
     }
   },
   created() {
