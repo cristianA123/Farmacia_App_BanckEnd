@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      SMS Enviados:
+      SMS Recibidos:
       <v-spacer></v-spacer>
       <v-text-field
         v-model="searchText"
@@ -22,7 +22,7 @@
         <template v-slot:[`item.times_open`]="{ item }">
           {{ item.times_open ? 'APERTURADO' : 'NO APERTURADO' }}
         </template>
-
+  
         <template v-slot:[`item.actions`]="{ item }">
           <v-menu
             offset-y
@@ -53,12 +53,12 @@
         @input="ongetSms"
       ></v-pagination>
     </v-card-text>
-
+  
   </v-card>
 </template>
-
+  
 <script>
-
+  
 export default {
   name:'DetailCampaignComponent',
   props: {
@@ -73,34 +73,40 @@ export default {
     hasUrl: {
       type: Boolean,
       default: true
-    },
-    headers: {
-      type: Array,
-      default: null
     }
+    // headers: {
+    //   type: Array,
+    //   default: null
+    // }
   },
   data () {
     return {
       campaign_id: null,
       searchText: '',
-      service_id: null
+      service_id: null,
+      headers:  [
+        { text: 'Telefono', value: 'phone' },
+        { text: 'Mensaje', value: 'content' },
+        { text: 'Fecha', value: 'created' },
+        { text: 'Credito', value: 'credit' }
+      ]
     }
   },
   mounted () {
-
+  
     this.ongetSms()
   },
   methods: {
-
+  
     ongetSms() {
-
+  
       this.$emit('ongetSms', this.searchText)
-
+  
     }
   }
 }
 </script>
-
-<style>
-
-</style>
+  
+  <style>
+  
+  </style>

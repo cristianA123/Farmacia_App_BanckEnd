@@ -61,7 +61,7 @@ export default {
             }
           }
         },
-        labels: ['Procesando', 'Entregados', 'Aperturados']
+        labels: ['Procesando', 'Entregados', 'Aperturados','Recibidos']
       }
     }
   },

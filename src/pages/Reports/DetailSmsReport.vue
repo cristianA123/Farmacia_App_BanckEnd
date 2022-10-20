@@ -21,12 +21,6 @@
       />
     </div>
 
-    <!-- dash campaing detail
-    <div id="dashboarDetail">
-      <DashDetailComponent 
-        :campaing="campaing"
-      />
-    </div> -->
     <v-row>
       <v-col
         cols="12"
@@ -56,10 +50,15 @@
       </v-col>
     </v-row>
 
-    <!-- componente url campaing detail
-    <UrlDashDetailComponent 
-      v-if="has_url"
-    /> -->
+    <DetailSmsReceivedCampaignComponent
+      ref="detailCampaignComponent"
+      class="mb-4"
+      :campaigns="smsReceiveds"
+      :registers="registers"
+      :pagination="paginationSmsReceived"
+      @ongetSms="ongetSmsReceived"
+    />
+    <!-- :headers="headersForTable" -->
 
     <!-- pagination -->
     <DetailCampaignComponent
@@ -79,9 +78,8 @@ import jspdf from 'jspdf'
 import html2canvas from 'html2canvas'
 
 import BackendApi from '@/services/backend.service'
-// import DashDetailComponent from './components/DashDetailComponent.vue'
-// import UrlDashDetailComponent from './components/UrlDashDetailComponent.vue'
 import DetailCampaignComponent from './components/DetailCampaignComponent.vue'
+import DetailSmsReceivedCampaignComponent from './components/DetailSmsReceivedCampaignComponent.vue'
 import BackPage from '@/components/common/BackPage.vue'
 import BtnToReload from '@/components/common/BtnToReload.vue'
 
@@ -92,12 +90,11 @@ import CampaignProgressComponent from './components/CampaignProgressComponent.vu
 export default {
   name:'DetailSmsReport',
   components:{
-    // DashDetailComponent,
-    // UrlDashDetailComponent,
     CampaignDetailCardComponent,
     CampaignMetricsdCardComponent,
     DetailCampaignComponent,
     CampaignProgressComponent,
+    DetailSmsReceivedCampaignComponent,
     BackPage,
     BtnToReload
   },
@@ -107,14 +104,20 @@ export default {
       registers: 0,
       excelprueba: null,
       loadingDownloadPdf: false,
-      has_url: true,
+      has_url: false,
       campaigns : [],
+      smsReceiveds: [],
       pagination: {
+        current: 1,
+        total: 0
+      },
+      paginationSmsReceived: {
         current: 1,
         total: 0
       },
       allSmsOfCampaing: [],
       search: '',
+      searchSmsReceived: '',
       isLoadingDownload: false
 
     }
@@ -149,14 +152,61 @@ export default {
   },
   mounted() {
     this.ongetSms()
+    console.log(this.$route.params)
   },
   methods: {
     file_to_json () {
     },
-   
+
+    async getSmsReceived(searchText) {
+      this.searchSmsReceived = searchText
+      const payload = {
+        campaign_id : this.$route.params.campaign_id,
+        service_id : 1,
+        searchtext : searchText
+      }
+
+      if ( searchText !== '' ) {
+        this.paginationSmsReceived.current = 1
+      }
+      BackendApi.post('/smsReceiveds?page=' + this.paginationSmsReceived.current,payload)
+        .then((response) => {
+          if (response.data.success) {
+
+            this.smsReceiveds = response.data.data.data
+            this.paginationSmsReceived.current = response.data.data.current_page
+            this.paginationSmsReceived.total = response.data.data.last_page
+            
+          }
+        })
+    },
+    ongetSmsReceived(searchText) {
+      this.searchSmsReceived = searchText
+      const payload = {
+        campaign_id : this.$route.params.campaign_id,
+        service_id : 1,
+        searchtext : searchText
+      }
+
+      if ( searchText !== '' ) {
+        this.paginationSmsReceived.current = 1
+      }
+      BackendApi.post('/smsReceiveds?page=' + this.paginationSmsReceived.current,payload)
+        .then((response) => {
+          if (response.data.success) {
+
+            this.smsReceiveds = response.data.data.data
+            this.paginationSmsReceived.current = response.data.data.current_page
+            this.paginationSmsReceived.total = response.data.data.last_page
+            
+          }
+        })
+    },
     async getCampaing() {
       await BackendApi.get('/campaign/' + this.$route.params.campaign_id).then((response) => {
         if (response.data.success) {
+          console.log('wwwwwwwwwwwwwwww')
+          console.log(response.data)
           this.dataCampaign = response.data.data
           this.registers = response.data.data.registers
         }
