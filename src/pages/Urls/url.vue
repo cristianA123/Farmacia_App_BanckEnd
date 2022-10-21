@@ -50,6 +50,12 @@
             >
               Modificar
             </v-list-item>
+            <v-list-item
+              link
+              @click="openDetail(item)"
+            >
+              Ver detalle
+            </v-list-item>
           </v-list>
         </v-menu>
       </template>
@@ -120,15 +126,17 @@ export default {
     getFiles () {
       this.items = []
       this.isLoading = true
-      BackendApi.get('/urls').then((response) => {
+      BackendApi.get('/urlsReport').then((response) => {
         if (response.data.success) {
-          console.log(response.data.data)
           this.items = response.data.data
           this.isLoading = false
         }
       }).catch((error) => {
-        console.log(error)
       })
+    },
+    openDetail (item)  {
+      console.log(item)
+      this.$router.push({ name: 'detail-short-url', params:{ id: item.id, url: item } })
     }
   }
 }

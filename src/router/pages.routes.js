@@ -27,6 +27,11 @@ export default [{
   component: () => import('@/pages/Urls/url.vue')
 },
 {
+  path: '/tools/shorturl/detai',
+  name: 'detail-short-url',
+  component: () => import('@/pages/Urls/DetailUrl.vue')
+},
+{
   path: '/tools/agendas',
   name: 'empty-agenda',
   component: () => import('@/pages/Agendas/agendaEmpty.vue')
