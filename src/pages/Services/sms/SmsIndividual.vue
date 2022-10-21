@@ -22,29 +22,34 @@
           <Input-Individual-Phones 
             @onInputNewIndividualPhone="onInputNewIndividualPhone"
           />
-          
+
           <MessageInputComponent 
             :agenda="false"
             :excel="false"
             :errors="errors"
             @onChangeMessage="onChangeMessage"
           />
-          <template>
-            <div class="text-center">
-              <v-bottom-sheet 
-                v-model="optionsShow"
-                inset
-              >
-                <Options-Component
-                  class="ml-3"
-                  :errors="errors"
-                  @onChange="onChangeOptions"
-                  @onSubmit="openPreviewComponent"
-                />
-              </v-bottom-sheet>
-            </div>
-          </template>
         </v-card-text>
+        <br>
+
+        <template>
+          <div class="text-center">
+            <v-bottom-sheet 
+              v-model="optionsShow"
+              inset
+            >
+              
+              <Options-Component
+                class="ml-3"
+                :errors="errors"
+                @onChange="onChangeOptions"
+                @onSubmit="openPreviewComponent"
+              />
+              
+            </v-bottom-sheet>
+          </div>
+        </template>
+
         <v-card-actions>
           <v-row
             justify="center"
@@ -61,37 +66,16 @@
             </v-btn>
           </v-row>
         </v-card-actions>
-
       </v-card>
-
-      <template>
-        <div class="text-center">
-          <v-bottom-sheet 
-            v-model="optionsShow"
-            inset
-          >
-            
-            <Options-Component
-              class="ml-3"
-              :errors="errors"
-              @onChange="onChangeOptions"
-              @onSubmit="openPreviewComponent"
-            />
-            
-          </v-bottom-sheet>
-        </div>
-      </template>
     </v-form>
 
     <PreviewSmsComponent
       ref="dialogPreview"
       :options="options" 
-      :messageExample="messageExample"
-      :registers="13"
-      :is-excel="true"
+      :message-example="messageExample"
+      :data-campaing="dataCampaing"
+      :is-excel="false"
       :is-btn-loading="isBtnLoading"
-      :credit-to-use="creditToUse"
-      :available-credit="availableCredit"
       @onPreviewSmsSubmit="PreviewSmsSubmit"
     />
   </div>
@@ -133,7 +117,8 @@ export default {
       },
       creditToUse : undefined,
       availableCredit : 0,
-      isBtnLoading: true
+      isBtnLoading: true,
+      dataCampaing: {}
 
     }
   },
@@ -161,11 +146,16 @@ export default {
         })
     },
     availableCreditByUser() {
-      BackendApi.get('/creditsUsedByUser').then((response) => {
-        if (response.data.success) {
-          this.availableCredit = response.data.data.availableCredit
-          this.isBtnLoading = false
 
+      const payload = {
+        message: this.message,
+        phones: this.phones
+      }
+
+      BackendApi.post('/calculateMessageCreditsSmsIndividual', payload).then((response) => {
+        if (response.data.success) {
+          this.dataCampaing = response.data.data
+          this.isBtnLoading = false
         }
       })
     },
@@ -177,8 +167,11 @@ export default {
     onChangeOptions(options) {
       this.options = options
     },
-    onChangeMessage(message) {
-      this.message = message
+    onChangeMessage(msg, msgExample, url_id, long_url) {
+      this.message = msg
+      this.messageExample = msgExample
+      this.url_id = url_id
+      this.long_url = long_url
     },
     onInputNewIndividualPhone(phones) {
       this.phones = phones
