@@ -121,7 +121,6 @@ export default {
   },
   computed: {
     computedCounterMessage () {
-
       const countCharacters = SmsCounter.count(this.messageExample).remaining
       const countCredits = SmsCounter.count(this.messageExample).messages
 
@@ -140,17 +139,13 @@ export default {
   methods: {
     tranforMessageForSms () {
 
-      if ( this.exampleItem.length !== 0) {
-        
-        this.messageExample = this.message
+      this.messageExample = this.message
 
-        this.vars.forEach( (element) => {
-          this.messageExample = this.messageExample.replace('[' + element.text + ']', this.exampleItem[0][element.value])
-        })
+      this.vars.forEach( (element) => {
+        this.messageExample = this.messageExample.replace('[' + element.text + ']', this.exampleItem[0][element.value])
+      })
 
-        this.messageExample = this.messageExample.replace('[CUSTOM_URL]', process.env.VUE_APP_EXAMPLE_URL_CUT_PE)
-
-      }
+      this.messageExample = this.messageExample.replace('[CUSTOM_URL]', process.env.VUE_APP_EXAMPLE_URL_CUT_PE)
 
       let estandarText = ''
       const filtro = '_@$ !#\'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZ¿abcdefghijklmnopqrstuvwxyz{}[]áéíóú\'ñ'
