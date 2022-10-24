@@ -104,7 +104,7 @@ export default {
       registers: 0,
       excelprueba: null,
       loadingDownloadPdf: false,
-      has_url: false,
+      has_url: true,
       campaigns : [],
       smsReceiveds: [],
       pagination: {

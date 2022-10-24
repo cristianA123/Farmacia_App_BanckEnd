@@ -101,7 +101,7 @@ export default {
               this.series.push(data.data.opened)
               this.chartOptions.labels.push('Aperturados')
             }
-            if (data.data.is_bidireccional >= 0) {
+            if (data.data.is_bidireccional > 0) {
               this.series.push(data.data.sending)
               console.log('aaaaaaaaaa')
               this.chartOptions.labels.push('Recibidos')
