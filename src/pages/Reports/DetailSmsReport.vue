@@ -50,24 +50,23 @@
       </v-col>
     </v-row>
 
-    <DetailSmsReceivedCampaignComponent
-      v-if="!!is_bidireccional"
-      ref="detailCampaignComponent"
-      class="mb-4"
-      :campaigns="smsReceiveds"
-      :registers="registers"
-      :pagination="paginationSmsReceived"
-      @ongetSms="ongetSmsReceived"
-    />
-
-    <!-- pagination -->
     <DetailCampaignComponent
       ref="detailCampaignComponent"
+      class="mb-4"
       :campaigns="campaigns"
       :headers="headersForTable"
       :registers="registers"
       :pagination="pagination"
       @ongetSms="ongetSms"
+    />
+
+    <DetailSmsReceivedCampaignComponent
+      v-if="!!is_bidireccional"
+      ref="detailCampaignComponent"
+      :campaigns="smsReceiveds"
+      :registers="registers"
+      :pagination="paginationSmsReceived"
+      @ongetSms="ongetSmsReceived"
     />
   </div>
 </template>
@@ -134,6 +133,7 @@ export default {
           { text: 'Fecha', value: 'created' },
           { text: 'Link', value: 'times_open' },
           { text: 'Credito', value: 'credit' },
+          { text: 'Operador', value: 'carrier' },
           { text: 'Estado', value: 'status' }
         ]
       } else {
@@ -142,6 +142,7 @@ export default {
           { text: 'Mensaje', value: 'content' },
           { text: 'Fecha', value: 'created' },
           { text: 'Credito', value: 'credit' },
+          { text: 'Operador', value: 'carrier' },
           { text: 'Estado', value: 'status' }
         ]
       }
@@ -258,7 +259,9 @@ export default {
           columns: [
             { label: 'Telefono', value: 'phone' },
             { label: 'Mensaje', value: 'content' },
-            { label: 'Fecha programada', value: 'scheduled' },
+            { label: 'Credito', value: 'credit' },
+            { label: 'Fecha', value: 'send_at' },
+            { label: 'Operador', value: 'carrier' },
             { label: 'Estado', value: 'status' }
           ],
           content: [
