@@ -103,7 +103,6 @@ export default {
             }
             if (data.data.is_bidireccional > 0) {
               this.series.push(data.data.sending)
-              console.log('aaaaaaaaaa')
               this.chartOptions.labels.push('Recibidos')
             }
 

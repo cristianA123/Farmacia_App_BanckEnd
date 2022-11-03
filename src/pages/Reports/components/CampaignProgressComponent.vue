@@ -22,6 +22,7 @@ import BackendApi from '@/services/backend.service'
 export default {
   data() {
     return {
+   
       series: [],
       data: [],
       showChart: false,
@@ -81,11 +82,21 @@ export default {
   
       await BackendApi.post('/dashBoardProgress', payload)
         .then(({ data }) => {
+          console.log(data.data)
           if (data.success) {
+
             data.data.forEach( (sms) => {
-              this.data.push(sms.sms_by_minute)
+
+              const payload2 = {
+                x : sms.created,
+                y : sms.sms_by_minute
+              }
+              
+              this.data.push(payload2)
             })
-            this.series.push({ data : this.data })
+
+            this.series.push({ name: 'sms', data : this.data })
+            console.log(this.series)
           }
           
         })

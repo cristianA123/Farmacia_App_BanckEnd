@@ -147,7 +147,7 @@ export default {
       }
     },
     is_bidireccional () {
-      return this.dataCampaign.sms_campaing.is_bidireccional
+      return this.dataCampaign?.sms_campaing?.is_bidireccional
     }
   },
   created() {
@@ -155,7 +155,6 @@ export default {
   },
   mounted() {
     this.ongetSms()
-    console.log(this.$route.params)
   },
   methods: {
     file_to_json () {
@@ -208,8 +207,6 @@ export default {
     async getCampaing() {
       await BackendApi.get('/campaign/' + this.$route.params.campaign_id).then((response) => {
         if (response.data.success) {
-          console.log('wwwwwwwwwwwwwwww')
-          console.log(response.data)
           this.dataCampaign = response.data.data
           this.registers = response.data.data.registers
         }
