@@ -20,7 +20,12 @@
           md="6"
           lg="3"
         >
-          <CardComponent :title="service.name" :img="service.icon" :descripcion="descriptionOfServices[service.service_id - 1]" :types-campaing="typesCampaing[service.service_id - 1]"></CardComponent>
+          <CardComponent 
+            :title="service.name"
+            :img="service.icon"
+            :descripcion="descriptionOfServices[service.service_id - 1]"
+            :types-campaing="typesCampaing[service.service_id - 1]"
+          ></CardComponent>
         </v-col>
       </v-row>
     </v-col>

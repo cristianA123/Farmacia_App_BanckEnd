@@ -6,7 +6,8 @@
         class="carta"
       >
         <v-card-title>
-          {{ title }}
+          {{ title.toUpperCase() }}
+          <!-- {{ title }} -->
         </v-card-title>
 
         <div
