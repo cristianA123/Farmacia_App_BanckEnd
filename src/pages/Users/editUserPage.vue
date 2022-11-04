@@ -120,27 +120,9 @@
                         {{ item.text }}
                       </v-chip>
                       <v-spacer></v-spacer>
-                      <!-- <v-list-item-action @click.stop>
-                        <v-btn
-                          icon
-                          @click.stop.prevent="edit(index, item)"
-                        >
-                          <v-icon>{{ editing !== item ? 'mdi-pencil' : 'mdi-check' }}</v-icon>
-                        </v-btn>
-                      </v-list-item-action> -->
                     </template>
                   </v-combobox>
-
-                  <!-- **************************************************************** -->
-                  <!-- <v-text-field
-                    v-else
-                    v-model="user.company"
-                    :disabled="!isAdmin"
-                    label="Empresa" 
-                    :rules="[v => !!v || 'Empresa es obligatorio']"
-                    outlined
-                    prepend-icon="mdi-briefcase-outline"
-                  /> -->
+                  
                   <v-text-field 
                     v-model="user.email" 
                     :error-messages="isValidEmail"
@@ -189,7 +171,7 @@
                       type="submit"
                       :loading="isLoading"
                     >
-                      {{ isEdit ? "Editar" : "Crear" }} 
+                      {{ isEdit ? "Guardar" : "Crear" }} 
                     </v-btn>
                   </div>
 

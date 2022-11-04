@@ -110,9 +110,6 @@
 import BackendApi from '@/services/backend.service'
 
 export default {
-  mounted() {
-    this.myUser()
-  },
   data() {
     return {
       data : {
@@ -125,6 +122,9 @@ export default {
         whatsapp: false
       }
     }
+  },
+  mounted() {
+    this.myUser()
   },
   methods: {
     myUser() {
