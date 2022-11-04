@@ -36,15 +36,13 @@
             clearable
             placeholder="Ej.: Filtrar por name, email, empresa, etc"
             outlined
-            @keyup.enter="searchUser(searchText)"
           />
         </v-row>
       </v-col>
       <v-data-table
         :loading="isLoading"
         :headers="headers"
-        :items="items"
-        :search="searchText"
+        :items="items_users_aux"
         class="flex-grow-1"
       >
        
@@ -225,6 +223,7 @@ export default {
       dialogConfirmEnabledUser: false,
       isLoading: false,
       items: [],
+      items_users_aux: [],
       myUser: null,
       searchText: '',
       headers: [
@@ -262,6 +261,11 @@ export default {
       return $cookies.get('user').isAdmin
     }
   },
+  watch: {
+    searchText(val) {
+      this.searchUser(val)
+    }
+  },
   mounted() {
     this.getUsers()
   },
@@ -272,7 +276,9 @@ export default {
       BackendApi.get('/user').then((response) => {
         if (response.data.success) {
           this.items = response.data.data
+          this.items_users_aux = response.data.data
           this.isLoading = false
+          console.log(this.items)
         } else {
           this.$store.dispatch('app/showToast', response.data.message)
         }
@@ -344,7 +350,14 @@ export default {
     confirmEnabled(item) {
       this.dialogConfirmEnabledUser = true
       this.selectedUser = item
-    }
+    },
+    searchUser(text) {
+      if (!text) {
+        this.getUsers()
+      } else {
+        this.items_users_aux = this.items.filter( (user) => user.name.includes(text) || user.email.includes(text))
+      }
+    }  
   }
 }
 </script>
