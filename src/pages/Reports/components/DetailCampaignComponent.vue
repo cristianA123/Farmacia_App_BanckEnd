@@ -20,8 +20,31 @@
         hide-default-footer 
       >
         <template v-slot:[`item.times_open`]="{ item }">
-          <v-icon v-if="item.times_open">mdi-eye-check-outline</v-icon>
-          <v-icon v-else>mdi-eye-off-outline</v-icon>
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon 
+                v-if="item.times_open"
+                v-bind="attrs"
+                v-on="on"
+              >
+                mdi-eye-check-outline
+              </v-icon>
+              <v-icon 
+                v-else
+                v-bind="attrs"
+                v-on="on"
+              >
+                mdi-eye-off-outline
+              </v-icon>
+            </template>
+            <span 
+              v-if="item.times_open"
+            >ABIERTO</span>
+            <span 
+              v-else
+            >PENDIENTE</span>
+          </v-tooltip>
+         
         </template>
 
         <template v-slot:[`item.actions`]="{ item }">
@@ -48,8 +71,28 @@
         </template>
 
         <template v-slot:[`item.status`]="{ item }">
-          <v-icon v-if="item.status === 'DELIVERED'">mdi-email-check-outline</v-icon>
-          <v-icon v-else>mdi-email-remove-outline</v-icon>
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon 
+                v-if="item.status === 'DELIVERED'"
+                v-bind="attrs"
+                v-on="on"
+              >mdi-email-check-outline
+              </v-icon>
+              <v-icon 
+                v-else
+                v-bind="attrs"
+                v-on="on"
+              >mdi-email-remove-outline
+              </v-icon>
+            </template>
+            <span 
+              v-if="item.status === 'DELIVERED'"
+            >DELIVERED</span>
+            <span 
+              v-else
+            >REJECTED</span>
+          </v-tooltip>
         </template>
         
         <p>{{ campaigns }}</p>
