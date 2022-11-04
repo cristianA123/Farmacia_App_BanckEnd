@@ -7,7 +7,6 @@
       >
         <v-card-title>
           {{ title.toUpperCase() }}
-          <!-- {{ title }} -->
         </v-card-title>
 
         <div
