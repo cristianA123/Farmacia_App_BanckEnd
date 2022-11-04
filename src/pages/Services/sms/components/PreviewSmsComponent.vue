@@ -27,7 +27,29 @@
               height: 430px; 
               background-size: 100%;"
             >
-              <div style="padding: 5px 25px; 25px  25px;"><div><span id="span_sms_text" style="background-color: rgb(230, 230, 235);text-align: left;padding: 5px 7px;margin: 100px 25px 25px 20px;border-radius: 10px;float: left;white-space: pre-wrap;font-size: 12px;color: black;">{{ messageExample }} </span></div></div>
+              <div 
+                style="padding: 5px 25px; 25px  25px;"
+              >
+                <div
+                  class="content_message"
+                >
+                  <span 
+                    id="span_sms_text" 
+                    style="background-color: rgb(230, 230, 235);
+                    text-align: left;
+                    padding: 5px 7px;
+                    margin: 100px 25px 25px 20px;
+                    border-radius: 10px;
+                    float: left;
+                    white-space: pre-wrap;
+                    font-size: 12px;
+                    /* white-space: nowrap;
+                    overflow: hidden; */
+                    color: black;"
+                  >{{ messageExample }}
+                  </span>
+                </div>
+              </div>
             </div>
           </v-col>
 
@@ -314,7 +336,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .phone_preview {
   background-image: url("/images/services/sms_preview.png"); 
@@ -322,4 +344,22 @@ export default {
   height: 430px; 
   background-size: 100%;
 }
+
+.content_message {
+  overflow: scroll;
+  margin-right: 15px;
+  height: 380px;
+  border: 1px solid black;
+}
+
+.content_message::-webkit-scrollbar {
+  /* overflow: scroll;
+  margin-right: 15px;
+  border: 1px solid black; */
+  width: 3px;
+}
+.content_message::-webkit-scrollbar-thumb {
+  background: #414141;
+}
+
 </style>
