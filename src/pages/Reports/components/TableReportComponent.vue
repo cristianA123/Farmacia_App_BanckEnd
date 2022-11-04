@@ -143,13 +143,6 @@
               >
                 Ver detalle
               </v-list-item>
-              <v-list-item
-                v-if="isAdmin"
-                link
-                @click="downloadFile(item)"
-              >
-                Archivo
-              </v-list-item>
               
             </v-list>
           </v-menu>
