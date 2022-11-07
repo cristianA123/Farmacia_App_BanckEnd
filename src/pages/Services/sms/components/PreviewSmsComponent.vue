@@ -21,31 +21,17 @@
             class="mt-0 pt-0"
             sm="4"
           >
-            <div 
-              style="background-image: url(https://cdn.discordapp.com/attachments/783095481227935744/984913157703225354/sms_preview.png); 
-              width: 250px; 
-              height: 430px; 
-              background-size: 100%;"
+            <div
+              class="content-img" 
             >
               <div 
-                style="padding: 5px 25px; 25px  25px;"
+                class="content-img--sms-text"
               >
                 <div
                   class="content_message"
                 >
-                  <span 
-                    id="span_sms_text" 
-                    style="background-color: rgb(230, 230, 235);
-                    text-align: left;
-                    padding: 5px 7px;
-                    margin: 100px 25px 25px 20px;
-                    border-radius: 10px;
-                    float: left;
-                    white-space: pre-wrap;
-                    font-size: 12px;
-                    /* white-space: nowrap;
-                    overflow: hidden; */
-                    color: black;"
+                  <span
+                    class="sms-text"
                   >{{ messageExample }}
                   </span>
                 </div>
@@ -338,28 +324,42 @@ export default {
 
 <style scoped>
 
-.phone_preview {
-  background-image: url("/images/services/sms_preview.png"); 
+.content-img {
+  background-image: url(https://cdn.discordapp.com/attachments/783095481227935744/984913157703225354/sms_preview.png); 
   width: 250px; 
   height: 430px; 
   background-size: 100%;
+  position: relative;
+}
+
+.content-img--sms-text {
+  position: absolute;
+  top: 92px;
+  left: 45px;
 }
 
 .content_message {
   overflow: scroll;
-  margin-right: 15px;
-  height: 380px;
-  border: 1px solid black;
+  height: 285px;
 }
 
 .content_message::-webkit-scrollbar {
-  /* overflow: scroll;
-  margin-right: 15px;
-  border: 1px solid black; */
   width: 3px;
 }
 .content_message::-webkit-scrollbar-thumb {
   background: #414141;
+}
+
+.sms-text {
+  background-color: rgb(230, 230, 235);
+  text-align: left;
+  border-radius: 10px;
+  float: left;
+  white-space: pre-wrap;
+  font-size: 12px;
+  padding: 10px;
+  width: 160px;
+  color: black;
 }
 
 </style>
