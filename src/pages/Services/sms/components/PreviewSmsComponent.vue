@@ -21,7 +21,7 @@
             class="mt-0 pt-0"
             sm="4"
           >
-            <div
+            <!-- <div
               class="content-img" 
             >
               <div 
@@ -36,7 +36,9 @@
                   </span>
                 </div>
               </div>
-            </div>
+            </div> -->
+          
+            <Chat :messages="setMessage"/>
           </v-col>
 
           <v-col
@@ -156,6 +158,7 @@
 
 <script>
 import BackendApi from '@/services/backend.service'
+import Chat from '@/components/common/Chat.vue'
 
 import jspdf from 'jspdf'
 import html2canvas from 'html2canvas'
@@ -163,6 +166,10 @@ import moment from 'moment'
 moment.locale('es')
 
 export default {
+  components: {
+    Chat
+
+  },
   props: {
     dataCampaing: {
       type: Object,
@@ -215,7 +222,8 @@ export default {
         { key:'[VAR8]', value:'VAR8' }
         // { key9:'[NOMBRE 1]' }
       ],
-      loadingSendPdf: false
+      loadingSendPdf: false,
+      message: []
     }
   },
   computed: {
@@ -233,6 +241,15 @@ export default {
       const a = moment(this.options.scheduled).format('lll')
 
       return a
+    },
+    setMessage () {
+      const payload = [{
+        type: '2',
+        text: this.messageExample,
+        date: 'hoy, ' + moment().format('LT')
+      }]
+
+      return payload
     }
   },
   methods: {
