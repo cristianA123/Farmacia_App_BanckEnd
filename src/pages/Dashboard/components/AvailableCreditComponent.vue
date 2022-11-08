@@ -46,7 +46,7 @@
             </tr>
             <tr>
               <td style="width: 300px;"><strong>Sub-usuarios:</strong></td>
-              <td style="text-align: right;">{{ assignedCredits | formatCurrency(configFormat) }}</td>
+              <td class="link-users" style="text-align: right;" @click="showUsers">{{ assignedCredits | formatCurrency(configFormat) }}</td>
             </tr>
             <tr>
               <td style="width: 300px;"><strong>Mi usuario:</strong></td>
@@ -127,7 +127,18 @@ export default {
           })
         }
       })
+    },
+    showUsers() {
+      this.$router.push({ name: 'users' })
     }
   }
 }
 </script>
+
+<style scoped>
+
+.link-users{
+  cursor: pointer;
+}
+
+</style>
