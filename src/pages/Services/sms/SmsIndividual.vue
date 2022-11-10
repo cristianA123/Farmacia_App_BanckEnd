@@ -180,7 +180,7 @@ export default {
       const payload = {
         service_id: 1,
         campaign_type_id: 1,
-        name: 'Individual',
+        name: this.$store.state.sms.name,
         destinations: this.phones,
         message: this.message,
         url_id: null,
