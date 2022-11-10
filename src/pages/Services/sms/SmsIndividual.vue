@@ -184,6 +184,7 @@ export default {
         destinations: this.phones,
         message: this.message,
         url_id: null,
+        long_url: this.long_url,
         options: this.options
       }
 
