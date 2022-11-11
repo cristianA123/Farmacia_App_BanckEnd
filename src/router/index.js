@@ -9,30 +9,32 @@ import UsersRoutes from './users.routes'
 
 Vue.use(Router)
 
-export const routes = [{
-  path: '/',
-  redirect: '/dashboard/analytics'
-}, {
-  path: '/dashboard/analytics',
-  name: 'dashboard-analytics',
-  component: () => import(/* webpackChunkName: "dashboard" */ '@/pages/Dashboard/dashboard.vue')
-},
-...ServicesRoutes,
-...PagesRoutes,
-...UsersRoutes,
-{
-  path: '/blank',
-  name: 'blank',
-  component: () => import(/* webpackChunkName: "blank" */ '@/pages/BlankPage.vue')
-},
-{
-  path: '*',
-  name: 'error',
-  component: () => import(/* webpackChunkName: "error" */ '@/pages/error/NotFoundPage.vue'),
-  meta: {
-    layout: 'error'
-  }
-}]
+export const routes = [
+  {
+    path: '/',
+    redirect: '/dashboard/analytics'
+  }, 
+  {
+    path: '/dashboard/analytics',
+    name: 'dashboard-analytics',
+    component: () => import(/* webpackChunkName: "dashboard" */ '@/pages/Dashboard/dashboard.vue')
+  },
+  ...ServicesRoutes,
+  ...PagesRoutes,
+  ...UsersRoutes,
+  {
+    path: '/blank',
+    name: 'blank',
+    component: () => import(/* webpackChunkName: "blank" */ '@/pages/BlankPage.vue')
+  },
+  {
+    path: '*',
+    name: 'error',
+    component: () => import(/* webpackChunkName: "error" */ '@/pages/error/NotFoundPage.vue'),
+    meta: {
+      layout: 'error'
+    }
+  }]
 
 const router = new Router({
   mode: 'history',

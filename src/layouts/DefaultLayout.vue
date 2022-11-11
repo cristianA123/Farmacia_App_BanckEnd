@@ -38,10 +38,10 @@
           
           <v-spacer></v-spacer>
 
-          <toolbar-apps />
+          <!-- <toolbar-apps /> -->
 
           <div :class="[$vuetify.rtl ? 'ml-1' : 'mr-1']">
-            <toolbar-notifications />
+            <!-- <toolbar-notifications /> -->
           </div>
           <toolbar-user />
         </div>
@@ -73,15 +73,15 @@ import config from '../configs'
 
 import MainMenu from '../components/navigation/MainMenu'
 import ToolbarUser from '../components/toolbar/ToolbarUser'
-import ToolbarApps from '../components/toolbar/ToolbarApps'
-import ToolbarNotifications from '../components/toolbar/ToolbarNotifications'
+// import ToolbarApps from '../components/toolbar/ToolbarApps'
+// import ToolbarNotifications from '../components/toolbar/ToolbarNotifications'
 
 export default {
   components: {
     MainMenu,
-    ToolbarUser,
-    ToolbarApps,
-    ToolbarNotifications
+    ToolbarUser
+    // ToolbarApps,
+    // ToolbarNotifications
   },
   data() {
     return {
