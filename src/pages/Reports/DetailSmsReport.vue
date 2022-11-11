@@ -295,8 +295,11 @@ export default {
           content: [
             ...this.allSmsOfCampaing
           ]
-        },
-        {
+        }
+      ]
+      
+      if (this.is_bidireccional) {
+        data.push({
           sheet: 'Respondidos',
           columns: [
             { label: 'Telefono', value: 'phone' },
@@ -307,8 +310,9 @@ export default {
           content: [
             ...this.allSmsReceivedOfCampaing
           ]
-        }
-      ]
+        })
+      }
+      
       const settings = {
         sheetName: 'Sms',
         fileName: 'Reporte de campaña'
