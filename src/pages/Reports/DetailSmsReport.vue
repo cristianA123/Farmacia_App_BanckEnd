@@ -115,6 +115,7 @@ export default {
         total: 0
       },
       allSmsOfCampaing: [],
+      allSmsReceivedOfCampaing: [],
       search: '',
       searchSmsReceived: '',
       isLoadingDownload: false
@@ -251,23 +252,63 @@ export default {
         .then((response) => {
           if (response.data.success) {
             this.allSmsOfCampaing = response.data.data
+            console.log('sms')
+            console.log(this.allSmsOfCampaing)
           }
         })
+
+      await BackendApi.post('/smsReceivedCampaignDetailAll', payload)
+        .then((response) => {
+          if (response.data.success) {
+            this.allSmsReceivedOfCampaing = response.data.data
+            console.log('received')
+            console.log(this.allSmsReceivedOfCampaing)
+          }
+        })
+
+      // { label: 'Link', value: (row) => (this.has_url ? (row.times_open ? 'ABIERTO' : 'NO ABIERTO') : '' ) },
+      let columnas = []
+
+      if (this.has_url)  {
+        columnas = [{ label: 'Telefono', value: 'phone' },
+          { label: 'Mensaje', value: 'content' },
+          { label: 'Fecha', value: 'send_at' },
+          { label: 'Link', value: (row) => (row.times_open ? 'ABIERTO' : 'NO ABIERTO') },
+          { label: 'Credito', value: 'credit' },
+          { label: 'Operador', value: 'carrier' },
+          { label: 'Estado', value: 'status' }]
+      } else {
+        columnas = [{ label: 'Telefono', value: 'phone' },
+          { label: 'Mensaje', value: 'content' },
+          { label: 'Fecha', value: 'send_at' },
+          { label: 'Credito', value: 'credit' },
+          { label: 'Operador', value: 'carrier' },
+          { label: 'Estado', value: 'status' }]
+      }
+
       const data = [
         {
           sheet: 'Sms',
           columns: [
-            { label: 'Telefono', value: 'phone' },
-            { label: 'Mensaje', value: 'content' },
-            { label: 'Credito', value: 'credit' },
-            { label: 'Fecha', value: 'send_at' },
-            { label: 'Operador', value: 'carrier' },
-            { label: 'Estado', value: 'status' }
+            ...columnas
           ],
           content: [
             ...this.allSmsOfCampaing
           ]
-        }]
+        },
+        {
+          sheet: 'Respondidos',
+          columns: [
+            { label: 'Telefono', value: 'phone' },
+            { label: 'Mensaje', value: 'content' },
+            { label: 'Fecha', value: 'created' },
+            { label: 'Credito', value: 'credit' }
+          ],
+          content: [
+            ...this.allSmsReceivedOfCampaing
+          ]
+        }
+      ]
       const settings = {
         sheetName: 'Sms',
         fileName: 'Reporte de campaña'
