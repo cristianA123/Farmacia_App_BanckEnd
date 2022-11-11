@@ -52,7 +52,7 @@ export default {
       headers: [
         { text: 'Usuario' , value: 'user_name' },
         { text: 'Campaña' , value: 'name' },
-        { text: 'Fecha de lanzamineto' , value: 'created_at' },
+        { text: 'Fecha de envío' , value: 'created_at' },
         { text: 'Estado' , value: 'status' },
         { text: 'Creditos' , value: 'total_cost' },
         { text: 'Acciones', value: 'actions' }
@@ -133,7 +133,7 @@ export default {
             { label: 'Email', value: 'email' },
             { label: 'Campaña', value: 'name' },
             { label: 'Servicio', value: 'service' },
-            { label: 'Fecha de lanzamiento', value: 'created_at' },
+            { label: 'Fecha de envio', value: 'created_at' },
             { label: 'Estado',  value: (row) => (row.status === 0 ? 'cancelado' : ( row.status === 1 ? 'finalizado' : (row.status === 2 ? 'pendiente' : ( row.status === 3 ? 'procesando' : 'agendado')))) },
             { label: 'Usuario', value: 'user' },
             { label: 'Creditos', value: 'total_cost' }
