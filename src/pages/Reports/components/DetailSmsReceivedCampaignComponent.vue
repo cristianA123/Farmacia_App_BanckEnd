@@ -19,8 +19,20 @@
         :items="campaigns"
         hide-default-footer 
       >
-        <template v-slot:[`item.times_open`]="{ item }">
-          {{ item.times_open ? 'APERTURADO' : 'NO APERTURADO' }}
+        <template v-slot:[`item.chat`]="{item}">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon
+                v-bind="attrs"
+                v-on="on"
+                @click="openChatModal(item)"
+              >
+                mdi-message-outline
+              </v-icon>
+            </template>
+            <span>chat</span>
+          </v-tooltip>
+          
         </template>
   
         <template v-slot:[`item.actions`]="{ item }">
@@ -53,14 +65,21 @@
         @input="ongetSms"
       ></v-pagination>
     </v-card-text>
-  
+    <ShowModalChatComponent 
+      ref="showModalChat"
+    />
   </v-card>
+  
 </template>
   
 <script>
-  
+
+import ShowModalChatComponent from './ShowModalChatComponent.vue'
+
 export default {
-  name:'DetailCampaignComponent',
+  components: {
+    ShowModalChatComponent
+  },
   props: {
     pagination: {
       type: Object,
@@ -87,6 +106,7 @@ export default {
       headers:  [
         { text: 'Telefono', value: 'phone' },
         { text: 'Mensaje', value: 'content' },
+        { text: 'Chat', value: 'chat' },
         { text: 'Fecha', value: 'created' },
         { text: 'Credito', value: 'credit' }
       ]
@@ -102,6 +122,9 @@ export default {
   
       this.$emit('ongetSms', this.searchText)
   
+    },
+    openChatModal(item) {
+      this.$refs.showModalChat.open(item.phone)
     }
   }
 }
