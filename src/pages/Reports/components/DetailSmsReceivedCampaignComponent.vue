@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      SMS Recibidos:
+      SMS Respondidos:
       <v-spacer></v-spacer>
       <v-text-field
         v-model="searchText"
