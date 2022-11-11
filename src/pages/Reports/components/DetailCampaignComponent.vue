@@ -42,7 +42,7 @@
             >ABIERTO</span>
             <span 
               v-else
-            >PENDIENTE</span>
+            >NO ABIERTO</span>
           </v-tooltip>
          
         </template>
