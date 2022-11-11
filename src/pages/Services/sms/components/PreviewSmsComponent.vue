@@ -21,23 +21,6 @@
             class="mt-0 pt-0"
             sm="4"
           >
-            <!-- <div
-              class="content-img" 
-            >
-              <div 
-                class="content-img--sms-text"
-              >
-                <div
-                  class="content_message"
-                >
-                  <span
-                    class="sms-text"
-                  >{{ messageExample }}
-                  </span>
-                </div>
-              </div>
-            </div> -->
-          
             <Chat :messages="setMessage"/>
           </v-col>
 
@@ -125,33 +108,34 @@
                 </table>
               </v-card-text>
             </v-card>
+            <!-- <v-card-actions>
+              <v-col
+                class="mt-0 pt-0 "
+              > -->
+            <v-row
+              justify="center"
+              class="pt-2"
+            >
+              <v-btn
+                color="green"
+                dark
+                :loading="isBtnLoading"
+                @click="submit"
+              >
+                <v-icon
+                  right
+                  class="mr-1"
+                >
+                  mdi-send-outline
+                </v-icon>
+                Lanzar campaña
+              </v-btn>
+            </v-row>
+            <!-- </v-col>
+            </v-card-actions> -->
           </v-col>
         </v-row>
       </v-card-text>
-      <v-card-actions>
-        <v-col
-          class="mt-0 pt-0"
-        >
-          <v-row
-            justify="center"
-          >
-            <v-btn
-              color="green"
-              dark
-              :loading="isBtnLoading"
-              @click="submit"
-            >
-              <v-icon
-                right
-                class="mr-1"
-              >
-                mdi-send-outline
-              </v-icon>
-              Lanzar campaña
-            </v-btn>
-          </v-row>
-        </v-col>
-      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
