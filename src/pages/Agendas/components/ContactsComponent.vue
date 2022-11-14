@@ -346,7 +346,7 @@ export default {
       selectedUsers: [],
       headers: [
         { text: 'Número', value: 'number' },
-        { text: 'Nombre1', value: 'name1' },/* 
+        { text: 'Nombre', value: 'name1' },/* 
         { text: 'Nombre2', value: 'name2' },
         { text: 'Apellido1', value: 'last_name1' },
         { text: 'Apellido2', value: 'last_name2' },
