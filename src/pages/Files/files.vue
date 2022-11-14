@@ -58,15 +58,13 @@
             <v-img
               :src="item.thumbnail"
               height="194"
+              @dblclick="ShowFile(item)"
             ></v-img>
 
             <v-card-text>
               <table>
                 <tr>
-                  <!-- Math.round(num / 100) * 100 -->
                   <td>Tamaño:</td>
-                  <!-- <td>{{ item.size }} </td> -->
-                  <!-- <td>{{ item.size > 0 ? Math.round(item.size*1000/100)*100 + 'Bytes' : Math.round(item.size*100)/100 + 'Kb' }} </td> -->
                   <td>{{ Math.round(item.size) + ' Kb' }} </td>
                 </tr>
                 <tr>
@@ -76,7 +74,6 @@
                 <tr>
                   <td>Link:</td>
                   <td>{{ item.short_url.length > 25 ? item.short_url.substring(0,25) + '...' : item.short_url }} </td>
-                  <!-- <td>{{ item.short_url }} </td> -->
                 </tr>
               </table>
             </v-card-text>
