@@ -10,11 +10,10 @@
         </v-card-title>
 
         <div
-          class="d-flex justify-center align-center "
+          class="d-flex justify-center align-center content-img"
         >
           <!-- :aspect-ratio="16/9" -->
           <v-img
-            width="auto"
             :src="img"
           >
 
@@ -69,7 +68,7 @@ export default {
     },
     img: {
       type: String,
-      default: 'https://cdn.discordapp.com/attachments/783095481227935744/984848205038645328/img_canal_email.png'
+      default: 'https://cdn.discordapp.com/attachments/783095481227935744/1041729757127114863/unknown.png'
     }, 
     descripcion: {
       type: String,
@@ -105,6 +104,10 @@ export default {
   padding-bottom: 16px;
   padding-top: 16px;
 } */
+
+.content-img {
+  height: 35vh;
+}
 
 .v-card--reveal {
   align-items: center;
