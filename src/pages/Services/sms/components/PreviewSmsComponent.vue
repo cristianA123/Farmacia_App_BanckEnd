@@ -4,9 +4,7 @@
     v-model="show"
     width="800px"
   >
-    <v-card
-      id="preview-sms-dialog"
-    >
+    <v-card>
       <v-card-title>
         Resumen de campaña:
         <v-spacer></v-spacer>
@@ -29,6 +27,7 @@
             sm="8"
           >
             <v-card
+              id="preview-sms-dialog"
               outlined
               color="#385F73"
               dark
@@ -246,12 +245,13 @@ export default {
     },
     async submit() {
       if (this.dataCampaing.availableCredit >= this.dataCampaing.necessary_credit) {
-        this.isBtnLoading = true
-  
+        // this.isBtnLoading = true
+        
         const options = {
           scale: 3
         }
-  
+
+        console.log($cookies.get('user'))
         await html2canvas(document.getElementById('preview-sms-dialog'),options).then(
           (canvas) => {
             const imgData = canvas.toDataURL('image/png')
@@ -277,14 +277,13 @@ export default {
             doc.setFontSize(11)
             doc.text('NOMBRE: ' +  $cookies.get('user').name , 25, 110)
             doc.text('CORREO: ' +  $cookies.get('user').email , 25, 125)
-            doc.text('EMPRESA: ' +  $cookies.get('user').company , 25, 140)
+            doc.text('EMPRESA: ' +  $cookies.get('user').company?.company , 25, 140)
             doc.setFontSize(12)
             doc.text('DATOS DE LA CAMPAÑA:', 25, 160)
             doc.setFontSize(11)
-            doc.text('NOMBRE: ' +  this.options.name , 25, 180)
-            doc.text('FORMATO DE MENSAJE: ' + this.message, 25, 195)
-            doc.text('COSTO PROBABLE DE CREDITOS: ' + this.necessaryCredit , 25, 210)
-            doc.text('CREDITOS DISPONIBLES: ' + this.availableCredit, 25, 225)
+            doc.text('NOMBRE: ' +  this.$store.state.sms.name , 25, 180)
+            doc.text('MENSAJE: ' + this.messageExample, 25, 195)
+            
             // doc.text('CREDITOS DISPONIBLES PROBABLES DESPUES DE CREAR CAMPAÑA : ' + this.availableCredit -  this.necessaryCredit  , 25, 80)
             // necessaryCredit 
             // availableCredit
@@ -303,10 +302,10 @@ export default {
               .catch( (error) => {
                 // this.$store.dispatch('app/showToast', 'No se pudo enviar el informe al email del usuario con datos de la campaña creada, verifique su correo')
               } )
-            // doc.save('Reporte de campaña.pdf')
+            doc.save('Reporte de campaña.pdf')
           }
         )
-        this.isBtnLoading = false
+        // this.isBtnLoading = false
         this.$emit('onPreviewSmsSubmit')
         this.close()
       } else {
