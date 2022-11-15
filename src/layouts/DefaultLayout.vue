@@ -93,7 +93,7 @@ export default {
   computed: {
     ...mapState('app', ['product', 'isContentBoxed', 'menuTheme', 'toolbarTheme', 'isToolbarDetached']),
     validateRole () {
-      return ($cookies.get('user').isAdmin) ? config.navigation.menu : this.filternavigation()
+      return ($cookies.get('user').isSuperAdmin) ? config.navigation.menu : this.filternavigation()
     }
   },
   methods: {
