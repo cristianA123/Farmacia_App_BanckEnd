@@ -251,7 +251,6 @@ export default {
           scale: 3
         }
 
-        console.log($cookies.get('user'))
         await html2canvas(document.getElementById('preview-sms-dialog'),options).then(
           (canvas) => {
             const imgData = canvas.toDataURL('image/png')
