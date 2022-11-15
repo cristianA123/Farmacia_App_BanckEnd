@@ -17,16 +17,21 @@
           ]"
         >
           <div
-            class="content-sms"
+            :class="[
+              message.type === '1' ? 'content-sms': ''
+            ]"
           >
-            <span
-              class="sms-text"
-              :class="[
-                message.type === '1' ? 'my-sms': 'sms-received', 
-                message.text.length > 21 ? 'sms-block' : 'sms-inline'
-              ]"
-            >{{ message.text }}
-            </span>
+            <div>
+
+              <span
+                class="sms-text"
+                :class="[
+                  message.type === '1' ? 'my-sms': 'sms-received', 
+                  message.text.length > 21 ? 'sms-block' : 'sms-inline'
+                ]"
+              >{{ message.text }}
+              </span>
+            </div>
             <span
               :class="[
                 message.type === '1' ? 'my-sms-date': 'sms-received-date'
@@ -118,7 +123,7 @@ export default {
   overflow: scroll;
   height: 285px;
   padding-right: 5px;
-
+  width: 167px;
 }
 
 .content_message::-webkit-scrollbar {
@@ -142,6 +147,12 @@ export default {
   font-size: 10px;
   text-align: start;
   display: block;
+}
+
+.content-sms {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 .sms-text {
   border-radius: 10px;
