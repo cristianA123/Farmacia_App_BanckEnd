@@ -29,7 +29,7 @@ export default {
     key: '',
     items: [
       { icon: 'mdi-file-image', text: 'Archivos', link: '/tools/filescloud' },
-      { icon: 'mdi-link-plus', text: 'Url', link: '/tools/shorturl' },
+      { icon: 'mdi-link-plus', text: 'URL', link: '/tools/shorturl' },
       { icon: 'mdi-contacts', text: 'Agendas', link: '/tools/agendas' }
     ]
   },
