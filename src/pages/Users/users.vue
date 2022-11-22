@@ -228,9 +228,9 @@ export default {
       searchText: '',
       headers: [
         { text: 'Usuario', value: 'email' },
-        { text: 'Creditos inicial', value: 'credit' },
-        { text: 'Creditos disponible', value: 'availableCredit' },
-        { text: 'Ultima Modif.', value: 'updated_at' },
+        { text: 'Crédito inicial', value: 'credit' },
+        { text: 'Créditos disponible', value: 'availableCredit' },
+        { text: 'Última Modif.', value: 'updated_at' },
         { text: 'Estado', value: 'status' },
         { text: 'Acciones', value: 'actions' }
       ]

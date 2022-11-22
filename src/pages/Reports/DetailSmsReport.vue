@@ -133,7 +133,7 @@ export default {
           { text: 'Mensaje', value: 'content' },
           { text: 'Fecha', value: 'created' },
           { text: 'Link', value: 'times_open' },
-          { text: 'Credito', value: 'credit' },
+          { text: 'Crédito', value: 'credit' },
           { text: 'Operador', value: 'carrier' },
           { text: 'Estado', value: 'status' }
         ]
@@ -142,7 +142,7 @@ export default {
           { text: 'Telefono', value: 'phone' },
           { text: 'Mensaje', value: 'content' },
           { text: 'Fecha', value: 'created' },
-          { text: 'Credito', value: 'credit' },
+          { text: 'Crédito', value: 'credit' },
           { text: 'Operador', value: 'carrier' },
           { text: 'Estado', value: 'status' }
         ]

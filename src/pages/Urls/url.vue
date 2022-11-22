@@ -3,6 +3,7 @@
     <div class="d-flex align-center py-3">
       <div>
         <div class="display-1">Acortador URL</div>
+        <!-- <div class="display-1">URL individual</div> -->
       </div>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
