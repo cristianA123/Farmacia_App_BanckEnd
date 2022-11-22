@@ -256,7 +256,7 @@ export default {
             const imgData = canvas.toDataURL('image/png')
             const doc = new jspdf('p', 'pt', 'a4')
             const bufferX = 25
-            const bufferY = 235
+            const bufferY = 255
             const imgProps = doc.getImageProperties(imgData)
             const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX
             const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
@@ -281,15 +281,15 @@ export default {
             doc.text('DATOS DE LA CAMPAÑA:', 25, 160)
             doc.setFontSize(11)
             doc.text('NOMBRE: ' +  this.$store.state.sms.name , 25, 180)
-            doc.text('MENSAJE: ' + this.messageExample, 25, 195)
-            
-            // doc.text('CREDITOS DISPONIBLES PROBABLES DESPUES DE CREAR CAMPAÑA : ' + this.availableCredit -  this.necessaryCredit  , 25, 80)
-            // necessaryCredit 
-            // availableCredit
+            const textlines =  doc.setFontSize(11).splitTextToSize('MENSAJE: ' + this.messageExample, 540)
+
+            let verticalOffset = 195
+
+            doc.text( textlines, 25, verticalOffset + 12 / 72)
+            verticalOffset += (textlines.length +  0.5) * 12 / 72
             doc.addImage(imgData, 'JPEG',bufferX ,bufferY , pdfWidth, pdfHeight, undefined, 'FAST')
-  
             const formData = new FormData()
-  
+            
             formData.append('file', doc.output('blob'))
             
             BackendApi.post('/send_email', formData)
