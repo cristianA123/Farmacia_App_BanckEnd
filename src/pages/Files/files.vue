@@ -68,7 +68,7 @@
                   <td>{{ Math.round(item.size) + ' Kb' }} </td>
                 </tr>
                 <tr>
-                  <td>Clis:</td>
+                  <td>Clicks:</td>
                   <td>{{ n_clics(item) }}</td>
                 </tr>
                 <tr>
