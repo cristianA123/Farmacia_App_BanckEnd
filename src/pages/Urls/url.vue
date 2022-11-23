@@ -93,7 +93,7 @@ export default {
         { text: 'Nombre', value: 'name' },
         { text: 'Links', value: 'short_url' },
         { text: 'Clicks', value: 'times_open' },
-        { text: 'Última modificacion', value: 'updated' },
+        { text: 'Última modificación', value: 'updated' },
         { text: 'Acciones', value: 'actions' }
       ],
       items: []
