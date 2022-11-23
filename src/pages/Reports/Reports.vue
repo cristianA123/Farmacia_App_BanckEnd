@@ -54,7 +54,7 @@ export default {
         { text: 'Campaña' , value: 'name' },
         { text: 'Fecha de envío' , value: 'created_at' },
         { text: 'Estado' , value: 'status' },
-        { text: 'Creditos' , value: 'total_cost' },
+        { text: 'Créditos' , value: 'total_cost' },
         { text: 'Acciones', value: 'actions' }
       ],
       isLoading: false,
