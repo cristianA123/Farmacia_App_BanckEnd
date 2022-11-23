@@ -19,7 +19,7 @@
     "export-from-json": "^1.6.0",
     "flag-icon-css": "^3.4.6",
     "html2canvas": "^1.4.1",
-    "json-as-xlsx": "^2.4.2",
+    "json-as-xlsx": "^2.4.6",
     "jspdf": "^2.5.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.3",
