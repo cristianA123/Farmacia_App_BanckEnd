@@ -148,7 +148,7 @@ export default {
       this.messageExample = this.messageExample.replace('[CUSTOM_URL]', process.env.VUE_APP_EXAMPLE_URL_CUT_PE)
 
       let estandarText = ''
-      const filtro = '_@$ !#\'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZ¿abcdefghijklmnopqrstuvwxyz{}[]áéíóú\'ñ'
+      const filtro = '%_@$ !#\'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZ¿abcdefghijklmnopqrstuvwxyz{}[]áéíóú\'ñ'
       
       for (let i = 0; i < this.message.length; i++) {
         if (filtro.indexOf(this.message.charAt(i)) !== -1) {
