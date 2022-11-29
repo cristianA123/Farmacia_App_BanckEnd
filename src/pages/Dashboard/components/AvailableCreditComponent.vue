@@ -66,7 +66,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text>Más detalle</v-btn>
+          <!-- <v-btn text>Más detalle</v-btn> -->
           <v-btn text @click="diaglog=false">Entiendo</v-btn>
         </v-card-actions>
       </v-card>
