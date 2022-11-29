@@ -20,7 +20,7 @@
     <!--Empty items --->
     <EmptyItems
       v-if="itemsEmpty && !isLoading"
-      icon="mdi-file-link-outline"
+      icon="mdi-link-plus"
       text="No tiene url creados. Para crear urls cortas clic en botón Crear Url Corta" 
     />
 

@@ -30,8 +30,8 @@
       <!--Empty items --->
       <EmptyItems
         v-if="itemsEmpty && !isLoading"
-        icon="mdi-file-sync-outline"
-        text="No tiene archivos cargados. Para cargar archivos clic en Subir archivo" 
+        icon="mdi-book-clock-outline"
+        text="No tiene agendas creadas. Para crear agendas clic en Crear agenda" 
       />
       <new-agenda ref="newAgenda" @onCreatedAgenda="refresh" />
     </v-col>

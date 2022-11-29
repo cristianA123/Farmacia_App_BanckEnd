@@ -18,8 +18,8 @@
     <!--Empty items --->
     <EmptyItems
       v-if="itemsEmpty && !isLoading"
-      icon="mdi-contacts"
-      text="No tiene agendas creadas. Para crear agendas cortas clic en botón Crear Nueva Agenda" 
+      icon="mdi-account-group"
+      text="No tiene usuarios creados. Para crear usuarios clic en el botón Creación de usuario" 
     />
 
     <v-card
