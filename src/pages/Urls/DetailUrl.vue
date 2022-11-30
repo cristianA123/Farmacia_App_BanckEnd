@@ -3,7 +3,7 @@
       
     <div class="d-flex align-center py-3">
       <div>
-        <div class="display-1">Reporte de trackin url:</div>
+        <div class="display-1">Reporte de tracking URL:</div>
       </div>
       <v-spacer></v-spacer>
       <!-- <v-btn

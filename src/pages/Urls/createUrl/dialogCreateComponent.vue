@@ -12,7 +12,7 @@
       >
         <v-card>
           <v-card-title>
-            <span class="text-h5">{{ isEdit ? "Editar url corta" : "Crear url corta" }}</span>
+            <span class="text-h5">{{ isEdit ? "Editar URL corta" : "Crear URL corta" }}</span>
           </v-card-title>
           <v-card-text>
             <v-container>
@@ -28,7 +28,7 @@
                     v-model="url"
                     :rules="[ v => v.length <=500 || 'El link es muy largo, asegúrese de tener como máximo 500 caracteres']"
                     type="url"
-                    label="Url"
+                    label="URL"
                     :error-messages="isValidUrl"
                     required
                   ></v-text-field>

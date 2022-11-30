@@ -310,7 +310,7 @@ export default {
       } else {
         const badRequest = {
           error :{
-            message:  'No dispone de credito disponible para crear campaña'
+            message:  'No dispone de crédito disponible para crear campaña'
           }
         }
           

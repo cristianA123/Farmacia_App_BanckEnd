@@ -56,7 +56,7 @@
                   <v-file-input
                     v-if="!isEdit"
                     v-model="file"
-                    label="Nombre de archivo"
+                    label="Adjuntar archivo ( mp4, wav, xlsx, xls, png, jpg, jpeg, pdf, doc, docx) tamaño máximo 20 MB."
                     :rules="[v => !!v || 'El archivo es obligatorio']"
                     :error-messages="isValidFile"
                     outlined

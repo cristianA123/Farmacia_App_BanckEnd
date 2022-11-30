@@ -229,7 +229,7 @@ export default {
       headers: [
         { text: 'Usuario', value: 'email' },
         { text: 'Crédito inicial', value: 'credit' },
-        { text: 'Créditos disponible', value: 'availableCredit' },
+        { text: 'Créditos disponibles', value: 'availableCredit' },
         { text: 'Última Modif.', value: 'updated_at' },
         { text: 'Estado', value: 'status' },
         { text: 'Acciones', value: 'actions' }

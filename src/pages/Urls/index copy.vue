@@ -2,7 +2,7 @@
   <div class="d-flex flex-column flex-grow-1">
     <div class="d-flex align-center py-3">
       <div>
-        <div class="display-1">Acortador url</div>
+        <div class="display-1">Acortador URL</div>
       </div>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
@@ -10,7 +10,7 @@
         color="primary"
         @click="dialogUploadShow = true"
       >
-        Crear url corta
+        Crear URL corta
       </v-btn>
     </div>
 
@@ -27,7 +27,7 @@
               hide-details
               dense
               clearable
-              placeholder="Ej.: Nombre de url"
+              placeholder="Ej.: Nombre de URL"
               v-debounce:800="getFiles"
             />
           </v-col>

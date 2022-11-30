@@ -41,7 +41,7 @@
               v-model="long_url"
               class="px-2 py-1"
               :rules="[
-                v => !!v || 'La url es obligatorio',
+                v => !!v || 'La URL es obligatorio',
                 v => isURL(v) || 'URL no es valido'
               ]"
               solo

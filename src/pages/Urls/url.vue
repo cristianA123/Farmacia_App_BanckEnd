@@ -11,7 +11,7 @@
         color="primary"
         @click="openDialogCreate(undefined)"
       >
-        Crear url corta
+        Crear URL corta
       </v-btn>
       <BtnToReload />
 
@@ -21,7 +21,7 @@
     <EmptyItems
       v-if="itemsEmpty && !isLoading"
       icon="mdi-link-plus"
-      text="No tiene url creados. Para crear urls cortas clic en botón Crear Url Corta" 
+      text="No tiene URL creados. Para crear URLS cortas clic en botón Crear URL Corta" 
     />
 
     <v-data-table
@@ -92,7 +92,7 @@ export default {
       headers: [
         { text: 'Nombre', value: 'name' },
         { text: 'Links', value: 'short_url' },
-        { text: 'Clicks', value: 'times_open' },
+        { text: 'Clics', value: 'times_open' },
         { text: 'Última modificación', value: 'updated' },
         { text: 'Acciones', value: 'actions' }
       ],

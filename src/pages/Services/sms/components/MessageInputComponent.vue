@@ -89,8 +89,8 @@ export default {
   data() {
     return {
       items: [
-        { title: 'Elegir url' },
-        { title: 'Url personalizado' }
+        { title: 'Elegir URL' },
+        { title: 'URL personalizado' }
       ],
       data_key_agenda: [
         { key:'[NOMBRE 1]', value:'name1' },
