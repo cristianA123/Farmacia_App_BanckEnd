@@ -21,7 +21,8 @@
 
       </v-col>
 
-      <!-- <v-col
+      <v-col
+        v-if="false"
         class="col-12 col-lg-3 py-0 pr-0 d-flex justify-space-between"
       >
 
@@ -33,7 +34,7 @@
           @onChange="ChangeSelectedServices"
         />
 
-      </v-col> -->
+      </v-col>
 
       <!-- date start -->
       <v-col class="col-6 col-lg-3 py-0 pr-0 pd-flex justify-space-between">
@@ -170,7 +171,7 @@ export default {
   },
   mounted() {
     this.getUsers()
-    this.getServices()
+    // this.getServices()
     this.dateStart = this.computedDateFormat
     this.dateEnd = this.computedDateFormat
   },
@@ -222,7 +223,7 @@ export default {
         
         const filters = {
           users: this.selectedUsers,
-          services: this.selectedServices,
+          services: [0,1,2],
           start_date: this.dateStart,
           final_date: this.dateEnd
         }
@@ -235,6 +236,9 @@ export default {
     },
     ChangeSelectedServices(services) {
       this.selectedServices = services
+      console.log('rrrrrr')
+      console.log(services)
+      console.log('rrrrrr')
     }
   }
 }
