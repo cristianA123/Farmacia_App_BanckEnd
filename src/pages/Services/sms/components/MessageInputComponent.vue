@@ -41,6 +41,7 @@
 
     <!---Mensaje-->
     <v-textarea
+      id="message"
       v-model="message"
       label="Mensaje a enviar"
       placeholder="Ej.: Celebra esta navidad con nuestras ofertas"
@@ -179,6 +180,7 @@ export default {
     },
     addVarOnMessage (text) {
       this.message = this.message + '[' + text + ']'
+      document.getElementById('message').focus()
     },
     chooseUrl(url) {
       this.$refs.DialogUrl.open(url)
@@ -186,10 +188,12 @@ export default {
     onChooseUrl(url, url_id) {
       this.url_id = url_id
       this.message = this.message + ' ' + url + ' '
+      document.getElementById('message').focus()
     },
     onMakeUrl(url, url_id,long_url) {
       this.long_url = long_url
       this.message = this.message + ' [' + 'CUSTOM_URL' + '] '
+      document.getElementById('message').focus()
     }
   }
 }

@@ -8,7 +8,7 @@
       >
 
         <v-card-title class="pa-2">
-          Selecciones una URL
+          Seleccione una URL
           <v-spacer></v-spacer>
           <v-btn icon @click="dialog = false">
             <v-icon>mdi-close</v-icon>
