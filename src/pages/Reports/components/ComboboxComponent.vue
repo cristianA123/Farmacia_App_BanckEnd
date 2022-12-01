@@ -106,7 +106,12 @@ export default {
     },
     ifSelectAllItems () {
 
-      this.$emit('onChange', this.selectedItems)
+      if (this.selectedItems[0]?.id) {
+        this.$emit('onChange', this.computedSelectedItems)
+      } else {
+        this.$emit('onChange', this.selectedItems)
+      }
+
     },
     toggle () {
       this.$nextTick(() => {

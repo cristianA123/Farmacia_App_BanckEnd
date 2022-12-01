@@ -232,6 +232,9 @@ export default {
       }
     },
     ChangeSelectedUsers(users) {
+      console.log('arbol')
+      console.log(users)
+      console.log('arbol')
       this.selectedUsers = users
     },
     ChangeSelectedServices(services) {
