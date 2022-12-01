@@ -1,9 +1,9 @@
 <template>
   <v-form
-    @submit.prevent="submit()"
     ref="form"
     v-model="validForm"
     lazy-validation
+    @submit.prevent="submit()"
   >
     <!-- search bar -->
     <v-row class="pb-1">
@@ -57,8 +57,8 @@
               clearable
               placeholder="Fecha inicio"
               v-bind="attrs"
-              v-on="on"
               :rules="[ v => !!v || 'Fecha de inicio es obligatorio' ]"
+              v-on="on"
             ></v-text-field>
           </template>
           <v-date-picker 
@@ -94,8 +94,8 @@
               clearable
               placeholder="Fecha fin"
               v-bind="attrs"
-              v-on="on"
               :rules="[ v => !!v || 'Fecha fin es obligatorio' ]"
+              v-on="on"
             ></v-text-field>
           </template>
           <v-date-picker 
@@ -117,9 +117,9 @@
           color="success"
           type="submit"
         >
-        <v-icon left>
-          mdi-reload
-        </v-icon>
+          <v-icon left>
+            mdi-reload
+          </v-icon>
           Buscar
         </v-btn>
       </v-col >
@@ -180,7 +180,7 @@ export default {
       this.isLoadingUsers = true
       
       BackendApi.get('/userforreport').then((response) => {
-        const data = [{ id:0, name: 'Todos' }]
+        const data = []
         const usersid = []
 
         response.data.data.forEach((user) => {
