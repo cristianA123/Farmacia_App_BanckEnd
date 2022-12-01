@@ -16,7 +16,7 @@
 
     <!-- user menu list -->
     <v-list dense nav>
-      <v-list-item
+      <!-- <v-list-item
         v-for="(item, index) in menu"
         :key="index"
         :to="item.link"
@@ -30,8 +30,18 @@
         <v-list-item-content>
           <v-list-item-title>{{ item.key ? $t(item.key) : item.text }}</v-list-item-title>
         </v-list-item-content>
+      </v-list-item> -->
+      <v-list-item @click="SendWhatsApp">
+        <v-list-item-icon>
+          <v-icon small>mdi-whatsapp</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content >
+          <v-list-item-title >Soporte</v-list-item-title>
+        </v-list-item-content>
       </v-list-item>
 
+      <a id="sendWhatsApp" href="https://wa.me/51975606897" target="_blank" >
+      </a>
       <v-divider class="my-1"></v-divider>
 
       <v-list-item @click="$store.dispatch('logout')">
@@ -71,6 +81,11 @@ export default {
       return {
         name: $cookies.get('user').name
       }
+    }
+  },
+  methods: {
+    SendWhatsApp() {
+      document.getElementById('sendWhatsApp').click()
     }
   }
 }
