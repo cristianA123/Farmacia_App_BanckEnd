@@ -118,7 +118,7 @@
               <v-btn
                 color="green"
                 dark
-                :loading="isBtnLoading"
+                :loading="isBtnLoadingCreateCampaing"
                 @click="submit"
               >
                 <v-icon
@@ -183,6 +183,7 @@ export default {
   data() {
     return {
       show: false,
+      isBtnLoadingCreateCampaing:  false,
       data_key_agenda: [
         { key:'[NOMBRE 1]', value:'name1' },
         { key:'[NOMBRE 2]', value:'name2' },
@@ -245,7 +246,7 @@ export default {
     },
     async submit() {
       if (this.dataCampaing.availableCredit >= this.dataCampaing.necessary_credit) {
-        // this.isBtnLoading = true
+        this.isBtnLoadingCreateCampaing = true
         
         const options = {
           scale: 3
@@ -304,8 +305,9 @@ export default {
             // doc.save('Reporte de campaña.pdf')
           }
         )
-        // this.isBtnLoading = false
+        
         this.$emit('onPreviewSmsSubmit')
+        this.isBtnLoadingCreateCampaing = false
         this.close()
       } else {
         const badRequest = {
