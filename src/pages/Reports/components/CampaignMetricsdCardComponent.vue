@@ -103,7 +103,7 @@ export default {
             }
             if (data.data.is_bidireccional > 0) {
               this.series.push(data.data.sending)
-              this.chartOptions.labels.push('Recibidos')
+              this.chartOptions.labels.push('RESPONDIDOS')
             }
 
             this.total = data.data.total
