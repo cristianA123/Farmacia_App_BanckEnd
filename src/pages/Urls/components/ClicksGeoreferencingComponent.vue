@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="padin">
     <v-card >
       <v-card-title>Georeferenciación de clics</v-card-title>
       <v-card-text>
         <div v-if="showChart">
           <apexchart
             type="donut"
-            width="400"
+            width="350"
             :options="chartOptions"
             :series="series"
           ></apexchart>
@@ -29,10 +29,10 @@ export default {
           type: 'donut'
         },
         responsive: [{
-          breakpoint: 480,
+          breakpoint: 400,
           options: {
             chart: {
-              width: 200
+              width: 400
             },
             legend: {
               position: 'bottom'

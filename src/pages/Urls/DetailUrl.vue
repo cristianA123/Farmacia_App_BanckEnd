@@ -26,7 +26,7 @@
         cols="12"
         xs="12"
         sm="6"
-        lg="4"
+        lg="8"
       >
         <DetailShortUrlComponent/>
       </v-col>

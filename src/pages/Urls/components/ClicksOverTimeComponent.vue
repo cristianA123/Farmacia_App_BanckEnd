@@ -6,7 +6,7 @@
         <div v-if="showChart">
           <apexchart
             type="area"
-            height="310"
+            height="230"
             :options="chartOptionsSpark3"
             :series="series"
           ></apexchart>

@@ -4,7 +4,7 @@
       <v-card-title>Dispositivos conectados</v-card-title>
       <v-card-text>
         <div>
-          <apexchart type="bar" height="250" :options="chartOptions" :series="series"></apexchart>
+          <apexchart type="bar" width="350" :options="chartOptions" :series="series"></apexchart>
         </div>
       </v-card-text>
     </v-card>
