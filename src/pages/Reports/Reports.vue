@@ -72,6 +72,7 @@ export default {
       BackendApi.post('/userCampaignBetween', filters).then((response) => {
         if (response.data.success) {
           this.reports = response.data.data
+          console.log(this.reports)
         }
         this.isLoading = false
       })
@@ -117,6 +118,7 @@ export default {
         BackendApi.post('/userCampaignBetween', payload).then((response) => {
           if (response.data.success) {
             this.reports = response.data.data
+            console.log(this.reports)
           }
           this.isLoading = false
         })

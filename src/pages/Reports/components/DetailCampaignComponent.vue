@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      SMS Enviados:
+      SMS Enviados: {{ campaign.id }}
       <v-spacer></v-spacer>
       <v-text-field
         v-model="searchText"
@@ -95,7 +95,6 @@
           </v-tooltip>
         </template>
         
-        <p>{{ campaigns }}</p>
       </v-data-table>
       <v-pagination
         v-model="pagination.current"
@@ -108,6 +107,7 @@
 </template>
 
 <script>
+import BackendApi from '@/services/backend.service'
 
 export default {
   name:'DetailCampaignComponent',
@@ -119,6 +119,10 @@ export default {
     campaigns: {
       type: Array,
       default: () => ({})
+    },
+    campaign: {
+      type: Object,
+      default: () => ({ id: 1 })
     },
     hasUrl: {
       type: Boolean,
@@ -139,6 +143,7 @@ export default {
   mounted () {
 
     this.ongetSms()
+    // this.totalCost()
   },
   methods: {
 
@@ -146,6 +151,18 @@ export default {
 
       this.$emit('ongetSms', this.searchText)
 
+    },
+    totalCost()  {
+      const payload = {
+        campaign_id: campaign.id
+      }
+
+      BackendApi.post('/totalCostCampaign', payload).then((response) => {
+        if (response.data.success) {
+          // this.reports = response.data.data
+          console.log(response.data.data)
+        }
+      })
     }
   }
 }

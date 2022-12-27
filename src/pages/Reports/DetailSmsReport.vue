@@ -53,6 +53,7 @@
     <DetailCampaignComponent
       ref="detailCampaignComponent"
       class="mb-4"
+      :campaign="$route.params.campaign"
       :campaigns="campaigns"
       :headers="headersForTable"
       :registers="registers"
@@ -222,6 +223,8 @@ export default {
         searchtext : searchText
       }
 
+      console.log(this.$route.params)
+
       if ( searchText !== '' ) {
         this.pagination.current = 1
       }
@@ -230,6 +233,7 @@ export default {
           if (response.data.success) {
 
             this.campaigns = response.data.data.data
+            console.log(this.campaigns)
             this.pagination.current = response.data.data.current_page
             this.pagination.total = response.data.data.last_page
             if ( response.data.data.data[0].url_id === null && response.data.data.data[0].long_url === null) {

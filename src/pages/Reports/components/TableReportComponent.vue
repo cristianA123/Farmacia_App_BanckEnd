@@ -199,7 +199,9 @@ export default {
   methods: {
     detalle(item) {
       
-      this.$router.push({ path: '/reports/sms/detail/' + item.id })
+      // this.$router.push({ path: '/reports/sms/detail/' + item.id,  params: { 'campana': item } })
+      // this.$router.push({ path: '/reports/sms/detail/' + item.id,  params: { username: 'erina' } })
+      this.$router.push({ name: 'reports-sms',  params: { campaign_id: item.id, campaign: item } })
     },
     downloadFile(item) { 
       window.location.assign(process.env.VUE_APP_BACKEND_ENDPOINT)
