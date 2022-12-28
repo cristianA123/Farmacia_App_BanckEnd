@@ -53,7 +53,7 @@
     <DetailCampaignComponent
       ref="detailCampaignComponent"
       class="mb-4"
-      :campaign="$route.params.campaign"
+      :total-cost-sms="totalCostSms"
       :campaigns="campaigns"
       :headers="headersForTable"
       :registers="registers"
@@ -64,6 +64,7 @@
     <DetailSmsReceivedCampaignComponent
       v-if="!!is_bidireccional"
       ref="detailCampaignComponent"
+      :total-cost-sms-received="totalCostSmsReceived"
       :campaigns="smsReceiveds"
       :registers="registers"
       :pagination="paginationSmsReceived"
@@ -119,8 +120,9 @@ export default {
       allSmsReceivedOfCampaing: [],
       search: '',
       searchSmsReceived: '',
-      isLoadingDownload: false
-
+      isLoadingDownload: false,
+      totalCostSms: 0,
+      totalCostSmsReceived: 0
     }
   },
   computed:{
@@ -158,6 +160,8 @@ export default {
   },
   mounted() {
     this.ongetSms()
+    this.getTotalCostSms()
+    this.getTotalCostSmsReceived()
   },
   methods: {
     file_to_json () {
@@ -347,6 +351,28 @@ export default {
           doc.save('Reporte de campaña.pdf')
         }
       )
+    },
+    getTotalCostSms()  {
+      const payload = {
+        campaign_id: this.$route.params.campaign_id
+      }
+
+      BackendApi.post('/totalCostCampaign', payload).then((response) => {
+        if (response.data.success) {
+          this.totalCostSms = response.data.data[0].total_cost
+        }
+      })
+    },
+    getTotalCostSmsReceived()  {
+      const payload = {
+        campaign_id: this.$route.params.campaign_id
+      }
+
+      BackendApi.post('/totalCostCampaignSmsReceived', payload).then((response) => {
+        if (response.data.success) {
+          this.totalCostSmsReceived = response.data.data[0].total_cost
+        }
+      })
     }
   }
 }

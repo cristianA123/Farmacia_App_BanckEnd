@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      SMS Respondidos:
+      SMS Respondidos: {{ totalCostSmsReceived }}
       <v-spacer></v-spacer>
       <v-text-field
         v-model="searchText"
@@ -88,6 +88,10 @@ export default {
     campaigns: {
       type: Array,
       default: () => ({})
+    },
+    totalCostSmsReceived: {
+      type: Number,
+      default: 0
     },
     hasUrl: {
       type: Boolean,

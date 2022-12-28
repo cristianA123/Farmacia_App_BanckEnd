@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      SMS Enviados: {{ campaign.id }}
+      SMS Enviados: {{ totalCostSms }}
       <v-spacer></v-spacer>
       <v-text-field
         v-model="searchText"
@@ -120,9 +120,9 @@ export default {
       type: Array,
       default: () => ({})
     },
-    campaign: {
-      type: Object,
-      default: () => ({ id: 1 })
+    totalCostSms: {
+      type: Number,
+      default: 0
     },
     hasUrl: {
       type: Boolean,
@@ -151,18 +151,6 @@ export default {
 
       this.$emit('ongetSms', this.searchText)
 
-    },
-    totalCost()  {
-      const payload = {
-        campaign_id: campaign.id
-      }
-
-      BackendApi.post('/totalCostCampaign', payload).then((response) => {
-        if (response.data.success) {
-          // this.reports = response.data.data
-          console.log(response.data.data)
-        }
-      })
     }
   }
 }
