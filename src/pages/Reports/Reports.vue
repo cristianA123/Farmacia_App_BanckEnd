@@ -20,6 +20,7 @@
     <TableReportComponent
       :headers="headers"
       :items="reports"
+      :total-cost-campaign="totalCostCampaign"
       :search_text="search_text"
       :is-loading="isLoading"
       @onfilter="on_filter"
@@ -58,7 +59,8 @@ export default {
         { text: 'Acciones', value: 'actions' }
       ],
       isLoading: false,
-      isLoadingDownload: false
+      isLoadingDownload: false,
+      totalCostCampaign: 0
     }
   },
   mounted() {
@@ -67,12 +69,16 @@ export default {
   },
   methods: {
     getReports(filters) {
+      this.totalCostCampaign = 0
+
       this.isLoading = true
       
       BackendApi.post('/userCampaignBetween', filters).then((response) => {
         if (response.data.success) {
           this.reports = response.data.data
-          console.log(this.reports)
+          this.reports.forEach((element) => {
+            this.totalCostCampaign += element.total_cost
+          })
         }
         this.isLoading = false
       })
@@ -106,6 +112,8 @@ export default {
     },
     onreadyusers (users) {
 
+      this.totalCostCampaign = 0
+
       this.isLoading = true
       const payload = {
         users: users,
@@ -118,7 +126,9 @@ export default {
         BackendApi.post('/userCampaignBetween', payload).then((response) => {
           if (response.data.success) {
             this.reports = response.data.data
-            console.log(this.reports)
+            this.reports.forEach((element) => {
+              this.totalCostCampaign += element.total_cost
+            })
           }
           this.isLoading = false
         })
