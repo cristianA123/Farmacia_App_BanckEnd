@@ -70,7 +70,7 @@ export default {
   methods: {
     getReports(filters) {
       this.totalCostCampaign = 0
-
+      this.reports = []
       this.isLoading = true
       
       BackendApi.post('/userCampaignBetween', filters).then((response) => {
