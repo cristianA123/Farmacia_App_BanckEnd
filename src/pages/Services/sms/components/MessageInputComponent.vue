@@ -134,6 +134,10 @@ export default {
   watch: {
     message: function () {
       
+      if (!this.message.includes('[CUSTOM_URL]')) {
+        this.long_url = ''
+      }
+      
       this.tranforMessageForSms()
     }
   },
@@ -190,7 +194,7 @@ export default {
       this.message = this.message + ' ' + url + ' '
       document.getElementById('message').focus()
     },
-    onMakeUrl(url, url_id,long_url) {
+    onMakeUrl(url, url_id, long_url) {
       this.long_url = long_url
       this.message = this.message + ' [' + 'CUSTOM_URL' + '] '
       document.getElementById('message').focus()

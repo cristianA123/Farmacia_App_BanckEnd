@@ -16,11 +16,12 @@
         </v-card-title>
 
         <v-card-text>
+          <!-- ELIJA UNA URL -->
           <v-col
             v-if="url == 0"
-            class="d-flex"
+            class="m-0 p-0"
             cols="12"
-            sm="6"
+            sm="12"
           >
             <v-select
               v-model="urlSelected"
@@ -33,7 +34,7 @@
             ></v-select>
           </v-col>
 
-          <!-- task form -->
+          <!-- URL PERSONALIZADA -->
           <div
             v-if="url == 1"
           >
@@ -42,17 +43,13 @@
               class="px-2 py-1"
               :rules="[
                 v => !!v || 'La URL es obligatorio',
-                v => isURL(v) || 'URL no es valido'
+                v => isURL(v) || 'URL no es válido'
               ]"
-              solo
-              flat
               placeholder="Ingrese URL"
               autofocus
               outlined
               required
             ></v-text-field>
-
-            <v-divider></v-divider>
           </div>
 
         </v-card-text>
@@ -80,7 +77,7 @@ export default {
       long_url: '',
       url:'',
       url_id: '',
-      items: ['Foo', 'Bar', 'Fizz', 'Buzz']
+      items: []
     }
   },
   computed: {
@@ -118,8 +115,8 @@ export default {
       this.dialog = false
     },
     save() {
-
       if (this.$refs.formNewUrl.validate()) {
+        // URL SELECCIONADA
         if (this.url === 0) {
           this.urls.map( ( url ) => {
             if ( url.id === this.urlSelected) {
@@ -128,19 +125,12 @@ export default {
             }
   
           } )
-  
-          console.log(this.url_id)
-          console.log(this.url)
-          console.log(this.urlSelected)
           this.$emit('onChooseUrl', this.url,this.url_id)
-        } else {
-          this.$emit('onMakeUrl', this.url,this.url_id,this.long_url)
-
-          console.log( this.long_url)
+        } else { //URL PERSONALIZADA
+          this.$emit('onMakeUrl', this.url, this.url_id, this.long_url)
         }
 
         this.close()
-
       }
     },
     isURL(str) {
