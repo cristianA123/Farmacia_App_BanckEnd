@@ -134,6 +134,10 @@ export default {
   watch: {
     message: function () {
       
+      if (!this.message.includes('[CUSTOM_URL]')) {
+        this.long_url = ''
+      }
+      
       this.tranforMessageForSms()
     }
   },
@@ -149,7 +153,7 @@ export default {
       this.messageExample = this.messageExample.replace('[CUSTOM_URL]', process.env.VUE_APP_EXAMPLE_URL_CUT_PE)
 
       let estandarText = ''
-      const filtro = '%_@$ !#\'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZ¿abcdefghijklmnopqrstuvwxyz{}[]áéíóú\'ñ'
+      const filtro = '%_@$ !#\'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚ¿abcdefghijklmnopqrstuvwxyz{}[]áéíóú\'ñ'
       
       for (let i = 0; i < this.message.length; i++) {
         if (filtro.indexOf(this.message.charAt(i)) !== -1) {
@@ -190,7 +194,7 @@ export default {
       this.message = this.message + ' ' + url + ' '
       document.getElementById('message').focus()
     },
-    onMakeUrl(url, url_id,long_url) {
+    onMakeUrl(url, url_id, long_url) {
       this.long_url = long_url
       this.message = this.message + ' [' + 'CUSTOM_URL' + '] '
       document.getElementById('message').focus()
