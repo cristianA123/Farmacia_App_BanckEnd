@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" width="600">
+  <v-dialog v-model="dialog" width="600" persistent>
     <v-card>
       <v-form
         ref="formNewUrl"
@@ -42,6 +42,7 @@
               class="px-2 py-1"
               :rules="[
                 v => !!v || 'La URL es obligatorio',
+                v => v.length < 500 || 'La URL es debe ser menor a 500 caracteres',
                 v => isURL(v) || 'URL no es valido'
               ]"
               solo
