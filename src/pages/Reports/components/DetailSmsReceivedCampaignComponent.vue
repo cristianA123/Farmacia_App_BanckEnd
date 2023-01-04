@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      SMS Respondidos: {{ totalCostSmsReceived }}
+      SMS Respondidos: {{ totalCostSmsReceived | formatCurrency(configFormat) }}
       <v-spacer></v-spacer>
       <v-text-field
         v-model="searchText"
@@ -129,6 +129,16 @@ export default {
     },
     openChatModal(item) {
       this.$refs.showModalChat.open(item.phone)
+    },
+    configFormat () {
+      return {
+        decimalDigits: 0,
+        decimalSeparator: '.',
+        thousandsSeparator: ',',
+        currencySymbol: '',
+        currencySymbolNumberOfSpaces: 0,
+        currencySymbolPosition: 'left'
+      }
     }
   }
 }

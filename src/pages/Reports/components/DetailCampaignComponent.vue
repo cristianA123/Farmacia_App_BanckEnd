@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      SMS Enviados: {{ totalCostSms }}
+      SMS Enviados: {{ totalCostSms | formatCurrency(configFormat) }}
       <v-spacer></v-spacer>
       <v-text-field
         v-model="searchText"
@@ -151,6 +151,16 @@ export default {
 
       this.$emit('ongetSms', this.searchText)
 
+    },
+    configFormat () {
+      return {
+        decimalDigits: 0,
+        decimalSeparator: '.',
+        thousandsSeparator: ',',
+        currencySymbol: '',
+        currencySymbolNumberOfSpaces: 0,
+        currencySymbolPosition: 'left'
+      }
     }
   }
 }

@@ -10,7 +10,7 @@
 
     <v-card>
       <v-card-title>
-        Resultados:
+        Resultados: {{ totalCostCampaign | formatCurrency(configFormat) }}
         <v-spacer></v-spacer>
         <v-text-field
           v-model="searchQuery"
@@ -174,6 +174,10 @@ export default {
     isLoading: {
       type: Boolean,
       default: false
+    },
+    totalCostCampaign: {
+      type: Number,
+      default: 0
     }
   },
   data() {
