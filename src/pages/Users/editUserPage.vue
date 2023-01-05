@@ -399,6 +399,7 @@ export default {
         whatsapp:false,
         mailling:false,
         channel_id: null,
+        channel_id_bi: null,
         credit: 0,
         provider_id: 1
       }
@@ -453,11 +454,15 @@ export default {
             text: response.data.data.company.company,
             color: this.colors[this.nonce - 1]
           }
+
+          console.log(this.user)  
   
           this.model = data
           this.nonce++
 
           this.services = response.data.data.father_services
+          this.user.channel_id = response.data.data.channels[0].id
+          this.user.channel_id_bi = response.data.data.channels[1].id
         }
       })
     },
@@ -494,6 +499,7 @@ export default {
           services: this.services,
           credit: this.user.credit,
           channel_id: this.user.channel_id,
+          channel_id_bi: this.user.channel_id_bi,
           user_id: this.$route.params.userId,
           company_id: this.model.id
         }
