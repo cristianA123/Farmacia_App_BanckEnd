@@ -1,16 +1,17 @@
 <template>
   <v-dialog v-model="dialog" width="600" persistent>
-    <v-card>
+    <v-card
+    >
       <v-form
         ref="formNewUrl"
         lazy-validation
         @submit.prevent="save()"
       >
+        <v-card-title>
+          ¡Importante!
+        </v-card-title>
         <v-card-text>
-          <v-alert type="info">
-            La función "Bidireccional" permite recibir respuestas SMS a los mensajes enviados en su campaña.
-          </v-alert>
-          <p>Cada mensaje recibido se contabilizará como 01 crédito.</p>
+          <h4>La función "Bidireccional" permite recibir respuestas SMS a los mensajes enviados en su campaña. Cada mensaje recibido se contabilizará como 01 crédito.</h4>
         </v-card-text>
   
         <v-card-actions class="pa-2">
