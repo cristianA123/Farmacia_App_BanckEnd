@@ -89,6 +89,15 @@
                   class="my-0 py-0"
                   lg="6"
                 >
+                  <v-switch
+                    v-model="editedItem.bidirectional"
+                    label="Bidireccional"
+                  ></v-switch>
+                </v-col>
+                <v-col
+                  class="my-0 py-0"
+                  lg="6"
+                >
                   <v-text-field
                     v-model="editedItem.dial"
                     :error-messages="isValidDial"
@@ -240,7 +249,8 @@ export default {
       authorization: '',
       var1: '',
       var2: '',
-      provider_id: null
+      provider_id: null,
+      bidirectional: false
     },
     defaultItem: {
       name: '',
@@ -252,7 +262,8 @@ export default {
       authorization: '',
       var1: '',
       var2: '',
-      provider_id: null
+      provider_id: null,
+      bidirectional: false
     }
   }),
 

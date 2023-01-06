@@ -11,9 +11,24 @@
           v-model="user.channel_id"
           item-text="name"
           item-value="id"
-          label="Canal"
+          label="Canal Unidireccional"
           :items="channels"
           :error-messages="isValidChannel_id"
+          outlined
+          hide-details
+        ></v-select>
+      </v-col>
+      <v-col
+        class="ml-0 pl-0"
+      >
+        <v-select
+          v-if="isAdmin"
+          v-model="user.channel_id_bi"
+          item-text="name"
+          item-value="id"
+          label="Canal Bidireccional"
+          :items="channelsBi"
+          :rules="[v => !!v || 'Es obligatorio el canal Bidireccioanal']"
           outlined
           hide-details
         ></v-select>
@@ -53,7 +68,8 @@ export default {
   },
   data() {
     return {
-      channels: []
+      channels: [],
+      channelsBi: []
     }
   },
   computed: {
@@ -70,12 +86,20 @@ export default {
   },
   mounted() {
     this.getChannels()
+    this.getChannelsBi()
   },
   methods: {
     getChannels() {
-      BackendApi.get('/channel').then((response) => {
+      BackendApi.get('/channelUni').then((response) => {
         if (response.data.success) {
           this.channels = response.data.data
+        }
+      })
+    },
+    getChannelsBi() {
+      BackendApi.get('/channelBi').then((response) => {
+        if (response.data.success) {
+          this.channelsBi = response.data.data
         }
       })
     }
