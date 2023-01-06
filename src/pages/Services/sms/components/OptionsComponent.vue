@@ -10,6 +10,7 @@
         class="ma-0 pa-0"
         prepend-icon="mdi-swap-vertical"
         label="Bidireccional"
+        @change="showDetail"
       />
 
       <v-switch
@@ -58,15 +59,18 @@
         </v-btn>
       </v-row>
     </v-card-actions>
+    <DialogInfoBidirectional ref="dialogInfoBidirectional"/>
   </v-card>
 </template>
 
 <script>
 import DateTimePicker from '@/components/common/DateTimePicker'
+import DialogInfoBidirectional from './DialogInfoBidirectional.vue'
 
 export default {
   components: {
-    DateTimePicker
+    DateTimePicker,
+    DialogInfoBidirectional
   },
   props: {
     errors: {
@@ -117,6 +121,12 @@ export default {
     },
     onSubmit() {
       this.$emit('onSubmit')
+    },
+    showDetail() {
+      
+      if (this.is_bidireccional) {
+        this.$refs.dialogInfoBidirectional.open()
+      }
     }
   }
 }

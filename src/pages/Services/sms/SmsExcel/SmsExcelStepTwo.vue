@@ -273,40 +273,40 @@ export default {
       this.$refs.dialogPreview.open()
     },
     PreviewSmsSubmit() {
-      if ($cookies.get('user').channel_id) {
-        const payload = {
-          service_id: 1,
-          campaign_type_id: 3,
-          name: this.$store.state.sms.name,
-          destinations: this.$store.state.sms.file.id,
-          message: this.message,
-          url_id: this.url_id,
-          options: this.options,
-          long_url: this.long_url
-        }
-
-        BackendApi.post('/campaign', payload)
-          .then((response) => {
-            if (response.data.success) {
-              this.$store.dispatch('app/showToast', response.data.message)
-              this.$router.push({ name: 'reports' })
-            }
-          })
-          .catch( (error) => {
-
-            this.$store.dispatch('app/showToast', 'No se pudo enviar la campaña, revise los datos ingresados')
-            this.errors = error.response.data.errors
-          } )
-          
-      } else {
-        const badRequest = {
-          error :{
-            message:  'No se puede crear campaña con este usuario comuniquese con el administrador.'
-          }
-        }
-
-        this.$store.dispatch('app/showError', badRequest)
+      // if ($cookies.get('user').channel_id) {
+      const payload = {
+        service_id: 1,
+        campaign_type_id: 3,
+        name: this.$store.state.sms.name,
+        destinations: this.$store.state.sms.file.id,
+        message: this.message,
+        url_id: this.url_id,
+        options: this.options,
+        long_url: this.long_url
       }
+
+      BackendApi.post('/campaign', payload)
+        .then((response) => {
+          if (response.data.success) {
+            this.$store.dispatch('app/showToast', response.data.message)
+            this.$router.push({ name: 'reports' })
+          }
+        })
+        .catch( (error) => {
+
+          this.$store.dispatch('app/showToast', 'No se pudo enviar la campaña, revise los datos ingresados')
+          this.errors = error.response.data.errors
+        } )
+          
+      // } else {
+      //   const badRequest = {
+      //     error :{
+      //       message:  'No se puede crear campaña con este usuario comuniquese con el administrador.'
+      //     }
+      //   }
+
+      //   this.$store.dispatch('app/showError', badRequest)
+      // }
     },
     onChangeMessage(msg, msgExample, url_id, long_url) {
       this.message = msg
