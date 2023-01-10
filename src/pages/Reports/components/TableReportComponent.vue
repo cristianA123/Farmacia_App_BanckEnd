@@ -119,7 +119,32 @@
         </template>
 
         <template v-slot:[`item.user_name`]="{ item }">
-          <userAvatar :user="{ name: item.user, company: item.company, email:item.email }" />
+          
+          <userAvatar v-if="item.campaign_type_id !== 4" :user="{ name: item.user, company: item.company, email:item.email }" />
+
+          <div v-else class="d-flex align-center py-1">
+            <v-avatar size="40" color="red">
+              <span class="white--text text-h5"><v-icon color="white">mdi-api</v-icon></span>
+            </v-avatar>
+            <v-col class="py-0 my-0">
+              <v-row>
+                <div class="ml-1 caption font-weight-bold">
+                  {{ item.user }}
+                </div>
+              </v-row>
+              <v-row>
+                <div class="ml-1 caption">
+                  {{ item.email }}
+                </div>
+              </v-row>
+              <v-row>
+                <div class="ml-1 caption">
+                  {{ item.company }}
+                </div>
+              </v-row>
+            </v-col>
+          </div>
+
         </template>
 
         <template v-slot:[`item.actions`]="{ item }">
