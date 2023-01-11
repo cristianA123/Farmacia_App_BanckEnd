@@ -12,6 +12,12 @@ export default [{
   name: 'register-user',
   props: true,
   component: () => import('@/pages/Users/editUserPage.vue')
+},
+{
+  path: '/config/users/endpoint/:userId?',
+  name: 'endpoint-user',
+  props: true,
+  component: () => import('@/pages/Users/components/EndPointComponent.vue')
 }, 
 {
   path: '/config/user',

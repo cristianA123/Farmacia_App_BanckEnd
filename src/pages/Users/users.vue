@@ -99,6 +99,14 @@
                 Modificar
               </v-list-item>
             </v-list>
+            <v-list>
+              <v-list-item
+                link
+                @click="showEndPoint(item.id)"
+              >
+                EndPoint
+              </v-list-item>
+            </v-list>
             <v-list
               v-if="item.status"
             >
@@ -209,7 +217,6 @@ export default {
     userAvatar,
     EmptyItems,
     BtnToReload
-
   },
   data() {
     return {
@@ -357,7 +364,10 @@ export default {
       } else {
         this.items_users_aux = this.items.filter( (user) => user.name.includes(text) || user.email.includes(text))
       }
-    }  
+    },
+    showEndPoint(id) {
+      this.$router.push({ path: '/config/users/endpoint/' + id })
+    }
   }
 }
 </script>
