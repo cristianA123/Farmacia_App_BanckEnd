@@ -479,9 +479,12 @@ export default {
             this.model = data
             this.nonce++
           }
-
-          if ( response.data.data?.channel_id) {
-            this.user.channel_id = response.data.data.channel_id
+          console.log(response.data.data?.channels)
+          if ( response.data.data?.channels[0]) {
+            this.user.channel_id = response.data.data.channels[0].id
+          }
+          if ( response.data.data?.channels[1]) {
+            this.user.channel_id_bi = response.data.data.channels[1].id
           }
 
           this.services = response.data.data?.father_services || []
