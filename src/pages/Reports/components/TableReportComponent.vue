@@ -10,7 +10,7 @@
 
     <v-card>
       <v-card-title>
-        Resultados: {{ totalCostCampaign | formatCurrency(configFormat) }}
+        Resultados: {{ totalCostCampaign | formatCurrency(configFormat) }}<small class="ml-1"> creditos</small>
         <v-spacer></v-spacer>
         <v-text-field
           v-model="searchQuery"

@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      SMS Enviados: {{ totalCostSms | formatCurrency(configFormat) }}
+      SMS Enviados: {{ totalCostSms | formatCurrency(configFormat) }} <small class="ml-1"> creditos</small>
       <v-spacer></v-spacer>
       <v-text-field
         v-model="searchText"
@@ -76,12 +76,14 @@
               <v-icon 
                 v-if="item.status === 'DELIVERED'"
                 v-bind="attrs"
+                color="success"
                 v-on="on"
               >mdi-email-check-outline
               </v-icon>
               <v-icon 
                 v-else
                 v-bind="attrs"
+                color="error"
                 v-on="on"
               >mdi-email-remove-outline
               </v-icon>

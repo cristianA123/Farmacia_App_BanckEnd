@@ -106,7 +106,7 @@
                 <span>Ver archivo</span>
               </v-tooltip>
 
-              <v-tooltip bottom>
+              <!-- <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
                   <v-btn
                     icon
@@ -117,7 +117,7 @@
                   </v-btn>
                 </template>
                 <span>Copiar Link</span>
-              </v-tooltip>
+              </v-tooltip> -->
             </v-card-actions>
           </v-card>
         </v-col>
