@@ -108,7 +108,7 @@ export default {
       searchText: '',
       service_id: null,
       headers:  [
-        { text: 'Telefono', value: 'phone' },
+        { text: 'Teléfono', value: 'phone' },
         { text: 'Mensaje', value: 'content' },
         { text: 'Chat', value: 'chat' },
         { text: 'Fecha', value: 'created' },

@@ -132,20 +132,20 @@ export default {
     headersForTable () {
       if (this.has_url) {
         return [
-          { text: 'Telefono', value: 'phone' },
+          { text: 'Teléfono', value: 'phone' },
           { text: 'Mensaje', value: 'content' },
           { text: 'Fecha', value: 'created' },
           { text: 'LINK PERSONALIZADO', value: 'times_open' },
-          { text: 'Crédito', value: 'credit' },
+          { text: 'Créditos', value: 'credit' },
           { text: 'Operador', value: 'carrier' },
           { text: 'Estado', value: 'status' }
         ]
       } else {
         return  [
-          { text: 'Telefono', value: 'phone' },
+          { text: 'Teléfono', value: 'phone' },
           { text: 'Mensaje', value: 'content' },
           { text: 'Fecha', value: 'created' },
-          { text: 'Crédito', value: 'credit' },
+          { text: 'Créditos', value: 'credit' },
           { text: 'Operador', value: 'carrier' },
           { text: 'Estado', value: 'status' }
         ]
@@ -310,7 +310,7 @@ export default {
         data.push({
           sheet: 'Respondidos',
           columns: [
-            { label: 'Telefono', value: 'phone' },
+            { label: 'Teléfono', value: 'phone' },
             { label: 'Mensaje', value: 'content' },
             { label: 'Fecha', value: 'created' },
             { label: 'Credito', value: 'credit' }

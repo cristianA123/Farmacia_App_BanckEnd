@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      SMS Enviados: {{ totalCostSms | formatCurrency(configFormat) }} <small class="ml-1"> creditos</small>
+      SMS Enviados: {{ totalCostSms | formatCurrency(configFormat) }} <small class="ml-1"> créditos</small>
       <v-spacer></v-spacer>
       <v-text-field
         v-model="searchText"
