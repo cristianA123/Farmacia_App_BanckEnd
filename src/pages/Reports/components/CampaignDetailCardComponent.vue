@@ -114,7 +114,7 @@ export default {
     },
     getDate() {
           
-      return moment(this.dataCampaign?.campaing?.updated_at).format('Y-M-D H:M:S') || ''
+      return moment(this.dataCampaign?.campaing?.updated_at).format('DD-MM-YYYY H:mm:ss') || ''
     }
   },
   created() {

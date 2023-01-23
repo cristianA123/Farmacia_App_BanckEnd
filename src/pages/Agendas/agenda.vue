@@ -61,6 +61,11 @@
               </v-badge>
             </template>
           </v-list-item-action>
+          <v-list-item-action class="ml-0">
+            <template>
+              <v-icon @click="confirmDelete(agenda)">mdi-delete</v-icon>
+            </template>
+          </v-list-item-action>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -87,6 +92,50 @@
       ref="newAgenda"
       @onCreatedAgenda="onCreatedAgenda"
     />
+
+    <template>
+      <div class="text-center">
+        <v-dialog
+          v-model="dialogConfirm"
+          persistent
+          max-width="450"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-list-item
+              link
+              v-bind="attrs"
+              v-on="on"
+            >
+              Eliminar
+            </v-list-item>
+          </template>
+          <v-card>
+            <v-card-title class="text-h5">
+              Seguro de eliminar esta agenda?
+            </v-card-title>
+            <v-card-text>Una vez eliminado esta agenda, no podrá recuperarla. Las campañas que se esten procesando y que hagan uso de esta agenda se enviarán con normalidad.</v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="secondary"
+                text
+                @click="dialogConfirm = false"
+              >
+                Cancelar
+              </v-btn>
+              <v-btn
+                color="success"
+                text
+                @click="deleteItem()"
+              >
+                Confirmo
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+
+        </v-dialog>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -105,6 +154,7 @@ export default {
     return {
       agendas: [],
       agendaSelected: 1,
+      agendaForDelete: {},
       drawer: null,
       dialogConfirm: false,
       isLoading: false,
@@ -143,17 +193,22 @@ export default {
       this.$refs.newAgenda.open(agenda)
     },
     confirmDelete(agenda) {
-      this.deleteItem(agenda)
+      this.dialogConfirm = true
+      this.agendaForDelete = agenda
+      console.log(agenda)
+      // this.deleteItem(agenda)
     },
-    deleteItem(agenda) {
-      BackendApi.delete('/agenda/' + agenda.id).then((response) => {
+    deleteItem() {
+      BackendApi.delete('/agenda/' + this.agendaForDelete.id).then(async (response) => {
         if (response.data.success) {
           this.$store.dispatch(
             'app/showToast',
             'Agenda eliminada exitosamente'
           )
           this.dialogConfirm = false
-          this.getAgendas()
+          // this.$router.push({ name: 'contactos-agenda' })
+          await this.getAgendas()
+          this.$router.push({ path: '/tools/agendas/' + this.agendas[0].id })
         } else {
           this.$store.dispatch('app/showToast', response.data.message)
         }
