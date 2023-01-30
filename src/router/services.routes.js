@@ -41,6 +41,11 @@ export default [
     name: 'sms-excel-step-two',
     component: () => import('@/pages/Services/sms/SmsExcel/SmsExcelStepTwo.vue')
   },
+  {
+    path: '/services/sms/create_campaing/sms_scheduled',
+    name: 'sms-calendarizado',
+    component: () => import('@/pages/Services/sms/SmsScheduled/SmsScheduledStepOne.vue')
+  },
   //REPORTS
   {
     path: '/reports',

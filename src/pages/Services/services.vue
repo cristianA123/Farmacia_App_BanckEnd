@@ -73,6 +73,12 @@ export default {
             icon: 'mdi-contacts-outline',
             description: 'Utiliza una de tus agendas de contactos',
             path: 'sms-agendas'
+          },
+          {
+            name: 'Calendarizado',
+            icon: 'mdi-contacts-outline',
+            description: 'Utiliza una de tus agendas de contactos',
+            path: 'sms-calendarizado'
           }
         ],
         [
