@@ -143,7 +143,7 @@ export default {
       options: {
         is_push: false,
         scheduled: null,
-        bidireccional: false
+        is_bidireccional: false
       },
       isFileLoading: false,
       errorMessageFile: null,
@@ -188,7 +188,7 @@ export default {
 
       console.log(payload)
 
-      BackendApi.post('/calculateMessageCreditsSmsExcel', payload).then((response) => {
+      BackendApi.post('/calculateMessageCreditsSmsScheduledExcel', payload).then((response) => {
         if (response.data.success) {
           console.log(response.data.data)
           this.dataCampaing = response.data.data
@@ -266,7 +266,7 @@ export default {
       // if ($cookies.get('user').channel_id) {
       const payload = {
         service_id: 1,
-        campaign_type_id: 3,
+        // campaign_type_id: 5,
         name: this.$store.state.sms.name,
         destinations: this.$store.state.sms.file.id,
         message: this.message,
@@ -275,7 +275,7 @@ export default {
         long_url: this.long_url
       }
 
-      BackendApi.post('/campaign', payload)
+      BackendApi.post('/campaign/scheduled', payload)
         .then((response) => {
           if (response.data.success) {
             this.$store.dispatch('app/showToast', response.data.message)
