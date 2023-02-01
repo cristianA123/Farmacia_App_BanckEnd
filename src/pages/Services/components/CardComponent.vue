@@ -129,7 +129,7 @@ export default {
 }
 
 .btn-active:hover{
-  color: #E29156;
+  color: #FF7901;
   background: #FFFFFF;
 }
 

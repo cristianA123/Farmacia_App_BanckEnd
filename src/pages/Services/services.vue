@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column flex-grow-1">
-    <div class="d-flex align-center py-3">
+    <div class="d-flex align-center py-3 px-2">
       <div class="display-1">Selecciona el servicio a utilizar</div>
       <v-spacer></v-spacer>
 
@@ -14,7 +14,7 @@
         <v-col
           v-for="(service ) in services"
           :key="service.id"
-          class="pl-0"
+          class="pa-2"
           cols="12"
           sm="6"
           md="6"
