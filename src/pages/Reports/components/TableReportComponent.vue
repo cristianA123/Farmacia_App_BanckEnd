@@ -111,6 +111,16 @@
             AGENDADO
           </v-chip>
 
+          <v-chip
+            v-if="item.status === 5"
+            class="ma-2"
+            color="primary"
+            text-color="white"
+            small
+          >
+            CALENDARIZADO
+          </v-chip>
+
         </template>
 
         <template v-slot:[`item.sms_credit_send`]="{ item }">

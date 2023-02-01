@@ -252,59 +252,59 @@ export default {
           scale: 3
         }
 
-        await html2canvas(document.getElementById('preview-sms-dialog'),options).then(
-          (canvas) => {
-            const imgData = canvas.toDataURL('image/png')
-            const doc = new jspdf('p', 'pt', 'a4')
-            const bufferX = 25
-            const bufferY = 255
-            const imgProps = doc.getImageProperties(imgData)
-            const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX
-            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
-            const sizeHead = 16
+        // await html2canvas(document.getElementById('preview-sms-dialog'),options).then(
+        //   (canvas) => {
+        //     const imgData = canvas.toDataURL('image/png')
+        //     const doc = new jspdf('p', 'pt', 'a4')
+        //     const bufferX = 25
+        //     const bufferY = 255
+        //     const imgProps = doc.getImageProperties(imgData)
+        //     const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX
+        //     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
+        //     const sizeHead = 16
   
-            doc.setFontSize(sizeHead)
-            const optionsHeader = {
-              align: 'center',
-              font: 'helvetica'
-            }
+        //     doc.setFontSize(sizeHead)
+        //     const optionsHeader = {
+        //       align: 'center',
+        //       font: 'helvetica'
+        //     }
   
-            doc.text('Campaña creada', pdfWidth / 2, 40, optionsHeader)
-            doc.setFontSize(11)
-            doc.text('FECHA Y HORA:' + ' ' + moment().format('MMMM Do YYYY, h:mm:ss a') , 25, 70)
-            doc.setFontSize(12)
-            doc.text('DATOS DEL USUARIO:', 25, 90)
-            doc.setFontSize(11)
-            doc.text('NOMBRE: ' +  $cookies.get('user').name , 25, 110)
-            doc.text('CORREO: ' +  $cookies.get('user').email , 25, 125)
-            doc.text('EMPRESA: ' +  $cookies.get('user').company?.company , 25, 140)
-            doc.setFontSize(12)
-            doc.text('DATOS DE LA CAMPAÑA:', 25, 160)
-            doc.setFontSize(11)
-            doc.text('NOMBRE: ' +  this.$store.state.sms.name , 25, 180)
-            const textlines =  doc.setFontSize(11).splitTextToSize('MENSAJE: ' + this.messageExample, 540)
+        //     doc.text('Campaña creada', pdfWidth / 2, 40, optionsHeader)
+        //     doc.setFontSize(11)
+        //     doc.text('FECHA Y HORA:' + ' ' + moment().format('MMMM Do YYYY, h:mm:ss a') , 25, 70)
+        //     doc.setFontSize(12)
+        //     doc.text('DATOS DEL USUARIO:', 25, 90)
+        //     doc.setFontSize(11)
+        //     doc.text('NOMBRE: ' +  $cookies.get('user').name , 25, 110)
+        //     doc.text('CORREO: ' +  $cookies.get('user').email , 25, 125)
+        //     doc.text('EMPRESA: ' +  $cookies.get('user').company?.company , 25, 140)
+        //     doc.setFontSize(12)
+        //     doc.text('DATOS DE LA CAMPAÑA:', 25, 160)
+        //     doc.setFontSize(11)
+        //     doc.text('NOMBRE: ' +  this.$store.state.sms.name , 25, 180)
+        //     const textlines =  doc.setFontSize(11).splitTextToSize('MENSAJE: ' + this.messageExample, 540)
 
-            let verticalOffset = 195
+        //     let verticalOffset = 195
 
-            doc.text( textlines, 25, verticalOffset + 12 / 72)
-            verticalOffset += (textlines.length +  0.5) * 12 / 72
-            doc.addImage(imgData, 'JPEG',bufferX ,bufferY , pdfWidth, pdfHeight, undefined, 'FAST')
-            const formData = new FormData()
+        //     doc.text( textlines, 25, verticalOffset + 12 / 72)
+        //     verticalOffset += (textlines.length +  0.5) * 12 / 72
+        //     doc.addImage(imgData, 'JPEG',bufferX ,bufferY , pdfWidth, pdfHeight, undefined, 'FAST')
+        //     const formData = new FormData()
             
-            formData.append('file', doc.output('blob'))
+        //     formData.append('file', doc.output('blob'))
             
-            BackendApi.post('/send_email', formData)
-              .then((response) => {
-                if (response.data.success) {
-                  //alert('Se ha enviado el correo')
-                }
-              })
-              .catch( (error) => {
-                // this.$store.dispatch('app/showToast', 'No se pudo enviar el informe al email del usuario con datos de la campaña creada, verifique su correo')
-              } )
-            // doc.save('Reporte de campaña.pdf')
-          }
-        )
+        //     BackendApi.post('/send_email', formData)
+        //       .then((response) => {
+        //         if (response.data.success) {
+        //           //alert('Se ha enviado el correo')
+        //         }
+        //       })
+        //       .catch( (error) => {
+        //         // this.$store.dispatch('app/showToast', 'No se pudo enviar el informe al email del usuario con datos de la campaña creada, verifique su correo')
+        //       } )
+        //     // doc.save('Reporte de campaña.pdf')
+        //   }
+        // )
         
         this.$emit('onPreviewSmsSubmit')
         this.isBtnLoadingCreateCampaing = false
