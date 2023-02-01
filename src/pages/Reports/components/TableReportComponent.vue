@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <!-- search bar form -->
     <FiltersReportComponent
       @onfilter="onfilter"
