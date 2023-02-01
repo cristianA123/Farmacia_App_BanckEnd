@@ -8,7 +8,7 @@
     <!-- search bar -->
     <v-row class="pb-1">
       <v-col
-        class="col-12 col-lg-3 py-0 pr-0 d-flex justify-space-between"
+        class="col-12 col-lg-3 py-0 d-flex justify-space-between"
       >
 
         <ComboboxComponent 
@@ -23,7 +23,7 @@
 
       <v-col
         v-if="false"
-        class="col-12 col-lg-3 py-0 pr-0 d-flex justify-space-between"
+        class="col-12 col-lg-3 py-0 d-flex justify-space-between"
       >
 
         <ComboboxComponent 
@@ -37,7 +37,7 @@
       </v-col>
 
       <!-- date start -->
-      <v-col class="col-6 col-lg-3 py-0 pr-0 pd-flex justify-space-between">
+      <v-col class="col-6 col-lg-3 py-0 pd-flex justify-space-between">
         <v-dialog
           ref="dialogStart"
           v-model="modalDateRangeStart"
@@ -74,7 +74,7 @@
       </v-col>
 
       <!-- date end -->
-      <v-col class="col-6 col-lg-3 py-0 pr-0 d-flex justify-space-between">
+      <v-col class="col-6 col-lg-3 py-0 d-flex justify-space-between">
         <v-dialog
           ref="dialogEnd"
           v-model="modalDateRangeEnd"
@@ -111,7 +111,7 @@
       </v-col>
 
       <!-- btn search -->
-      <v-col class="col-12 col-lg-2 py-0 d-flex justify-space-between">
+      <v-col class="col-12 col-lg-3 py-0 d-flex justify-space-between">
         <v-btn
           class="flex-grow-1"
           color="success"
