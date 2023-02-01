@@ -2,8 +2,6 @@
   <v-col cols="12" lg="3" xl="3">
     <v-card
       height="200px"
-      color="light-blue darken-4"
-      dark
     >
       <v-card-title>
         Crédito {{ service }} consumido

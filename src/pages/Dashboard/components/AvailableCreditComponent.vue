@@ -1,7 +1,9 @@
 <template>
   <v-col cols="12" lg="6">
     <v-card
+      dark
       height="270px"
+      color="#FF7901"
       @click="detailAvailableCredit"
     >
       <v-card-title>

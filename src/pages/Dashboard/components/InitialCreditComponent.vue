@@ -1,8 +1,8 @@
 <template>
   <v-col cols="12" lg="6">
     <v-card
+      color="#1E1E35"
       dark
-      color="teal"
       height="270px"
     >
       <v-card-title>

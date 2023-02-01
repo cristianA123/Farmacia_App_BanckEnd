@@ -4,6 +4,7 @@
       outlined
       color="primary"
       class="ml-2"
+      small
       @click="reoad"
     >
       <v-icon>
