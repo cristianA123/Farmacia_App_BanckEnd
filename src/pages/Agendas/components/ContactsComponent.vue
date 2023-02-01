@@ -65,7 +65,7 @@
           <v-text-field
             v-model="searchText"
             v-debounce:10000="getContacts"
-            class="pa-2"
+            class="pa-2 mx-0"
             append-icon="mdi-magnify"
             solo
             placeholder="Ej.: Filtrar por numero, nombre1, nombre2,  email, apellido1, apellido2 etc" 
@@ -100,31 +100,34 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
-              <v-spacer></v-spacer>
               <v-menu offset-y left transition="slide-y-transition">
                 <template v-slot:activator="{ on }">
-                  <BtnToReload class="mr-3" />  
-                  <v-btn
-                    outlined
-                    color="primary"
-                    :loading="loadingDownloadExcel"
-                    @click="downloadExcel"
-                  >
-                    <v-icon>mdi-progress-download</v-icon>
-                  </v-btn>
-                  <v-btn 
-                    class="mr-2"
-                    color="primary"
-                    v-on="on"
-                  >
-                    <v-icon
-                      left
-                      dark
+                  <v-row class="align-center justify-center">
+                    <v-btn 
+                      class="mx-0"
+                      color="primary"
+                      v-on="on"
                     >
-                      mdi-plus
-                    </v-icon>
-                    Nuevos contactos
-                  </v-btn>
+                      <v-icon
+                        left
+                        dark
+                      >
+                        mdi-plus
+                      </v-icon>
+                      Nuevos contactos
+                    </v-btn>
+                    <BtnToReload/>  
+                    <v-btn
+                      class="mr-0 ml-1"
+                      outlined
+                      color="primary"
+                      small
+                      :loading="loadingDownloadExcel"
+                      @click="downloadExcel"
+                    >
+                      <v-icon>mdi-progress-download</v-icon>
+                    </v-btn>  
+                  </v-row>
                 </template>
 
                 <!-- user menu list -->
