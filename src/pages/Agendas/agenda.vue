@@ -94,7 +94,7 @@
     />
 
     <template>
-      <div class="text-center">
+      <div v-if="dialogConfirm" class="text-center">
         <v-dialog
           v-model="dialogConfirm"
           persistent

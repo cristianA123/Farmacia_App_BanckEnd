@@ -81,19 +81,29 @@
               >mdi-email-check-outline
               </v-icon>
               <v-icon 
-                v-else
+                v-if="item.status === 'REJECTED'"
                 v-bind="attrs"
                 color="error"
                 v-on="on"
               >mdi-email-remove-outline
+              </v-icon>
+              <v-icon 
+                v-if="item.status === 'PENDING'"
+                v-bind="attrs"
+                color="primary"
+                v-on="on"
+              >mdi-clock-fast
               </v-icon>
             </template>
             <span 
               v-if="item.status === 'DELIVERED'"
             >DELIVERED</span>
             <span 
-              v-else
+              v-if="item.status === 'REJECTED'"
             >REJECTED</span>
+            <span 
+              v-if="item.status === 'PENDING'"
+            >PENDING</span>
           </v-tooltip>
         </template>
         

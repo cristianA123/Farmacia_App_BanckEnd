@@ -131,7 +131,7 @@ export default {
 
         formData.append('file', file)
 
-        BackendApi.post('/sms/upload/excelcampaing', formData)
+        BackendApi.post('/sms/upload/excelScheduledCampaing', formData)
           .then((response) => {
             this.isFileLoading = false
 
@@ -157,7 +157,7 @@ export default {
     submit() {
       if (this.$refs.form.validate()) {
         this.$store.dispatch('name', this.name)
-        this.$router.push({ name: 'sms-excel-step-two' })
+        this.$router.push({ name: 'sms-excel-schedule-two' })
       }
     }
   }
