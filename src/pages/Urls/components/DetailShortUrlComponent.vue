@@ -34,7 +34,7 @@
         <v-divider></v-divider>
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title>FECHA Y HORA:</v-list-item-title>
+            <v-list-item-title>FECHA Y HORA DE CREACIÓN DE URL:</v-list-item-title>
             <v-list-item-subtitle>{{ getcreated }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>

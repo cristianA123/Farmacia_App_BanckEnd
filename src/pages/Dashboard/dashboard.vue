@@ -145,7 +145,7 @@ export default {
           doc.text('DATOS DEL USUARIO:', 25, 80)
           doc.text('NOMBRE: ' +  $cookies.get('user').name , 25, 95)
           doc.text('CORREO: ' +  $cookies.get('user').email , 25, 110)
-          doc.text('CAMPAÑIA: ' +  $cookies.get('user').company , 25, 125)
+          doc.text('COMPAÑIA: ' +  $cookies.get('user').company , 25, 125)
           doc.addImage(imgData, 'JPEG',bufferX ,bufferY , pdfWidth, pdfHeight, undefined, 'FAST')
           
           doc.save('Reporte de campaña.pdf')
