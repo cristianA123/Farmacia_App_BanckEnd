@@ -75,10 +75,8 @@
         </template>
 
         <template v-slot:[`top`]>
-          <v-col
-            class="pb-1"
-          >
-            <v-row>
+          <v-col>
+            <v-row class="justify-center">
               <v-menu 
                 offset-y 
                 left
@@ -100,12 +98,12 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
-              <v-spacer></v-spacer>
-              <v-menu offset-y left transition="slide-y-transition">
+              <v-menu offset-y left transition="slide-y-transition" class="align-center justify-center">
                 <template v-slot:activator="{ on }">
                   <BtnToReload class="mr-3" />  
                   <v-btn
                     outlined
+                    small
                     color="primary"
                     :loading="loadingDownloadExcel"
                     @click="downloadExcel"
@@ -115,6 +113,7 @@
                   <v-btn 
                     class="mr-2"
                     color="primary"
+                    small
                     v-on="on"
                   >
                     <v-icon
