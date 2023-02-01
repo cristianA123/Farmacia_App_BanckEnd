@@ -1,14 +1,15 @@
 <template>
   <div class="d-flex flex-grow-1 flex-column">
     <!-- <div class="d-flex align-center py-3"> -->
-    <div class="d-flex justify-space-between align-content-center mb-1">
-      <div class="display-1">Dashboard</div>
+    <div id="dashBoard" class="d-flex align-center justify-space-between align-content-center mb-1" dense>
+      <div class="display-1 text-lg-h4 text-md-h4 text-h5">Dashboard</div>
       <v-spacer></v-spacer>
       <v-btn
         depressed
         outlined
         color="primary"
         class="mx-2"
+        small
         :loading="loadingSendPdfByEmail"
         @click="sendPdfByEmail"
       >
@@ -18,18 +19,19 @@
       <v-btn
         outlined
         color="primary"
+        small
         :loading="loadingDownloadPdf"
         @click="downloadPdf"
       >
         <v-icon>mdi-progress-download</v-icon>
       </v-btn>
 
-      <BtnToReload />
+      <BtnToReload/>
     
       <!-- </div> -->
     </div>
    
-    <v-row id="dashBoard" class="flex-grow-0" dense>
+    <v-row id="dashBoard" class="d-flex justify-space-between align-content-center mb-1" dense>
 
       <InitialCreditComponent 
         :credit="credits.credit"
