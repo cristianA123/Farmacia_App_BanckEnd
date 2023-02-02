@@ -8,7 +8,7 @@
     <!-- search bar -->
     <v-row class="pb-1 justify-space-between" no-gutters>
       <v-col
-        class="col-12 col-lg-3 col-md-3 py-0 d-flex justify-space-between"
+        class="col-12 col-lg-4 col-md-4 py-0 d-flex justify-space-between"
       >
 
         <ComboboxComponent 
@@ -111,7 +111,7 @@
       </v-col>
 
       <!-- btn search -->
-      <v-col class="col-12 col-lg-3 col-md-3 mb-2 py-0 d-flex justify-space-between">
+      <v-col class="col-12 col-lg-2 col-md-2 mb-2 py-0 d-flex justify-space-between">
         <v-btn
           height="40px"
           class="flex-grow-1"
