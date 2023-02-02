@@ -6,7 +6,7 @@
     @submit.prevent="submit()"
   >
     <!-- search bar -->
-    <v-row class="pb-1">
+    <v-row class="pb-1 justify-space-between" no-gutters>
       <v-col
         class="col-12 col-lg-3 py-0 d-flex justify-space-between"
       >
@@ -37,7 +37,7 @@
       </v-col>
 
       <!-- date start -->
-      <v-col class="col-6 col-lg-3 py-0 pd-flex justify-space-between">
+      <v-col class="col-12 col-lg-3 py-0 pd-flex justify-space-between">
         <v-dialog
           ref="dialogStart"
           v-model="modalDateRangeStart"
@@ -74,7 +74,7 @@
       </v-col>
 
       <!-- date end -->
-      <v-col class="col-6 col-lg-3 py-0 d-flex justify-space-between">
+      <v-col class="col-12 col-lg-3 py-0 d-flex justify-space-between">
         <v-dialog
           ref="dialogEnd"
           v-model="modalDateRangeEnd"
