@@ -2,12 +2,13 @@
   <div class="d-flex flex-column flex-grow-1">
     <div class="d-flex align-center pb-3">
       <div>
-        <div class="display-1">Enviar SMS a una agenda de contactos</div>
+        <div class="text-h6 text-lg-h4 text-md-h4">Enviar SMS a una agenda de contactos</div>
       </div>
       <v-spacer></v-spacer>
-      <BackPage 
+      <div><BackPage 
         to="services"
-      />
+      /></div>
+      
     </div>
 
     <v-form

@@ -5,9 +5,11 @@
         <div class="display-1">Enviar SMS Individual</div>
       </div>
       <v-spacer></v-spacer>
-      <BackPage 
-        to="services"
-      />
+      <div>
+        <BackPage 
+          to="services"
+        />
+      </div>
     </div>
 
     <v-form

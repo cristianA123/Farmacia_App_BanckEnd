@@ -1,67 +1,63 @@
 <template>
-  <div class="d-flex flex-column flex-grow-1">
-    <div class="d-flex align-center py-3">
-      <div>
-        <div class="display-1">Acortador URL</div>
-        <!-- <div class="display-1">URL individual</div> -->
-      </div>
-      <v-spacer></v-spacer>
+  <div class="d-flex flex-column flex-grow-1 justify-center">
+    <v-row class="align-center mx-1">
+      <div class="text-h6 text-lg-h4 text-md-h4 text-sm-h6">Acortador URL</div>
       <v-spacer></v-spacer>
       <v-btn
         color="primary"
+        small
         @click="openDialogCreate(undefined)"
       >
         Crear URL corta
       </v-btn>
       <BtnToReload />
-
-    </div>
-
+    </v-row>
     <!--Empty items --->
-    <EmptyItems
-      v-if="itemsEmpty && !isLoading"
-      icon="mdi-link-plus"
-      text="No tiene URL creados. Para crear URLS cortas clic en botón Crear URL Corta" 
-    />
-
-    <v-data-table
-      v-else
-      :headers="headers"
-      :items="items"
-    >
-      <template v-slot:[`item.times_open`]="{ item }">
-        {{ item.times_open || 0 }}
-      </template>
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-menu
-          offset-y
-        >
-          <template v-slot:activator="{ attrs, on }">
-            <v-btn
-              v-bind="attrs"
-              v-on="on"
-            >
-              Acciones
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item
-              link
-              @click="openDialogCreate(item)"
-            >
-              Modificar
-            </v-list-item>
-            <v-list-item
-              link
-              @click="openDetail(item)"
-            >
-              Ver detalle
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </template>
-    </v-data-table>
-
+    <v-col>
+      <EmptyItems
+        v-if="itemsEmpty && !isLoading"
+        icon="mdi-link-plus"
+        text="No tiene URL creados. Para crear URLS cortas clic en botón Crear URL Corta" 
+      />
+    
+      <v-data-table
+        v-else
+        :headers="headers"
+        :items="items"
+      >
+        <template v-slot:[`item.times_open`]="{ item }">
+          {{ item.times_open || 0 }}
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-menu
+            offset-y
+          >
+            <template v-slot:activator="{ attrs, on }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+              >
+                Acciones
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                link
+                @click="openDialogCreate(item)"
+              >
+                Modificar
+              </v-list-item>
+              <v-list-item
+                link
+                @click="openDetail(item)"
+              >
+                Ver detalle
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </template>
+      </v-data-table>
+    </v-col>
     <DialogCreateComponent
       ref="dialogCreate"
       @onDialogCreateFinish="onDialogCreateFinish"

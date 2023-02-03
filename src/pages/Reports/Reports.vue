@@ -6,6 +6,7 @@
       </div>
       <v-spacer></v-spacer>
       <v-btn
+        small
         outlined
         color="primary"
         :loading="isLoadingDownload"
