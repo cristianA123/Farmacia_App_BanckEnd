@@ -29,7 +29,7 @@
             <v-card
               id="preview-sms-dialog"
               outlined
-              color="#385F73"
+              color="primary"
               dark
               width="500px"
             >
