@@ -55,8 +55,8 @@ export default {
         { icon: 'mdi-file-document', text: 'Documentacion Api',
           items: [
             { text: 'Crear Campaña', link: '/document/crear', chip: true, api:'POST', color: 'primary' },
-            { text: 'Creditos', link: '/document/creditos',chip: true, api:'GET' },
-            { text: 'Reporte Campaña', link: '/document/reporte',chip: true, api:'GET' }
+            { text: 'Creditos', link: '/document/creditos',chip: true, api:'GET'  ,color: '#FF7901' },
+            { text: 'Reporte Campaña', link: '/document/reporte',chip: true, api:'GET'  ,color: '#FF7901' }
           ] }
       ]
     }]

@@ -33,8 +33,16 @@
         <div class="editor mb-4">
           <h3 class="mb-2">Metodos</h3>
           <span>
-            La API soporta el siguiente metodo HTTP:<br>
-            POST: para crear un nuevo recurso.
+            <v-chip
+              class="mr-1 font-weight-black"
+              dense
+              label
+              color="primary"
+              x-small
+              dark
+            >
+              POST
+            </v-chip> para crear un nuevo recurso.
           </span>
         </div>
 
@@ -82,7 +90,7 @@
         </div>
 
         <div class="editor mb-4">
-          <h3 class="mb-2">Respuestas</h3>
+          <h3 class="mb-2">Respuesta</h3>
           <textarea ref="respuesta" v-model="respuesta"></textarea>
         </div>
 

@@ -234,12 +234,12 @@ export default {
       myUser: null,
       searchText: '',
       headers: [
-        { text: 'Usuario',align:'center', value: 'email' },
+        { text: 'Usuario',align:'center',sortable: false, value: 'email' },
         { text: 'Crédito inicial', value: 'credit' },
         { text: 'Créditos disponibles', value: 'availableCredit' },
-        { text: 'Última Modif.', value: 'updated_at' },
-        { text: 'Estado',align:'center', value: 'status' },
-        { text: 'Acciones',align:'center', value: 'actions' }
+        { text: 'Última Modif.',align:'center',value: 'updated_at' },
+        { text: 'Estado',align:'center', sortable: false,value: 'status' },
+        { text: 'Acciones',align:'center',sortable: false, value: 'actions' }
       ]
     }
   },

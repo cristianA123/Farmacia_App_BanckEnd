@@ -102,32 +102,35 @@
               </v-menu>
               <v-menu offset-y left transition="slide-y-transition">
                 <template v-slot:activator="{ on }">
-                  <v-row class="align-center justify-center">
-                    <v-btn 
-                      class="mx-0"
-                      color="primary"
-                      v-on="on"
-                    >
-                      <v-icon
-                        left
-                        dark
+                  <v-col>
+                    <div class="row col justify-end align-center px-0 mx-0">
+                      <v-btn 
+                        class="mx-0"
+                        color="primary"
+                        small
+                        v-on="on"
                       >
-                        mdi-plus
-                      </v-icon>
-                      Nuevos contactos
-                    </v-btn>
-                    <BtnToReload/>  
-                    <v-btn
-                      class="mr-0 ml-1"
-                      outlined
-                      color="primary"
-                      small
-                      :loading="loadingDownloadExcel"
-                      @click="downloadExcel"
-                    >
-                      <v-icon>mdi-progress-download</v-icon>
-                    </v-btn>  
-                  </v-row>
+                        <v-icon
+                          left
+                          dark
+                        >
+                          mdi-plus
+                        </v-icon>
+                        Nuevos contactos
+                      </v-btn> 
+                      <v-btn
+                        class="mr-0 ml-1"
+                        outlined
+                        color="primary"
+                        small
+                        :loading="loadingDownloadExcel"
+                        @click="downloadExcel"
+                      >
+                        <v-icon>mdi-progress-download</v-icon>
+                      </v-btn>  
+                      <BtnToReload/> 
+                    </div>
+                  </v-col>
                 </template>
 
                 <!-- user menu list -->

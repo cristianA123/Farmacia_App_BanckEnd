@@ -33,13 +33,21 @@
         <div class="editor mb-4">
           <h3 class="mb-2">Metodos</h3>
           <span>
-            La API soporta el siguiente metodo HTTP:<br>
-            GET: para obtener datos.
+            <v-chip
+              class="mr-1 font-weight-black"
+              dense
+              label
+              color="#FF7901"
+              x-small
+              dark
+            >
+              GET
+            </v-chip> para obtener datos.
           </span>
         </div>
 
         <div class="editor">
-          <h3 class="mb-2">Respuestas</h3>
+          <h3 class="mb-2">Respuesta</h3>
           <textarea ref="respuesta" v-model="respuesta"></textarea>
           <v-simple-table dark class="my-3">
             <template v-slot:default>

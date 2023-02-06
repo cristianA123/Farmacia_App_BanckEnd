@@ -52,12 +52,12 @@ export default {
       users: [],
       reports: [],
       headers: [
-        { text: 'Usuario' ,align:'center', value: 'user_name' },
-        { text: 'Campaña' , value: 'name' },
+        { text: 'Usuario' ,align:'center', sortable: false,value: 'user_name' },
+        { text: 'Campaña' ,align:'center', sortable: false,value: 'name' },
         { text: 'Fecha de envío',align:'center' , value: 'created_at' },
-        { text: 'Estado' ,align:'center', value: 'status' },
+        { text: 'Estado' ,align:'center', sortable: false,value: 'status' },
         { text: 'Créditos' , value: 'total_cost' },
-        { text: 'Acciones', align:'center',value: 'actions' }
+        { text: 'Acciones', align:'center',sortable: false,value: 'actions' }
       ],
       isLoading: false,
       isLoadingDownload: false,

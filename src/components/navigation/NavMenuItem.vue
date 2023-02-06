@@ -19,6 +19,7 @@
           <v-chip
             v-if="menuItem.chip"
             class="mr-1 font-weight-black"
+            dark
             dense
             label
             :color="menuItem.color"
