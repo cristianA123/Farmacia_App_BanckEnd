@@ -98,7 +98,7 @@
                     <v-icon>mdi-eye</v-icon>
                     <a  
                       :id="item.id" 
-                      :href="item.long_url" 
+                      :href="item.short_url" 
                       target="_blank"
                     ></a>
                   </v-btn>

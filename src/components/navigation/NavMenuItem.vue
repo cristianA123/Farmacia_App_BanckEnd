@@ -11,11 +11,21 @@
     >
       <v-list-item-icon>
         <v-icon :small="small" :class="{ 'grey--text': menuItem.disabled }">
-          {{ menuItem.icon || 'mdi-circle-medium' }}
+          {{ menuItem.icon }}
         </v-icon>
       </v-list-item-icon>
       <v-list-item-content>
         <v-list-item-title>
+          <v-chip
+            v-if="menuItem.chip"
+            class="mr-1 font-weight-black"
+            dense
+            label
+            :color="menuItem.color"
+            x-small
+          >
+            {{ menuItem.api }}
+          </v-chip>
           {{ menuItem.key ? $t(menuItem.key) : menuItem.text }}
         </v-list-item-title>
       </v-list-item-content>
