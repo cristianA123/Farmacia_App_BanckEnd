@@ -136,9 +136,8 @@ export default {
       if (this.isEdit) {
         this.name = item.name
         this.file = item.file
-        const acceptedImageTypes = ['image/jpeg', 'image/png', 'image/svg']
 
-        if (acceptedImageTypes.includes(this.file.type) ) {
+        if (item.extension === 'jpeg' || item.extension === 'png') {
           this.imagen = true
         } else {
           this.imagen = false

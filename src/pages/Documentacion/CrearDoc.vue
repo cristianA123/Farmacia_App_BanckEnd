@@ -304,7 +304,7 @@ $request->setConfig(array(
   'follow_redirects' => TRUE
 ));
 $request->setHeader(array(
-  'Authorization' => 'Basic bXRlcnJvbmVzLnJhQGdtYWlsLmNvbToxMjM0NTY=',
+  'Authorization' => 'samxksamxxmkaxmsaknxasjnxjnsxjaq',
   'Content-Type' => 'text/plain'
 ));
 $request->setBody('{\n "campaign_name": "Campaña de ejemplo",\n "messages": [\n {\n "phone": 99988877,\n "text": "Mensaje uno ",\n "message_id": "asd21"\n },\n {\n "phone": 999111000,\n "text": "Mensaje dos",\n "message_id": "dase3"\n }\n ],\n "options": {\n "push": false,\n "is_bidireccional": false\n }\n}');
@@ -326,7 +326,7 @@ var options = {
   'method': 'POST',
   'url': 'https://api.enviamas.pe/api/sms/create_campaign',
   'headers': {
-    'Authorization': 'Basic bXRlcnJvbmVzLnJhQGdtYWlsLmNvbToxMjM0NTY=',
+    'Authorization': 'samxksamxxmkaxmsaknxasjnxjnsxjaq',
     'Content-Type': 'text/plain'
   },
   body: '{\n "campaign_name": "Campaña de ejemplo",\n "messages": [\n {\n "phone": 99988877,\n "text": "Mensaje uno ",\n "message_id": "asd21"\n },\n {\n "phone": 999111000,\n "text": "Mensaje dos",\n "message_id": "dase3"\n }\n ],\n "options": {\n "push": false,\n "is_bidireccional": false\n }\n}'
@@ -361,7 +361,7 @@ payload = {
 }
 
 headers = {
-  'Authorization': 'Basic bXRlcnJvbmVzLnJhQGdtYWlsLmNvbToxMjM0NTY=',
+  'Authorization': 'samxksamxxmkaxmsaknxasjnxjnsxjaq',
   'Content-Type': 'application/json'
 }
 
