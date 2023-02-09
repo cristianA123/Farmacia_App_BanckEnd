@@ -260,7 +260,12 @@ export default {
     async openPreviewComponent() {
       await this.availableCreditByUser()
       this.optionsShow = false
-      this.$refs.dialogPreview.open()
+      const payload = {
+        name: this.$store.state.sms.name,
+        message: this.message
+      }
+      
+      this.$refs.dialogPreview.open(payload)
     },
     PreviewSmsSubmit() {
       // if ($cookies.get('user').channel_id) {
