@@ -71,7 +71,7 @@
             <v-btn
               color="blue darken-1"
               text
-              @click="close()"
+              @click="dialog = false"
             >
               Cerrar
             </v-btn>
@@ -127,6 +127,7 @@ export default {
   },
   methods: {
     open(item) {
+      
       this.errors = {
         name:'',
         file:''
@@ -134,10 +135,12 @@ export default {
       this.item = item
 
       if (this.isEdit) {
+        console.log('editando')
+        console.log(item.extension)
         this.name = item.name
         this.file = item.file
 
-        if (item.extension === 'jpeg' || item.extension === 'png') {
+        if (item.extension === 'jpg' || item.extension === 'png') {
           this.imagen = true
         } else {
           this.imagen = false
@@ -151,6 +154,7 @@ export default {
 
       this.dialog = true
     },
+
     close () {
       this.$refs.form.reset()
       this.isLoading = false
