@@ -51,4 +51,20 @@ export default [{
   path: '/channels/vendors',
   name: 'channels-vendors',
   component: () => import('@/pages/Channels/channels.vue')
-}]
+},
+{
+  path: '/document/crear',
+  name: 'documentacion-crear',
+  component: () => import('@/pages/Documentacion/CrearDoc.vue')
+},
+{
+  path: '/document/reporte',
+  name: 'documentacion-reporte',
+  component: () => import('@/pages/Documentacion/ReporteDoc.vue')
+},
+{
+  path: '/document/creditos',
+  name: 'documentacion-creditos',
+  component: () => import('@/pages/Documentacion/Creditos.vue')
+}
+]

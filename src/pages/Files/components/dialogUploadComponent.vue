@@ -46,7 +46,7 @@
                     /> 
 
                     <v-img
-                      v-else
+                      v-if="!isEditFile && imagen"
                       :src="long_url"
                       height="194"
                     />
@@ -96,6 +96,7 @@ import BackendApi from '@/services/backend.service'
 export default {
   data() {
     return {
+      imagen: null,
       errors: {
         name:'',
         file:''
@@ -135,6 +136,12 @@ export default {
       if (this.isEdit) {
         this.name = item.name
         this.file = item.file
+
+        if (item.extension === 'jpeg' || item.extension === 'png') {
+          this.imagen = true
+        } else {
+          this.imagen = false
+        }
         this.long_url = item.long_url
       } else {
         this.name = null

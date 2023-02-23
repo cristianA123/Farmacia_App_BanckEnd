@@ -75,8 +75,10 @@
         </template>
 
         <template v-slot:[`top`]>
-          <v-col>
-            <v-row class="justify-center">
+          <v-col
+            class="pb-1"
+          >
+            <v-row class="justify-end">
               <v-menu 
                 offset-y 
                 left
@@ -98,51 +100,56 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
-              <v-menu offset-y left transition="slide-y-transition">
-                <template v-slot:activator="{ on }">
-                  <v-row class="align-center justify-center">
-                    <v-btn 
-                      class="mx-0"
-                      color="primary"
-                      v-on="on"
-                    >
-                      <v-icon
-                        left
-                        dark
-                      >
-                        mdi-plus
-                      </v-icon>
-                      Nuevos contactos
-                    </v-btn>
-                    <BtnToReload/>  
-                    <v-btn
-                      class="mr-0 ml-1"
-                      outlined
-                      color="primary"
-                      small
-                      :loading="loadingDownloadExcel"
-                      @click="downloadExcel"
-                    >
-                      <v-icon>mdi-progress-download</v-icon>
-                    </v-btn>  
-                  </v-row>
-                </template>
+              <div>
+                <v-menu offset-y left transition="slide-y-transition">
+                  <template v-slot:activator="{ on }">
+                    <v-col class="pb-0">
+                      <div class="row col justify-end align-center px-0 mx-0 pb-0">
+                        <v-btn 
+                          class="mx-0"
+                          color="primary"
+                          small
+                          v-on="on"
+                        >
+                          <v-icon
+                            left
+                            dark
+                          >
+                            mdi-plus
+                          </v-icon>
+                          Nuevos contactos
+                        </v-btn> 
+                        <v-btn
+                          class="mr-0 ml-1"
+                          outlined
+                          color="primary"
+                          small
+                          :loading="loadingDownloadExcel"
+                          @click="downloadExcel"
+                        >
+                          <v-icon>mdi-progress-download</v-icon>
+                        </v-btn>  
+                        <BtnToReload/> 
+                      </div>
+                    </v-col>
+                  </template>
 
-                <!-- user menu list -->
-                <v-list dense nav>
-                  <v-list-item @click="openNewContact()">
-                    <v-list-item-content>
-                      <v-list-item-title>Individual</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
+                  <!-- user menu list -->
+                  <v-list>
+                    <v-list-item @click="openNewContact()">
+                      <v-list-item-content>
+                        <v-list-item-title>Individual</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
 
-                  <v-list-item @click="openNewContactsFromExcel()">
-                    <v-list-item-content>
-                      <v-list-item-title>Desde Excel</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
+                    <v-list-item @click="openNewContactsFromExcel()">
+                      <v-list-item-content>
+                        <v-list-item-title>Desde Excel</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </div>
             </v-row>
           </v-col>
           <v-col

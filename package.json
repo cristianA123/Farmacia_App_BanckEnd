@@ -9,11 +9,13 @@
     "dev": "npm run serve"
   },
   "dependencies": {
+    "@emmetio/codemirror-plugin": "^1.2.4",
     "@indielayer/vue-live-demo": "^1.0.0",
     "@johmun/vue-tags-input": "^2.1.0",
     "animate.css": "^4.1.0",
     "apexcharts": "^3.19.2",
     "axios": "^0.21.4",
+    "codemirror": "^5.54.0",
     "dropify": "^0.2.2",
     "echarts": "^4.8.0",
     "export-from-json": "^1.6.0",
