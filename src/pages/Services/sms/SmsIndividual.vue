@@ -214,7 +214,12 @@ export default {
     async openPreviewComponent() {
       await this.availableCreditByUser()
       this.optionsShow = false
-      this.$refs.dialogPreview.open()
+      const payload = {
+        name: 'Individual',
+        message: this.message
+      }
+
+      this.$refs.dialogPreview.open(payload)
     }
   }
 }

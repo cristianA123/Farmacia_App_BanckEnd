@@ -51,7 +51,7 @@
               <v-list-item-avatar color="grey"> <v-icon>mdi-file-image</v-icon> </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title class="headline">{{ item.name }}</v-list-item-title>
-                <v-list-item-subtitle>Actualizado: {{ item.updated }}</v-list-item-subtitle>
+                <v-list-item-subtitle>Creado: {{ item.created }}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
 

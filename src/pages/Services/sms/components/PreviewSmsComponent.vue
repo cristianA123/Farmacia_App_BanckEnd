@@ -207,7 +207,8 @@ export default {
         // { key9:'[NOMBRE 1]' }
       ],
       loadingSendPdf: false,
-      message: []
+      message: [],
+      payload: []
     }
   },
   computed: {
@@ -237,8 +238,11 @@ export default {
     }
   },
   methods: {
-    open() {
+    open(payload) {
       this.show = true
+      this.payload = payload
+      console.log(payload)
+      // console.log('2')
       // this.isloading = true
     },
     close() {
@@ -292,6 +296,16 @@ export default {
             const formData = new FormData()
             
             formData.append('file', doc.output('blob'))
+            formData.append('bidireccional', this.options.is_bidireccional ? 'SI' : 'NO')
+            formData.append('push', this.options.is_push ? 'SI' : 'NO')
+            formData.append('scheduled', this.options.scheduled ? 'SI' : 'NO')
+            formData.append('registro', this.dataCampaing.rows)
+            formData.append('numeroInvalido',( this.dataCampaing.rows - this.dataCampaing.valid_number ) )
+            formData.append('masCaracteres', this.dataCampaing.messages_160_letters)
+            formData.append('creditos', this.dataCampaing.necessary_credit)
+            formData.append('message' , this.payload.message)
+            formData.append('name' , this.payload.name)
+            console.log(formData)
             
             BackendApi.post('/send_email', formData)
               .then((response) => {

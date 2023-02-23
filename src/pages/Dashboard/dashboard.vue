@@ -139,6 +139,7 @@ export default {
             font: 'helvetica'
           }
 
+          console.log($cookies.get('user').company)
           doc.text('Dashboard', pdfWidth / 2, 40, optionsHeader)
           doc.setFontSize(12)
           doc.text('FECHA Y HORA:' + ' ' + moment().format('MMMM Do YYYY, h:mm:ss a') , 25, 65)
